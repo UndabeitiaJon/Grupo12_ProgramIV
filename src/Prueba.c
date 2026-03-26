@@ -21,5 +21,6 @@ int main(void) {
 		return 0;
 	}
 	//kjboiu
+	//Prueba contador de comentarios
 	return EXIT_SUCCESS;
 }
