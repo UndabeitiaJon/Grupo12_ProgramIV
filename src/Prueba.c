@@ -15,5 +15,10 @@ int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
 	puts("Prueba de configurar bien el github");
 	puts("Erdoiza vago");
+	//Erdoixza vago
+	int i = 0;
+	if (i == 0){
+		return 0;
+	}
 	return EXIT_SUCCESS;
 }
