@@ -13,5 +13,6 @@
 
 int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+	puts("Prueba de configurar bien el github");
 	return EXIT_SUCCESS;
 }
