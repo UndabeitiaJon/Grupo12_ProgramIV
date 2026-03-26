@@ -14,6 +14,6 @@
 int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
 	puts("Prueba de configurar bien el github");
-	puts("PruebaErdoiza");
+	puts("Erdoiza vago");
 	return EXIT_SUCCESS;
 }
