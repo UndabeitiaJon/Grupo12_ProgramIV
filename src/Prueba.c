@@ -20,5 +20,6 @@ int main(void) {
 	if (i == 0){
 		return 0;
 	}
+	//kjboiu
 	return EXIT_SUCCESS;
 }
