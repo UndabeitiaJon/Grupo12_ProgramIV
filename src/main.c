@@ -10,7 +10,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <trenfe.h>
+
+#include "estructuras.h"
 
 int main(void) {
 	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */

@@ -5,9 +5,9 @@
  *      Author: jon.undabeitia (Unai Erdoiza seguro que no)
  */
 
-#include <trenfe.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "estructuras.h"
 
 
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,

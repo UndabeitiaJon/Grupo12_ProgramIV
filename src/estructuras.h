@@ -5,8 +5,8 @@
  *      Author: jon.undabeitia
  */
 
-#ifndef SRC_TRENFE_H_
-#define SRC_TRENFE_H_
+#ifndef SRC_ESTRUCTURAS_H_
+#define SRC_ESTRUCTURAS_H_
 #define MAX_PARADAS 30
 #define DIAS_SEMANA 7
 
@@ -112,4 +112,4 @@ typedef struct {
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,
                      char *email, char *telefono, char *contrasenia,
                      Date fechaNacimiento, Rol rol);
-#endif /* SRC_TRENFE_H_ */
+#endif /* SRC_ESTRUCTURAS_H_ */
