@@ -298,5 +298,5 @@ typedef struct {
  */
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,
                      char *email, char *telefono, char *contrasenia,
-                     char *fechaNacimiento, RolUsuario *rol);
+                     char *fechaNacimiento, RolUsuario rol);
 #endif /* SRC_ESTRUCTURAS_H_ */
