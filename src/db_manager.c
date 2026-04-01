@@ -259,3 +259,79 @@ void listar_usuarios_db(){
 	sqlite3_finalize(stmt);
 	sqlite3_close(db);
 }
+bool verificar_usuario (char *email, char *contraseniaIntroducida){
+	if (comprobar_usuario_registrado(email)){
+		if (comprobar_contrasenia(email, contraseniaIntroducida)){
+			return true;
+		}else{
+			printf("Contraseña incorrecta.");
+		}
+	}else{
+		printf("Email no registrado.");
+	}
+	return false;
+}
+bool comprobar_usuario_registrado (char *email){
+	sqlite3 *db;
+	sqlite3_stmt *stmt;
+	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+		return false;
+	}
+	char sql[] = "select count(*) from USUARIOS where email = ?";
+
+	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (result != SQLITE_OK){
+		printf("Error preparando statement // comprobar_usuario_registrado");
+		return false;
+	}
+	result = sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
+	if (result != SQLITE_OK){
+		printf("Error haciendo el bind // comprobar_usuario_registrado");
+		return false;
+	}
+	int seleccion = 0;
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		seleccion = sqlite3_column_int(stmt, 0);
+    }
+
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+
+	return seleccion == 1;
+}
+bool comprobar_contrasenia (char *email, char *contraseniaIntroducida){
+	sqlite3 *db;
+	sqlite3_stmt *stmt;
+	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+		return false;
+	}
+	char sql[] = "select pass_hash from USUARIOS where email = ?";
+
+	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (result != SQLITE_OK){
+		printf("Error preparando statement // comprobar_usuario_registrado");
+		return false;
+	}
+	result = sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
+	if (result != SQLITE_OK){
+		printf("Error haciendo el bind // comprobar_usuario_registrado");
+		return false;
+	}
+	bool coincide = false;
+	if (sqlite3_step(stmt) == SQLITE_ROW) {
+		//HAY QUE DECIDIR SI LA CONTRASEÑA SE GUARDA COMO UN HASH O NO EN LA BBDD PARA
+		//TENER QUE CIFRAR Y DESCIFRAR O NO
+	    const char *pass_hash = (const char *)sqlite3_column_text(stmt, 0);
+	    if (strcmp(pass_hash, contraseniaIntroducida) == 0){
+
+	    	coincide = true;
+	    }
+	}
+
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+
+	return  coincide;
+}

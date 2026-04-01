@@ -15,6 +15,7 @@
 #include "db_manager.h"
 
 int main(void) {
+	printf("BIENVENIDO A TRENFE");
 
 	return EXIT_SUCCESS;
 }
@@ -28,7 +29,7 @@ void menu_alta_usuario() {
     RolUsuario rol;
 
     printf("\n=== ALTA DE NUEVO USUARIO ===\n");
-
+    fflush(stdout);
     #define CLEAN_BUFFER while(getchar() != '\n')
 
     printf("Nombre: ");
