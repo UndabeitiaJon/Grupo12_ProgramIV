@@ -8,7 +8,7 @@
 #ifndef SRC_DB_MANAGER_H_
 #define SRC_DB_MANAGER_H_
 #include "sqlite3.h"
-#define DB_PATH "./data/trenfe.db"
+#include "config.h"
 #include "estructuras.h"
 #include <stdbool.h>
 

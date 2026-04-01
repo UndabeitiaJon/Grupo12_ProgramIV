@@ -14,7 +14,7 @@ int init_database() {
 	sqlite3 *db;
 	char *error_mesg = 0;
 
-	int rc = sqlite3_open(DB_PATH, &db);
+	int rc = sqlite3_open(cfg.db_path, &db);
 	if(rc != SQLITE_OK){
 		printf("Error al abrir la BD: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
@@ -134,7 +134,7 @@ int init_database() {
 void importar_usuarios_csv(const char* ruta_csv){
 	sqlite3 *db;
 	char *err_msg = 0;
-	if (sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+	if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
 		return;
 	}
 
@@ -160,7 +160,7 @@ void importar_usuarios_csv(const char* ruta_csv){
 		char *rol = strtok(NULL, ";");
 
 		if (nombre && apellido && dni && email && rol) {
-			char sql;
+			char sql [512];
 		    snprintf(sql, sizeof(sql),
 		    "INSERT INTO USUARIOS (nombre, apellido, dni, email, rol) "
 		    "VALUES ('%s', '%s', '%s', '%s', '%s');",
@@ -190,7 +190,7 @@ const char* rol_a_texto(RolUsuario rol) {
 int insertar_usuario_db(Usuario u){
 	sqlite3 *db;
 	char *err_msg = 0;
-	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+	if(sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
 		return 1;
 	}
 	char sql[1024];
@@ -217,7 +217,7 @@ int insertar_usuario_db(Usuario u){
 void listar_usuarios_db(){
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+	if(sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
 		return;
 	}
 	const char *sql = "SELECT id_u, nombre, apellido, dni, rol FROM USUARIOS;";
@@ -274,7 +274,7 @@ bool verificar_usuario (char *email, char *contraseniaIntroducida){
 bool comprobar_usuario_registrado (char *email){
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+	if(sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
 		return false;
 	}
 	char sql[] = "select count(*) from USUARIOS where email = ?";
@@ -303,7 +303,7 @@ bool comprobar_usuario_registrado (char *email){
 bool comprobar_contrasenia (char *email, char *contraseniaIntroducida){
 	sqlite3 *db;
 	sqlite3_stmt *stmt;
-	if(sqlite3_open(DB_PATH, &db) != SQLITE_OK){
+	if(sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
 		return false;
 	}
 	char sql[] = "select pass_hash from USUARIOS where email = ?";
