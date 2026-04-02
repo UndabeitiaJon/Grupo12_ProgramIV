@@ -47,9 +47,10 @@ int main(void) {
     log_evento(cfg.log_path, NULL, "INICIO", "Sistema arrancado");
 
     int opcion;
-    do {
+
     	limpiar_pantalla();
         printf("\n-----------------------------------------\n");
+        printf("  2. Registrar\n");
         printf("  1. Iniciar sesion\n");
         printf("  0. Salir\n");
         printf("-----------------------------------------\n");
@@ -66,10 +67,14 @@ int main(void) {
                 log_evento(cfg.log_path, NULL, "FIN", "Sistema detenido");
                 printf("Hasta luego.\n");
                 break;
+            case 2:
+            	limpiar_pantalla();
+            	menu_alta_usuario();
+            	break;
             default:
                 printf("Opcion no valida.\n");
         }
-    } while(opcion != 0);
+
 
     return EXIT_SUCCESS;
 }

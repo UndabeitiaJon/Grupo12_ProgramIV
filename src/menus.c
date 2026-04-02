@@ -11,8 +11,6 @@
 #include "config.h"
 #include "logs.h"
 
-void menu_principal(char *email_logueado);
-void menu_alta_usuario();
 
 void menu_login() {
     char email[128], pass[256];
@@ -27,7 +25,9 @@ void menu_login() {
 
         if (verificar_usuario(email, pass)) {
             log_evento(cfg.log_path, email, "LOGIN", "Inicio de sesion correcto");
-            menu_principal(email);
+            //EXTRAEMOS EL USUARIO DE LA BD
+            Usuario user = obtener_usuario(email);
+            comprobar_rol_usuario(email, user);
             return;
         }
         printf("Credenciales incorrectas. Intentos restantes: %d\n", intentos);
@@ -35,8 +35,27 @@ void menu_login() {
     log_evento(cfg.log_path, email, "LOGIN_FAIL", "Demasiados intentos fallidos");
     printf("Demasiados intentos fallidos.\n");
 }
-
-void menu_principal(char *email_logueado) {
+//COMPROBAR EL ROL DEL USUARIO PARA ABRIR UN MENU PRINCIPAL U OTRO
+void comprobar_rol_usuario(char *email,Usuario user){
+	RolUsuario rol = obtener_rol_usuario(email);
+	switch (rol) {
+		case ROL_PASAJERO:
+			printf("ENTRANDO EN MENU PASAJERO");
+			menu_principal_pasajero(user);
+			break;
+		case ROL_EMPLEADO:
+			menu_principal_empleado(user);
+			break;
+		case ROL_ADMIN:
+			menu_principal_administrador(email, user);
+			break;
+		default:
+		    printf("Rol desconocido.\n");
+		    break;
+	}
+}
+//MENU PRINCIPAL DE ADMIN
+void menu_principal_administrador(const char *email_logueado, const Usuario user) {
     int opcion;
     do {
         printf("\n=== MENU PRINCIPAL ===\n");
@@ -62,7 +81,7 @@ void menu_principal(char *email_logueado) {
         }
     } while(opcion != 0);
 }
-
+//MENU REGISTRO
 void menu_alta_usuario() {
     char nombre[64], apellido[64], dni[16], email[128], telf[20], pass[256], fecha_nac[11];
     int rol_opcion;
@@ -100,6 +119,7 @@ void menu_alta_usuario() {
         printf("Error al dar de alta el usuario.\n");
     }
 }
+//Funcion para limpiar la terminal -- NO FUNCIONA ; )
 void limpiar_pantalla(){
 	#ifdef _WIN32
         system("cls");
@@ -107,4 +127,19 @@ void limpiar_pantalla(){
         system("clear");
     #endif
 }
+//MENU DE PASAJEROS
+void menu_principal_pasajero(const Usuario user){
+	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+	printf("\t3.Cerrar Sesion\n");
+	printf("\t2.Gestionar nuevas reservas\n");
+	printf("\t1.Gestionar mis reservas\n");
+	printf("\t0.Entrar a Mi Trenfe\n");
+}
+//MENU DE EMPLEADO
+void menu_principal_empleado(const Usuario user){
+	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+	printf("\t2.Cerrar Sesion\n");
+	printf("\t1. Mis datos\n");
+	printf("\t0. Servicios\n");
 
+}

@@ -327,7 +327,33 @@ int obtener_id_usuario(const char *email){
 	sqlite3_close(db);
 	return id;
 }
+Usuario obtener_usuario (const char *email){
+	Usuario u;
+	sqlite3 *db = abrir_bd();
+	if (!db) return u;
 
+	sqlite3_stmt *stmt;
+	const char *sql = "SELECT * FROM USUARIOS WHERE email = ?;";
+	if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK){
+		sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
+		if (sqlite3_step(stmt) == SQLITE_ROW) {
+			u.id_u = sqlite3_column_int(stmt, 0);
+			strncpy(u.nombre,           (const char *)sqlite3_column_text(stmt, 1), sizeof(u.nombre));
+			strncpy(u.apellido,         (const char *)sqlite3_column_text(stmt, 2), sizeof(u.apellido));
+			strncpy(u.dni,              (const char *)sqlite3_column_text(stmt, 3), sizeof(u.dni));
+			strncpy(u.email,            (const char *)sqlite3_column_text(stmt, 4), sizeof(u.email));
+			strncpy(u.telf,             (const char *)sqlite3_column_text(stmt, 5), sizeof(u.telf));
+			strncpy(u.fecha_nac,        (const char *)sqlite3_column_text(stmt, 6), sizeof(u.fecha_nac));
+			strncpy(u.pass_hash,        (const char *)sqlite3_column_text(stmt, 7), sizeof(u.pass_hash));
+		    u.rol    = (RolUsuario)      sqlite3_column_int(stmt, 8);
+		    u.activo =                   sqlite3_column_int(stmt, 9);
+		    strncpy(u.fecha_registro,   (const char *)sqlite3_column_text(stmt, 10), sizeof(u.fecha_registro));
+		}
+		sqlite3_finalize(stmt);
+	}
+	sqlite3_close(db);
+	return u;
+}
 
 
 int insertar_usuario_db(Usuario u) {

@@ -35,3 +35,25 @@
 [2026-04-02 17:11:53] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
 [2026-04-02 17:14:58] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-02 17:15:11] [5] [LOGIN_FAIL] Demasiados intentos fallidos
+[2026-04-02 17:02:33] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:03:12] [maria@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:04:11] [maria@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:19] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:05:23] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:49] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:42:50] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:44:21] [markel.trigo2006@gmail.com] [INSERT] Usuario creado correctamente
+[2026-04-02 17:44:46] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:45:25] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:45:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:48:57] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:49:22] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:13:11] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:13:29] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:14:29] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:14:44] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:16:24] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:16:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:20:29] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:20:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:25:05] [SISTEMA] [INICIO] Sistema arrancado

@@ -20,6 +20,8 @@ void seed_database(void);
 const char* rol_a_texto(RolUsuario rol);
 RolUsuario obtener_rol_usuario(const char *email); //aqui podemos ver si es mejor en base al email o dni o asi
 int obtener_id_usuario(const char *email); //aqui podemos ver si es mejor en base al email o dni o asi
+//Funcion para obtener un usuario de la bd
+Usuario obtener_usuario(const char *email);
 int insertar_usuario_db(Usuario u);
 void listar_usuarios_db();
 void listar_empleados_db(void); //
