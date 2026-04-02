@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : Ekain Aranoa
+ Name        :
  Author      : 
  Version     :
  Copyright   : Your copyright notice
@@ -17,11 +17,23 @@
 #include "logs.h"
 #include "menus.h"
 
-int main(void) {
-    printf("=== BIENVENIDO A TRENFE ===\n");
+#ifdef _WIN32
+    #include <direct.h>
+    #define crear_directorio(p) _mkdir(p)
+#else
+    #include <sys/stat.h>
+    #define crear_directorio(p) mkdir(p, 0755)
+#endif
 
-    _mkdir("./data");
-    _mkdir("./logs");
+int main(void) {
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    printf("=========================================\n");
+    printf("     BIENVENIDO AL SISTEMA TRENFE\n");
+    printf("=========================================\n");
+
+    crear_directorio("./data");
+    crear_directorio("./logs");
 
     cargar_config("./data/config.cfg", &cfg);
 
@@ -30,12 +42,16 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
+    seed_database();
+
     log_evento(cfg.log_path, NULL, "INICIO", "Sistema arrancado");
 
     int opcion;
     do {
-        printf("\n1. Iniciar sesion\n");
-        printf("0. Salir\n");
+        printf("\n-----------------------------------------\n");
+        printf("  1. Iniciar sesion\n");
+        printf("  0. Salir\n");
+        printf("-----------------------------------------\n");
         printf("Opcion: ");
         scanf("%d", &opcion);
 
