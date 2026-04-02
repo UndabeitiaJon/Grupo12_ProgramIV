@@ -327,6 +327,11 @@ int obtener_id_usuario(const char *email){
 	sqlite3_close(db);
 	return id;
 }
+
+
+
+
+
 Usuario obtener_usuario (const char *email){
 	Usuario u;
 	sqlite3 *db = abrir_bd();
@@ -379,8 +384,19 @@ int insertar_usuario_db(Usuario u) {
     sqlite3_bind_text(stmt, 8, rol_a_texto(u.rol),  -1, SQLITE_TRANSIENT);
     sqlite3_bind_int (stmt, 9, u.activo);
 
-    rc = sqlite3_step(stmt);
+    int rc2 = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+
+    if(rc2 == SQLITE_DONE && u.rol == ROL_PASAJERO ){
+    	int nuevo_id = (int) sqlite3_last_insert_rowid(db);
+    	char sql2[256];
+    	snprintf(sql2, sizeof(sql2),
+    	"INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento)"
+    	" VALUES (%d,0,'NINGUNO');", nuevo_id); // snprintf En lugar de imprimir el texto en la pantalla, lo guarda dentro de tu variable sql2
+    	 sqlite3_exec(db, sql2, 0, 0, NULL);
+    }
+
+
     sqlite3_close(db);
 
     if (rc != SQLITE_DONE) {
@@ -420,6 +436,36 @@ void listar_usuarios_db() {
     }
     sqlite3_finalize(stmt);
     sqlite3_close(db);
+}
+
+void listar_empleados_db(){
+	sqlite3 *db = abrir_bd();
+	if (!db) return;
+
+	sqlite3_stmt *stmt;
+	const char *sql =
+			"SELECT u.id_u, u.nombre, u.apellido, u.email, de.num_empleado,"
+	        "de.rol_empleado, de.anios_exp, de.estado "
+	        "FROM USUARIOS u LEFT JOIN DATOS_EMPLEADO de ON u.id_u=de.id_u "
+	        "WHERE u.rol='MAQUINISTA' ORDER BY u.id_u;";
+	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	 printf("\n%-4s | %-15s | %-15s | %-20s | %-10s | %-15s | %s\n",
+			 "ID","NOMBRE","APELLIDO","EMAIL","NUM EMP","ROL","EST.");
+	 printf("%-4s-+-%-15s-+-%-15s-+-%-20s-+-%-10s-+-%-15s-+-%s\n",
+	        "----","---------------","---------------","-----------",
+	        "-------------------------","----------","------");
+	 while (sqlite3_step(stmt) == SQLITE_ROW){
+		printf("%-4d | %-15s | %-15s | %-20s | %-10s | %-15s | %s\n",
+		sqlite3_column_int (stmt, 0),
+		(const char*) sqlite3_column_text(stmt, 1),
+		(const char*) sqlite3_column_text(stmt, 2),
+		(const char*) sqlite3_column_text(stmt, 3),
+		sqlite3_column_text(stmt,4) ? (const char*)sqlite3_column_text(stmt,4) : "-",
+		sqlite3_column_text(stmt,5) ? (const char*) sqlite3_column_text(stmt,5) : "MAQUINISTA",
+		sqlite3_column_text(stmt,7) ? (const char*)sqlite3_column_text(stmt,7) : "ACTIVO");
+	 }
+	 sqlite3_finalize(stmt);
+	 sqlite3_close(db);
 }
 
 void importar_usuarios_csv(const char* ruta_csv) {

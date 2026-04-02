@@ -24,7 +24,7 @@ int obtener_id_usuario(const char *email); //aqui podemos ver si es mejor en bas
 Usuario obtener_usuario(const char *email);
 int insertar_usuario_db(Usuario u);
 void listar_usuarios_db();
-void listar_empleados_db(void); //
+void listar_empleados_db();
 int modificar_usuario_db(int id_u, const char *campo, const char *valor); //
 int deshabilitar_usuario_db(int id_u); //
 void buscar_usuario_db(const char *dni_o_nombre);//
