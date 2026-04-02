@@ -9,7 +9,7 @@
 #define MENUS_H
 
 void menu_login();
-void comprobar_rol_usuario(char *email);
+void comprobar_rol_usuario(char *email,Usuario user);
 void menu_alta_usuario();
 void limpiar_pantalla ();
 //Menu de administrador

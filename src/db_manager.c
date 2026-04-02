@@ -448,7 +448,7 @@ int insertar_usuario_db(Usuario u) {
 
     sqlite3_close(db);
 
-    if (rc != SQLITE_DONE) {
+    if (rc2 != SQLITE_DONE) {
         printf("Error al insertar usuario: %s\n", sqlite3_errmsg(db));
         return 1;
     }

@@ -110,20 +110,50 @@ void limpiar_pantalla(){
     #endif
 }
 //MENU DE PASAJEROS
-void menu_principal_pasajero(const Usuario user){
-	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
-	printf("\t3.Cerrar Sesion\n");
-	printf("\t2.Gestionar nuevas reservas\n");
-	printf("\t1.Gestionar mis reservas\n");
-	printf("\t0.Entrar a Mi Trenfe\n");
-}
-//MENU DE EMPLEADO
-void menu_principal_empleado(const Usuario user){
-	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
-	printf("\t2.Cerrar Sesion\n");
-	printf("\t1. Mis datos\n");
-	printf("\t0. Servicios\n");
+void menu_principal_pasajero(const Usuario user) {
+    int opcion;
+    do {
+        printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+        printf("1. Gestionar mis reservas\n");
+        printf("2. Gestionar nuevas reservas\n");
+        printf("3. Mi Trenfe\n");
+        printf("0. Cerrar sesion\n");
+        printf("Opcion: ");
+        scanf("%d", &opcion);
 
+        switch(opcion) {
+            case 1: printf("Mis reservas (proximamente)\n"); break;
+            case 2: printf("Nueva reserva (proximamente)\n"); break;
+            case 3: printf("Mi Trenfe (proximamente)\n"); break;
+            case 0:
+                log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
+                printf("Hasta luego %s.\n", user.nombre);
+                break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while(opcion != 0);
+}
+
+void menu_principal_empleado(const Usuario user) {
+    int opcion;
+    do {
+        printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+        printf("1. Mis datos\n");
+        printf("2. Servicios asignados\n");
+        printf("0. Cerrar sesion\n");
+        printf("Opcion: ");
+        scanf("%d", &opcion);
+
+        switch(opcion) {
+            case 1: printf("Mis datos (proximamente)\n"); break;
+            case 2: printf("Servicios (proximamente)\n"); break;
+            case 0:
+                log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
+                printf("Hasta luego %s.\n", user.nombre);
+                break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while(opcion != 0);
 }
 
 void menu_login() {
