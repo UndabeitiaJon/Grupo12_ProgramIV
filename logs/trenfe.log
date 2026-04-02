@@ -31,3 +31,9 @@
 [2026-04-02 15:16:20] [SISTEMA] [FIN] Sistema detenido
 [2026-04-02 15:16:47] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-02 15:16:55] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 17:02:33] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:03:12] [maria@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:04:11] [maria@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:19] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:05:23] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:49] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
