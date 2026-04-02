@@ -343,16 +343,16 @@ Usuario obtener_usuario (const char *email){
 		sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
 		if (sqlite3_step(stmt) == SQLITE_ROW) {
 			u.id_u = sqlite3_column_int(stmt, 0);
-			strncpy(u.nombre,           (const char *)sqlite3_column_text(stmt, 1), sizeof(u.nombre));
-			strncpy(u.apellido,         (const char *)sqlite3_column_text(stmt, 2), sizeof(u.apellido));
-			strncpy(u.dni,              (const char *)sqlite3_column_text(stmt, 3), sizeof(u.dni));
-			strncpy(u.email,            (const char *)sqlite3_column_text(stmt, 4), sizeof(u.email));
-			strncpy(u.telf,             (const char *)sqlite3_column_text(stmt, 5), sizeof(u.telf));
-			strncpy(u.fecha_nac,        (const char *)sqlite3_column_text(stmt, 6), sizeof(u.fecha_nac));
-			strncpy(u.pass_hash,        (const char *)sqlite3_column_text(stmt, 7), sizeof(u.pass_hash));
-		    u.rol    = (RolUsuario)      sqlite3_column_int(stmt, 8);
-		    u.activo =                   sqlite3_column_int(stmt, 9);
-		    strncpy(u.fecha_registro,   (const char *)sqlite3_column_text(stmt, 10), sizeof(u.fecha_registro));
+			strncpy(u.nombre, (const char *)sqlite3_column_text(stmt, 1), sizeof(u.nombre));
+			strncpy(u.apellido,(const char *)sqlite3_column_text(stmt, 2), sizeof(u.apellido));
+			strncpy(u.dni,(const char *)sqlite3_column_text(stmt, 3), sizeof(u.dni));
+			strncpy(u.email, (const char *)sqlite3_column_text(stmt, 4), sizeof(u.email));
+			strncpy(u.telf,(const char *)sqlite3_column_text(stmt, 5), sizeof(u.telf));
+			strncpy(u.fecha_nac, (const char *)sqlite3_column_text(stmt, 6), sizeof(u.fecha_nac));
+			strncpy(u.pass_hash, (const char *)sqlite3_column_text(stmt, 7), sizeof(u.pass_hash));
+		    u.rol    = (RolUsuario)sqlite3_column_int(stmt, 8);
+		    u.activo =  sqlite3_column_int(stmt, 9);
+		    strncpy(u.fecha_registro,(const char *)sqlite3_column_text(stmt, 10), sizeof(u.fecha_registro));
 		}
 		sqlite3_finalize(stmt);
 	}
@@ -360,6 +360,55 @@ Usuario obtener_usuario (const char *email){
 	return u;
 }
 
+Usuario obtener_usuario_por_id(int id_u){
+	Usuario u;
+	memset(&u, 0, sizeof(u)); //guarda en memoria justo lo que quiero
+	u.id_u = -1;
+	sqlite3 *db = abrir_bd();
+	if(!db) return u;
+	sqlite3_stmt *stmt;
+	if (sqlite3_prepare_v2(db,
+	    "SELECT id_u,nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro "
+	    "FROM USUARIOS WHERE id_u=?;",-1, &stmt, NULL) == SQLITE_OK) {
+		 sqlite3_bind_int(stmt, 1, id_u);
+		 if(sqlite3_step(stmt) == SQLITE_ROW){
+			 u.id_u = sqlite3_column_int(stmt, 0);
+			 strncpy(u.nombre,(const char *)sqlite3_column_text(stmt,1), 63);
+			 strncpy(u.apellido,(const char *)sqlite3_column_text(stmt,2), 63);
+			 strncpy(u.dni, (const char *)sqlite3_column_text(stmt,3), 15);
+			 strncpy(u.email, (const char *)sqlite3_column_text(stmt,4),127);
+			 //Extraemos el telefono
+			 if (sqlite3_column_text(stmt,5)){
+				 strncpy(u.telf,  (const char *)sqlite3_column_text(stmt,5), 19);
+			 }
+			 //Extraemos la fecha de nacimiento
+			 if (sqlite3_column_text(stmt,6)){
+				 strncpy(u.fecha_nac,(const char *)sqlite3_column_text(stmt,6),10);
+			 }
+			 u.activo = sqlite3_column_int(stmt, 9);
+			 //Extraemos la fecha de registro
+			 if (sqlite3_column_text(stmt,10)){
+				 strncpy(u.fecha_registro, (const char *)sqlite3_column_text(stmt,10), 19);
+			 }
+			 const char *r = (const char *)sqlite3_column_text(stmt,8);
+			 if (!strcmp(r,"ADMIN")){
+				 u.rol = ROL_ADMIN;
+			 }else if (!strcmp(r,"MAQUINISTA")){
+				 u.rol = ROL_EMPLEADO;
+			 }else{
+				 u.rol = ROL_PASAJERO;
+			 }
+		 }
+		 sqlite3_finalize(stmt);
+	}
+	sqlite3_close(db);
+	return u;
+}
+
+Usuario obtener_usuario_por_email(const char *email) {
+    int id = obtener_id_usuario(email);
+    return obtener_usuario_por_id(id);
+}
 
 int insertar_usuario_db(Usuario u) {
     sqlite3 *db = abrir_bd();
@@ -449,12 +498,12 @@ void listar_empleados_db(){
 	        "FROM USUARIOS u LEFT JOIN DATOS_EMPLEADO de ON u.id_u=de.id_u "
 	        "WHERE u.rol='MAQUINISTA' ORDER BY u.id_u;";
 	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-	 printf("\n%-4s | %-15s | %-15s | %-20s | %-10s | %-15s | %s\n",
+	printf("\n%-4s | %-15s | %-15s | %-20s | %-10s | %-15s | %s\n",
 			 "ID","NOMBRE","APELLIDO","EMAIL","NUM EMP","ROL","EST.");
-	 printf("%-4s-+-%-15s-+-%-15s-+-%-20s-+-%-10s-+-%-15s-+-%s\n",
+	printf("%-4s-+-%-15s-+-%-15s-+-%-20s-+-%-10s-+-%-15s-+-%s\n",
 	        "----","---------------","---------------","-----------",
 	        "-------------------------","----------","------");
-	 while (sqlite3_step(stmt) == SQLITE_ROW){
+	while (sqlite3_step(stmt) == SQLITE_ROW){
 		printf("%-4d | %-15s | %-15s | %-20s | %-10s | %-15s | %s\n",
 		sqlite3_column_int (stmt, 0),
 		(const char*) sqlite3_column_text(stmt, 1),
@@ -467,6 +516,63 @@ void listar_empleados_db(){
 	 sqlite3_finalize(stmt);
 	 sqlite3_close(db);
 }
+
+int modificar_usuario_db(int id_u, const char *campo, const char *valor){
+	sqlite3 *db = abrir_bd();
+	if (!db) return 1;
+	char sql[512];
+	snprintf(sql, sizeof(sql),
+		"UPDATE USUARIOS SET %s=? WHERE id_u=?;", campo);
+	sqlite3_stmt *stmt;
+	sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	sqlite3_bind_text(stmt,1,valor,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_int (stmt,2,id_u);
+	int rc = sqlite3_step(stmt);
+	sqlite3_finalize(stmt); sqlite3_close(db);
+	return (rc == SQLITE_DONE) ? 0 : 1;
+}
+
+int deshabilitar_usuario_db(int id_u){
+	return modificar_usuario_db(id_u, "activo", "0");
+}
+
+void buscar_usuario_db(const char *dni_o_nombre){
+	sqlite3 *db = abrir_bd();
+	if (!db) return;
+
+	sqlite3_stmt *stmt;
+	char patron[128];
+
+	snprintf(patron, sizeof(patron), "%%%s%%", dni_o_nombre); // al poner en sql el LIKE se usa %palabra% ya que coge todo lo que sea palabra escrito de la forma que sea, al % existir en c se pone %%
+	sqlite3_prepare_v2(db,
+			"SELECT id_u,nombre,apellido,dni,email,rol,activo FROM USUARIOS "
+	        "WHERE dni LIKE ? OR nombre LIKE ? OR apellido LIKE ? ORDER BY id_u;",
+	        -1,&stmt,NULL);
+	sqlite3_bind_text(stmt,1,patron,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt,2,patron,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt,3,patron,-1,SQLITE_TRANSIENT);
+	int n = 0;
+	printf("\n%-4s | %-15s | %-15s | %-11s | %-25s | %-10s | %s\n",
+			"ID","NOMBRE","APELLIDO","DNI","EMAIL","ROL","ACT.");
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		printf("%-4d | %-15s | %-15s | %-11s | %-25s | %-10s | %s\n",
+				sqlite3_column_int(stmt,0),
+				(const char*)sqlite3_column_text(stmt,1),
+				(const char*)sqlite3_column_text(stmt,2),
+				(const char*)sqlite3_column_text(stmt,3),
+				(const char*)sqlite3_column_text(stmt,4),
+				(const char*)sqlite3_column_text(stmt,5),
+				sqlite3_column_int(stmt,6)?"Si":"No");
+		n++;
+	}
+	if (!n){
+		printf("[Sin resultados para '%s']\n", dni_o_nombre);
+	}
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+}
+
+
 
 void importar_usuarios_csv(const char* ruta_csv) {
     sqlite3 *db = abrir_bd();
@@ -546,6 +652,21 @@ bool comprobar_contrasenia(char *email, char *contrasenia) {
     }
     sqlite3_close(db);
     return ok;
+}
+
+int cambiar_contrasenia_db(const char *email, const char *nueva_pass){
+	 sqlite3 *db = abrir_bd();
+	 if (!db) return 1;
+
+	 sqlite3_stmt *stmt;
+	 const char *sql = "UPDATE USUARIOS SET pass_hash=? WHERE email=?;";
+	 sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	 sqlite3_bind_text(stmt,1,nueva_pass,-1,SQLITE_TRANSIENT);
+	 sqlite3_bind_text(stmt,2,email,-1,SQLITE_TRANSIENT);
+	 int rc = sqlite3_step(stmt); //ejecuta el stmt
+	 sqlite3_finalize(stmt);
+	 sqlite3_close(db);
+	 return (rc == SQLITE_DONE) ? 0 : 1;
 }
 
 /* ============================================================

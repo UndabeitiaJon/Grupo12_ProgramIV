@@ -25,16 +25,16 @@ Usuario obtener_usuario(const char *email);
 int insertar_usuario_db(Usuario u);
 void listar_usuarios_db();
 void listar_empleados_db();
-int modificar_usuario_db(int id_u, const char *campo, const char *valor); //
-int deshabilitar_usuario_db(int id_u); //
-void buscar_usuario_db(const char *dni_o_nombre);//
+int modificar_usuario_db(int id_u, const char *campo, const char *valor);
+int deshabilitar_usuario_db(int id_u);
+void buscar_usuario_db(const char *dni_o_nombre);
 bool verificar_usuario(char *email, char *contraseniaIntroducida);
 //Funcion para comprobar si el usuario existe en la bbdd
 bool comprobar_usuario_registrado(char *email);
 //Funcion para comprobar la contraseña del usuario
 bool comprobar_contrasenia (char *email, char *contraseniaIntroducida);
-int cambiar_contrasenia_db(const char *email, const char *nueva_pass); //
+int cambiar_contrasenia_db(const char *email, const char *nueva_pass);
 void importar_usuarios_csv(const char* ruta_csv);
-Usuario obtener_usuario_por_id(int id_u); //
-Usuario obtener_usuario_por_email(const char *email); //
+Usuario obtener_usuario_por_id(int id_u);
+Usuario obtener_usuario_por_email(const char *email);
 #endif /* SRC_DB_MANAGER_H_ */

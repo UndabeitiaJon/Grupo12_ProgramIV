@@ -11,6 +11,11 @@
 #include "config.h"
 #include "logs.h"
 
+void menu_principal_pasajero(const Usuario user);
+void menu_principal_empleado(const Usuario user);
+void menu_principal_administrador(const char *email_logueado, const Usuario user);
+void menu_alta_usuario();
+
 
 //COMPROBAR EL ROL DEL USUARIO PARA ABRIR UN MENU PRINCIPAL U OTRO
 void comprobar_rol_usuario(char *email,Usuario user){
