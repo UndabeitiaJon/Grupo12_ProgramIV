@@ -2,7 +2,7 @@
  * trenfe.c
  *
  *  Created on: 29 mar 2026
- *      Author: jon.undabeitia (Unai Erdoiza seguro que no)
+ *      Author:
  */
 
 #include <stdio.h>
@@ -14,17 +14,17 @@
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,
                      char *email, char *telefono, char *contrasenia,
                      char *fechaNacimiento, RolUsuario rol) {
-    static int contador = 0;
 
     Usuario u;
-    u.id_u = contador++;
-    strcpy(u.nombre, nombre);
-    strcpy(u.apellido, apellido);
-    strcpy(u.dni, dni);
-    strcpy(u.email, email);
-    strcpy(u.telf, telefono);
-    strcpy(u.pass_hash, contrasenia);
-    strcpy(u.fecha_nac, fechaNacimiento);
+    memset(&u, 0, sizeof(u));
+    u.id_u = 0;
+    strncpy(u.nombre, nombre,sizeof(u.nombre)- 1);
+    strncpy(u.apellido, apellido, sizeof(u.apellido)- 1);
+    strncpy(u.dni, dni, sizeof(u.dni) - 1);
+    strncpy(u.email, email, sizeof(u.email)- 1);
+    strncpy(u.telf, telefono, sizeof(u.telf)- 1);
+    strncpy(u.pass_hash, contrasenia, sizeof(u.pass_hash) - 1);
+    strncpy(u.fecha_nac, fechaNacimiento, sizeof(u.fecha_nac) - 1);
     u.rol    = rol;
     u.activo = 1;  // activo por defecto al crearse
 

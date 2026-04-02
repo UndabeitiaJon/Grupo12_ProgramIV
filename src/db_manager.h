@@ -13,12 +13,13 @@
 #include <stdbool.h>
 
 int init_database();
-void seed_database(void); //
+void seed_database(void);
 
 //Usuarios
+// los que tienen // es que falta de implementar
 const char* rol_a_texto(RolUsuario rol);
-RolUsuario obtener_rol_usuario(const char *email); //
-int obtener_id_usuario(const char *email); //
+RolUsuario obtener_rol_usuario(const char *email); //aqui podemos ver si es mejor en base al email o dni o asi
+int obtener_id_usuario(const char *email); //aqui podemos ver si es mejor en base al email o dni o asi
 int insertar_usuario_db(Usuario u);
 void listar_usuarios_db();
 void listar_empleados_db(void); //

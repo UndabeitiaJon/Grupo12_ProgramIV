@@ -47,6 +47,25 @@ int init_database() {
         "rol TEXT CHECK(rol IN ('ADMIN','PASAJERO','MAQUINISTA')),"
         "activo INTEGER DEFAULT 1, fecha_registro TEXT);"
 
+    	"CREATE TABLE IF NOT EXISTS DATOS_PASAJERO ("
+    	"id_u INTEGER PRIMARY KEY,"
+    	"puntos_fidelidad INTEGER DEFAULT 0,"
+    	"tipo_descuento TEXT DEFAULT 'NINGUNO',"
+    	"num_tarjeta_fidelizacion TEXT,"
+    	"necesidad_asistencia_pmr INTEGER DEFAULT 0,"
+    	"FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
+
+    	"CREATE TABLE IF NOT EXISTS DATOS_EMPLEADO ("
+    	"id_u INTEGER PRIMARY KEY,"
+    	"num_empleado TEXT UNIQUE,"
+    	"num_ss TEXT,"
+        "fecha_ingreso TEXT,"
+    	"rol_empleado TEXT,"
+    	"anios_exp INTEGER DEFAULT 0,"
+    	"telf_empresa TEXT,"
+    	"estado TEXT DEFAULT 'ACTIVO',"
+    	"FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
+
         "CREATE TABLE IF NOT EXISTS TRENES ("
         "id_t INTEGER PRIMARY KEY AUTOINCREMENT,"
         "nombre_modelo TEXT NOT NULL, num_serie TEXT UNIQUE,"
@@ -134,6 +153,15 @@ int init_database() {
         "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr),"
         "FOREIGN KEY(id_est) REFERENCES ESTACIONES(id_est));"
 
+    	"CREATE TABLE IF NOT EXISTS SERVICIOS_OPERATIVOS ("
+    	"id_serv INTEGER PRIMARY KEY AUTOINCREMENT,"
+    	"id_tr INTEGER, fecha TEXT,"
+    	"estado_serv TEXT DEFAULT 'PROGRAMADO',"
+    	"hora_inicio_real TEXT, hora_fin_real TEXT,"
+    	"minutos_retraso INTEGER DEFAULT 0,"
+    	"causa_retraso TEXT,"
+    	"FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
+
         "CREATE TABLE IF NOT EXISTS DESCUENTOS ("
         "tipo_descuento TEXT PRIMARY KEY,"
         "porcentaje REAL);";
@@ -175,6 +203,22 @@ void seed_database() {
         " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com',"
         "'622333444','1985-03-20','maq123','MAQUINISTA',1,date('now'));"
 
+    	"INSERT OR IGNORE INTO USUARIOS "
+    	"(nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
+    	" VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com',"
+    	"'633444555','2000-09-10','pass456','PASAJERO',1,date('now'));"
+
+    	"INSERT OR IGNORE INTO DATOS_PASAJERO "
+    	"(id_u,puntos_fidelidad,tipo_descuento) "
+    	"VALUES (2,150,'JOVEN');"
+
+    	"INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento)"
+    	" VALUES (4,0,'NINGUNO');"
+
+    	"INSERT OR IGNORE INTO DATOS_EMPLEADO "
+    	"(id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
+    	" VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
+
         "INSERT OR IGNORE INTO TRENES "
         "(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
         " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
@@ -205,10 +249,21 @@ void seed_database() {
         "duracion_min,precio_base,dias_operacion,estado)"
         " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
 
+    	"INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
+    	" VALUES (1,45.50,1.0,1.8,30.0,12.0);"
+    	"INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
+    	" VALUES (2,32.00,1.0,1.8,30.0,12.0);"
+
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('JOVEN',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('DORADA',40.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('NUMEROSA',20.0);"
-        "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);";
+        "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);"
+
+    	"INSERT OR IGNORE INTO ASIGNACIONES_PERSONAL (id_serv,id_u,id_t,rol_servicio)"
+    	" VALUES (1,3,1,'CONDUCTOR');"
+
+    	"INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
+        " VALUES (1,date('now'),'PROGRAMADO');";
 
     if (sqlite3_exec(db, sql, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error insertando datos: %s\n", err);
@@ -218,6 +273,7 @@ void seed_database() {
         printf("       Admin:      admin@trenfe.com  / admin123\n");
         printf("       Pasajero:   juan@trenfe.com   / pass123\n");
         printf("       Maquinista: pedro@trenfe.com  / maq123\n");
+        printf("       Pasajero:   maria@trenfe.com  / pass456\n");
     }
 
     sqlite3_close(db);
@@ -252,6 +308,27 @@ RolUsuario obtener_rol_usuario(const char *email) {
     sqlite3_close(db);
     return rol;
 }
+
+int obtener_id_usuario(const char *email){
+	sqlite3 *db = abrir_bd();
+	if (!db) return -1;
+
+	sqlite3_stmt *stmt;
+	int id = -1;
+	const char *sql = "SELECT id_u FROM USUARIOS WHERE email=?;";
+
+	if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
+		if (sqlite3_step(stmt) == SQLITE_ROW) {
+			 id = sqlite3_column_int(stmt, 0);
+		}
+		sqlite3_finalize(stmt);
+	}
+	sqlite3_close(db);
+	return id;
+}
+
+
 
 int insertar_usuario_db(Usuario u) {
     sqlite3 *db = abrir_bd();
