@@ -11,5 +11,5 @@
 void menu_login();
 void menu_principal(char *email_logueado);
 void menu_alta_usuario();
-
+void limpiar_pantalla ();
 #endif

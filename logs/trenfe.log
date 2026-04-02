@@ -31,3 +31,7 @@
 [2026-04-02 15:16:20] [SISTEMA] [FIN] Sistema detenido
 [2026-04-02 15:16:47] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-02 15:16:55] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 17:09:56] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:11:53] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:14:58] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:15:11] [5] [LOGIN_FAIL] Demasiados intentos fallidos

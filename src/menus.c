@@ -100,4 +100,11 @@ void menu_alta_usuario() {
         printf("Error al dar de alta el usuario.\n");
     }
 }
+void limpiar_pantalla(){
+	#ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
 

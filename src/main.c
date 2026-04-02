@@ -48,6 +48,7 @@ int main(void) {
 
     int opcion;
     do {
+    	limpiar_pantalla();
         printf("\n-----------------------------------------\n");
         printf("  1. Iniciar sesion\n");
         printf("  0. Salir\n");
@@ -57,9 +58,11 @@ int main(void) {
 
         switch(opcion) {
             case 1:
+            	limpiar_pantalla();
                 menu_login();
                 break;
             case 0:
+            	limpiar_pantalla();
                 log_evento(cfg.log_path, NULL, "FIN", "Sistema detenido");
                 printf("Hasta luego.\n");
                 break;
