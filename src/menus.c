@@ -64,10 +64,10 @@ void menu_principal_administrador(const char *email_logueado, const Usuario user
     } while(opcion != 0);
 }
 //MENU REGISTRO
-void menu_alta_usuario() {
+void menu_alta_usuario(Usuario user) {
     char nombre[64], apellido[64], dni[16], email[128], telf[20], pass[256], fecha_nac[11];
     int rol_opcion;
-    RolUsuario rol;
+    RolUsuario rol = ROL_PASAJERO;
 
     printf("\n=== ALTA DE NUEVO USUARIO ===\n");
 
@@ -77,20 +77,30 @@ void menu_alta_usuario() {
     scanf("%63s", apellido);
     printf("DNI: ");
     scanf("%15s", dni);
-    printf("Email: ");
-    scanf("%127s", email);
+    //COMPROBAR QUE EL EMAIL NO ESTE REGISTRADO YA EN LA BD
+
+    do {
+    	printf("Email: ");
+    	scanf("%127s", email);
+	} while (comprobar_usuario_registrado(email));
+
     printf("Telefono: ");
     scanf("%19s", telf);
     printf("Fecha Nacimiento (AAAA-MM-DD): ");
     scanf("%10s", fecha_nac);
     printf("Contrasena: ");
     scanf("%255s", pass);
-    printf("Rol (0: Pasajero, 1: Maquinista, 2: Admin): ");
-    scanf("%d", &rol_opcion);
 
-    if (rol_opcion == 2) rol = ROL_ADMIN;
-    else if (rol_opcion == 1) rol = ROL_EMPLEADO;
-    else rol = ROL_PASAJERO;
+    if (user.rol == ROL_ADMIN){
+    	printf("Rol (0: Pasajero, 1: Maquinista, 2: Admin): ");
+    	scanf("%d", &rol_opcion);
+
+    	if (rol_opcion == 2) rol = ROL_ADMIN;
+    	else if (rol_opcion == 1) rol = ROL_EMPLEADO;
+   	    else rol = ROL_PASAJERO;
+    }
+
+
 
     Usuario nuevo = crearUsuario(nombre, apellido, dni, email, telf, pass, fecha_nac, rol);
 
@@ -110,26 +120,58 @@ void limpiar_pantalla(){
     #endif
 }
 //MENU DE PASAJEROS
-void menu_principal_pasajero(const Usuario user){
-	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
-	printf("\t3.Cerrar Sesion\n");
-	printf("\t2.Gestionar nuevas reservas\n");
-	printf("\t1.Gestionar mis reservas\n");
-	printf("\t0.Entrar a Mi Trenfe\n");
-}
-//MENU DE EMPLEADO
-void menu_principal_empleado(const Usuario user){
-	printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
-	printf("\t2.Cerrar Sesion\n");
-	printf("\t1. Mis datos\n");
-	printf("\t0. Servicios\n");
+void menu_principal_pasajero(const Usuario user) {
+    int opcion;
+    limpiar_pantalla();
+    do {
+        printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+        printf("1. Gestionar mis reservas\n");
+        printf("2. Gestionar nuevas reservas\n");
+        printf("3. Mi Trenfe\n");
+        printf("0. Cerrar sesion\n");
+        printf("Opcion: ");
+        scanf("%d", &opcion);
 
+        switch(opcion) {
+            case 1: printf("Mis reservas (proximamente)\n"); break;
+            case 2: printf("Nueva reserva (proximamente)\n"); break;
+            case 3: printf("Mi Trenfe (proximamente)\n"); break;
+            case 0:
+                log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
+                printf("Hasta luego %s.\n", user.nombre);
+                break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while(opcion != 0);
+}
+
+void menu_principal_empleado(const Usuario user) {
+    int opcion;
+    limpiar_pantalla();
+    do {
+        printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
+        printf("1. Mis datos\n");
+        printf("2. Servicios asignados\n");
+        printf("0. Cerrar sesion\n");
+        printf("Opcion: ");
+        scanf("%d", &opcion);
+
+        switch(opcion) {
+            case 1: printf("Mis datos (proximamente)\n"); break;
+            case 2: printf("Servicios (proximamente)\n"); break;
+            case 0:
+                log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
+                printf("Hasta luego %s.\n", user.nombre);
+                break;
+            default: printf("Opcion no valida.\n");
+        }
+    } while(opcion != 0);
 }
 
 void menu_login() {
     char email[128], pass[256];
     int intentos = 3;
-
+    limpiar_pantalla();
     printf("\n=== INICIO DE SESION ===\n");
     while (intentos-- > 0) {
         printf("Email: ");

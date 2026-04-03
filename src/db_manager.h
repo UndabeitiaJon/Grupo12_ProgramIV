@@ -37,4 +37,15 @@ int cambiar_contrasenia_db(const char *email, const char *nueva_pass);
 void importar_usuarios_csv(const char* ruta_csv);
 Usuario obtener_usuario_por_id(int id_u);
 Usuario obtener_usuario_por_email(const char *email);
+
+//TRENES
+int insertar_tren_db(Tren t);
+void listar_trenes_db();
+int modificar_estado_tren_db(int id_t, EstadoMantenimiento nuevo_estado);
+int eliminar_tren_db(int id_t);
+Tren obtener_tren_por_id(int id_t);
+void buscar_tren_por_modelo(const char *modelo);
+
+//TRAYECTOS
+int cargar_trayectos_csv(const char *ruta_csv);
 #endif /* SRC_DB_MANAGER_H_ */

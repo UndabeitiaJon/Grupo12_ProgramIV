@@ -48,32 +48,28 @@ int main(void) {
 
     int opcion;
 
-    	limpiar_pantalla();
+    do {
+        limpiar_pantalla();
         printf("\n-----------------------------------------\n");
-        printf("  2. Registrar\n");
+        printf("     BIENVENIDO AL SISTEMA TRENFE\n");
+        printf("-----------------------------------------\n");
         printf("  1. Iniciar sesion\n");
+        printf("  2. Registrar\n");
         printf("  0. Salir\n");
         printf("-----------------------------------------\n");
         printf("Opcion: ");
         scanf("%d", &opcion);
 
         switch(opcion) {
-            case 1:
-            	limpiar_pantalla();
-                menu_login();
-                break;
+            case 1: limpiar_pantalla(); menu_login(); break;
+            case 2: limpiar_pantalla(); menu_alta_usuario(NULL); break;
             case 0:
-            	limpiar_pantalla();
                 log_evento(cfg.log_path, NULL, "FIN", "Sistema detenido");
                 printf("Hasta luego.\n");
                 break;
-            case 2:
-            	limpiar_pantalla();
-            	menu_alta_usuario();
-            	break;
-            default:
-                printf("Opcion no valida.\n");
+            default: printf("Opcion no valida.\n"); break;
         }
+    } while(opcion != 0);
 
 
     return EXIT_SUCCESS;
