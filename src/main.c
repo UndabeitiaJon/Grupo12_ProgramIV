@@ -62,7 +62,7 @@ int main(void) {
 
         switch(opcion) {
             case 1: limpiar_pantalla(); menu_login(); break;
-            case 2: limpiar_pantalla(); menu_alta_usuario(); break;
+            case 2: limpiar_pantalla(); menu_alta_usuario(NULL); break;
             case 0:
                 log_evento(cfg.log_path, NULL, "FIN", "Sistema detenido");
                 printf("Hasta luego.\n");

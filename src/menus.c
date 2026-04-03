@@ -64,10 +64,10 @@ void menu_principal_administrador(const char *email_logueado, const Usuario user
     } while(opcion != 0);
 }
 //MENU REGISTRO
-void menu_alta_usuario() {
+void menu_alta_usuario(Usuario user) {
     char nombre[64], apellido[64], dni[16], email[128], telf[20], pass[256], fecha_nac[11];
     int rol_opcion;
-    RolUsuario rol;
+    RolUsuario rol = ROL_PASAJERO;
 
     printf("\n=== ALTA DE NUEVO USUARIO ===\n");
 
@@ -77,20 +77,30 @@ void menu_alta_usuario() {
     scanf("%63s", apellido);
     printf("DNI: ");
     scanf("%15s", dni);
-    printf("Email: ");
-    scanf("%127s", email);
+    //COMPROBAR QUE EL EMAIL NO ESTE REGISTRADO YA EN LA BD
+
+    do {
+    	printf("Email: ");
+    	scanf("%127s", email);
+	} while (comprobar_usuario_registrado(email));
+
     printf("Telefono: ");
     scanf("%19s", telf);
     printf("Fecha Nacimiento (AAAA-MM-DD): ");
     scanf("%10s", fecha_nac);
     printf("Contrasena: ");
     scanf("%255s", pass);
-    printf("Rol (0: Pasajero, 1: Maquinista, 2: Admin): ");
-    scanf("%d", &rol_opcion);
 
-    if (rol_opcion == 2) rol = ROL_ADMIN;
-    else if (rol_opcion == 1) rol = ROL_EMPLEADO;
-    else rol = ROL_PASAJERO;
+    if (user.rol == ROL_ADMIN){
+    	printf("Rol (0: Pasajero, 1: Maquinista, 2: Admin): ");
+    	scanf("%d", &rol_opcion);
+
+    	if (rol_opcion == 2) rol = ROL_ADMIN;
+    	else if (rol_opcion == 1) rol = ROL_EMPLEADO;
+   	    else rol = ROL_PASAJERO;
+    }
+
+
 
     Usuario nuevo = crearUsuario(nombre, apellido, dni, email, telf, pass, fecha_nac, rol);
 
@@ -112,6 +122,7 @@ void limpiar_pantalla(){
 //MENU DE PASAJEROS
 void menu_principal_pasajero(const Usuario user) {
     int opcion;
+    limpiar_pantalla();
     do {
         printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
         printf("1. Gestionar mis reservas\n");
@@ -136,6 +147,7 @@ void menu_principal_pasajero(const Usuario user) {
 
 void menu_principal_empleado(const Usuario user) {
     int opcion;
+    limpiar_pantalla();
     do {
         printf("\n=== BIENVENIDO/A %s ===\n", user.nombre);
         printf("1. Mis datos\n");
@@ -159,7 +171,7 @@ void menu_principal_empleado(const Usuario user) {
 void menu_login() {
     char email[128], pass[256];
     int intentos = 3;
-
+    limpiar_pantalla();
     printf("\n=== INICIO DE SESION ===\n");
     while (intentos-- > 0) {
         printf("Email: ");

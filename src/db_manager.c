@@ -723,6 +723,121 @@ void listar_trenes_db() {
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+Tren obtener_tren_por_id(int id_t) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    Tren t;
+    memset(&t, 0, sizeof(t));
+
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return t;
+
+    char sql[256];
+    snprintf(sql, sizeof(sql),
+        "SELECT id_t, modelo, num_serie, anio_fab, estado_mant FROM TRENES WHERE id_t = %d;", id_t);
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        sqlite3_close(db);
+        return t;
+    }
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        t.id_t = sqlite3_column_int(stmt, 0);
+        strncpy(t.nombre_modelo, (const char*)sqlite3_column_text(stmt, 1), sizeof(t.nombre_modelo)-1);
+        strncpy(t.num_serie,     (const char*)sqlite3_column_text(stmt, 2), sizeof(t.num_serie)-1);
+        t.anio_fab    = sqlite3_column_int(stmt, 3);
+        t.estado_mant = texto_a_estado_tren((const char*)sqlite3_column_text(stmt, 4));
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return t;
+}
+
+int modificar_estado_tren_db(int id_t, EstadoMantenimiento nuevo_estado) {
+    sqlite3 *db;
+    char *err_msg = 0;
+
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return 1;
+
+    char sql[256];
+    snprintf(sql, sizeof(sql),
+        "UPDATE TRENES SET estado_mant = '%s' WHERE id_t = %d;",
+        estado_tren_a_texto(nuevo_estado), id_t);
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        printf("Error al modificar tren: %s\n", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        return 1;
+    }
+
+    printf("[OK] Estado del tren %d actualizado a %s.\n",
+           id_t, estado_tren_a_texto(nuevo_estado));
+    sqlite3_close(db);
+    return 0;
+}
+
+int eliminar_tren_db(int id_t) {
+    sqlite3 *db;
+    char *err_msg = 0;
+
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return 1;
+
+    char sql[128];
+    snprintf(sql, sizeof(sql), "DELETE FROM TRENES WHERE id_t = %d;", id_t);
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
+    if (rc != SQLITE_OK) {
+        printf("Error al eliminar tren: %s\n", err_msg);
+        sqlite3_free(err_msg);
+        sqlite3_close(db);
+        return 1;
+    }
+
+    printf("[OK] Tren %d eliminado correctamente.\n", id_t);
+    log_evento(cfg.log_path, NULL, "DELETE", "Tren eliminado");
+    sqlite3_close(db);
+    return 0;
+}
+
+void buscar_tren_por_modelo(const char *modelo) {
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return;
+
+    const char *sql = "SELECT id_t, modelo, num_serie, anio_fab, estado_mant FROM TRENES WHERE modelo LIKE ?;";
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        sqlite3_close(db);
+        return;
+    }
+
+    char patron[68];
+    snprintf(patron, sizeof(patron), "%%%s%%", modelo);
+    sqlite3_bind_text(stmt, 1, patron, -1, SQLITE_TRANSIENT);
+
+    printf("\n--- RESULTADOS BUSQUEDA: %s ---\n", modelo);
+    printf("%-5s | %-20s | %-15s | %-6s | %-12s\n",
+           "ID", "MODELO", "NUM SERIE", "AÑO", "ESTADO");
+    printf("---------------------------------------------------------------\n");
+
+    int encontrados = 0;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        printf("%-5d | %-20s | %-15s | %-6d | %-12s\n",
+            sqlite3_column_int(stmt, 0),
+            (const char*)sqlite3_column_text(stmt, 1),
+            (const char*)sqlite3_column_text(stmt, 2),
+            sqlite3_column_int(stmt, 3),
+            (const char*)sqlite3_column_text(stmt, 4));
+        encontrados++;
+    }
+
+    if (encontrados == 0) printf("No se encontraron trenes con ese modelo.\n");
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
 
 /* ============================================================
  *  ESTACIONES
@@ -846,3 +961,98 @@ void listar_trayectos_db() {
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+#define MAX_CAMPO 128
+int cargar_trayectos_csv (const char *ruta_csv){
+	sqlite3 *db = abrir_bd();
+
+	FILE *f = fopen(ruta_csv, "r");
+	    if (f == NULL) {
+	        log_evento(cfg.log_path, NULL, "ERROR", "No se pudo abrir el CSV de trayectos");
+	        return -1;
+	    }
+
+	    char linea[512];
+	    int insertados = 0;
+	    int es_cabecera = 1;  /* la primera linea es la cabecera, la saltamos */
+
+	    while (fgets(linea, sizeof(linea), f) != NULL) {
+
+	        /* Saltar la primera linea (cabecera) */
+	        if (es_cabecera) {
+	            es_cabecera = 0;
+	            continue;
+	        }
+
+	        /* Eliminar el salto de linea al final si existe */
+	        linea[strcspn(linea, "\r\n")] = '\0';
+
+	        /* Variables para cada campo del CSV */
+	        char id_tr[MAX_CAMPO];
+	        char id_t[MAX_CAMPO];
+	        char id_est_origen[MAX_CAMPO];
+	        char id_est_destino[MAX_CAMPO];
+	        char hora_salida[MAX_CAMPO];
+	        char hora_llegada[MAX_CAMPO];
+	        char duracion_min[MAX_CAMPO];
+	        char precio_base[MAX_CAMPO];
+	        char dias_operacion[MAX_CAMPO];
+	        char estado[MAX_CAMPO];
+
+	        /* Separar la linea por ';' copiando para no modificar 'linea' */
+	        char copia[512];
+	        strncpy(copia, linea, sizeof(copia));
+
+	        char *token = strtok(copia, ";");
+	        if (token == NULL) continue;  strncpy(id_tr,          token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(id_t,           token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(id_est_origen,  token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(id_est_destino, token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(hora_salida,    token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(hora_llegada,   token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(duracion_min,   token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(precio_base,    token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(dias_operacion, token, MAX_CAMPO);
+	        token = strtok(NULL, ";");
+	        if (token == NULL) continue;  strncpy(estado,         token, MAX_CAMPO);
+
+	        /* Construir la sentencia SQL */
+	        char sql[512];
+	        snprintf(sql, sizeof(sql),
+	            "INSERT INTO TRAYECTOS "
+	            "(origen_id, destino_id, hora_salida, hora_llegada, dias_operativos, estado) "
+	            "VALUES (%s, %s, '%s', '%s', '%s', '%s');",
+	            id_est_origen,
+	            id_est_destino,
+	            hora_salida,
+	            hora_llegada,
+	            dias_operacion,
+	            estado
+	        );
+
+	        /* Ejecutar la sentencia en la BD */
+	        char *error_sql = NULL;
+	        int resultado = sqlite3_exec(db, sql, NULL, NULL, &error_sql);
+
+	        if (resultado != SQLITE_OK) {
+	            printf("Error al insertar trayecto (linea %d): %s\n", insertados + 2, error_sql);
+	            sqlite3_free(error_sql);
+	        } else {
+	            insertados++;
+	        }
+	    }
+	    char mensaje_log[128];
+	    snprintf(mensaje_log, sizeof(mensaje_log),
+	                "Carga CSV trayectos completada: %d trayectos insertados", insertados);
+	    log_evento(cfg.log_path, NULL, "INSERT", mensaje_log);
+	    fclose(f);
+
+	    return insertados;
+	}
