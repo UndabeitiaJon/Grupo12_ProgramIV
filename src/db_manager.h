@@ -38,6 +38,16 @@ void importar_usuarios_csv(const char* ruta_csv);
 Usuario obtener_usuario_por_id(int id_u);
 Usuario obtener_usuario_por_email(const char *email);
 
+
+/* ============================================================
+ *  DATOS PASAJERO (puntos fidelidad, descuento)
+ * ============================================================ */
+int  obtener_puntos_fidelidad(int id_u);
+int  actualizar_puntos_fidelidad(int id_u, int puntos);
+void listar_historial_puntos(int id_u);
+TipoDescuento obtener_descuento_usuario(int id_u);
+int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo);
+
 //TRENES
 int insertar_tren_db(Tren t);
 void listar_trenes_db();
@@ -46,7 +56,15 @@ int eliminar_tren_db(int id_t);
 Tren obtener_tren_por_id(int id_t);
 void buscar_tren_por_modelo(const char *modelo);
 int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int anio, EstadoMantenimiento estado, const char *fecha_rev);
-void listar_trenes_con_vagones(void); //
+//void listar_trenes_con_vagones(void);
+
+//VAGONES
+int  insertar_vagon_db(Vagon v);
+void listar_vagones_tren(int id_tren);
+int  contar_asientos_libres(int id_tr, const char *fecha_viaje,
+                             int num_vagon, const char *clase);
+/* Devuelve mapa de asientos (1=libre, 0=ocupado) para un vagón */
+void mostrar_mapa_asientos(int id_tr, const char *fecha_viaje, int num_vagon);
 
 //ESTACIONES
 int insertar_estacion_db(Estacion e);

@@ -670,6 +670,100 @@ int cambiar_contrasenia_db(const char *email, const char *nueva_pass){
 }
 
 /* ============================================================
+ *  DATOS PASAJERO (puntos fidelidad, descuento)
+ * ============================================================ */
+int  obtener_puntos_fidelidad(int id_u){
+	sqlite3 *db = abrir_bd();
+	    if (!db) return -1;
+
+	    sqlite3_stmt *stmt;
+	    int puntos = -1;
+	    const char *sql = "SELECT puntos_fidelidad FROM DATOS_PASAJERO WHERE id_u = ?;";
+
+	    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+	        sqlite3_bind_int(stmt, 1, id_u);
+	        if (sqlite3_step(stmt) == SQLITE_ROW) {
+	            puntos = sqlite3_column_int(stmt, 0);
+	        }
+	        sqlite3_finalize(stmt);
+	    }
+	    sqlite3_close(db);
+	    return puntos;
+
+}
+int  actualizar_puntos_fidelidad(int id_u, int puntos){
+	sqlite3 *db = abrir_bd();
+	if(!db) return -1;
+	int puntos_antiguos = obtener_puntos_fidelidad(id_u);
+	int puntos_actualizados = puntos_antiguos + puntos;
+	sqlite3_stmt *stmt;
+	const char *sql = "UPDATE DATOS_PASAJEROS SET puntos_fidelidad = ? WHERE id_u = ?";
+	 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+		        sqlite3_bind_int(stmt, 1, puntos_actualizados);
+		        sqlite3_bind_int(stmt, 2, id_u);
+		        sqlite3_step(stmt);
+		        sqlite3_finalize(stmt);
+		    }
+	 sqlite3_close(db);
+	 return 0;
+}
+void listar_historial_puntos(int id_u){
+
+}
+
+TipoDescuento obtener_descuento_usuario(int id_u) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return DESCUENTO_NINGUNO;
+
+    sqlite3_stmt *stmt;
+    TipoDescuento desc = DESCUENTO_NINGUNO;
+    const char *sql = "SELECT tipo_descuento FROM DATOS_PASAJERO WHERE id_u = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_int(stmt, 1, id_u);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            const char *tipo = (const char*)sqlite3_column_text(stmt, 0);
+            if      (strcmp(tipo, "JOVEN") == 0){
+            	desc = DESCUENTO_JOVEN;
+            }else if (strcmp(tipo, "DORADA") == 0){
+            	desc = DESCUENTO_DORADA;
+            }else if (strcmp(tipo, "NUMEROSA") == 0){
+            	desc = DESCUENTO_NUMEROSA;
+            }else if (sftrcmp(tipo, "ABONO") == 0){
+            	desc = DESCUENTO_ABONO;
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+    sqlite3_close(db);
+    return desc;
+}
+
+int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo){
+	sqlite3 *db = abrir_bd();
+		if(!db) return -1;
+		char descuento = "";
+		if (tipo == DESCUENTO_JOVEN){
+			descuento = "JOVEN";
+		}else if (tipo == DESCUENTO_DORADA){
+			descuento = "DORADA";
+		}else if (tipo == DESCUENTO_NUMEROSA){
+			descuento = "NUMEROSA";
+		}else if (tipo == DESCUENTO_ABONO){
+			descuento = "ABONO";
+		}
+		sqlite3_stmt *stmt;
+		const char *sql = "UPDATE DATOS_PASAJEROS SET tipo_descuento = ? WHERE id_u = ?";
+		 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+			        sqlite3_bind_int(stmt, 1, descuento);
+			        sqlite3_bind_int(stmt, 2, id_u);
+			        sqlite3_step(stmt);
+			        sqlite3_finalize(stmt);
+			    }
+		 sqlite3_close(db);
+		 return 0;
+}
+/* ============================================================
  *  TRENES
  * ============================================================ */
 
@@ -865,6 +959,78 @@ int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int an
 	 sqlite3_close(db);
 	 return (rc==SQLITE_DONE)?0:1;
 }
+
+int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
+	sqlite3 *db = abrir_bd();
+			if(!db) return -1;
+			char et = "";
+			if (estado == TREN_AVERIA){
+				et = "AVERIA";
+			}else if (estado == TREN_OPERATIVO){
+				et = "OPERATIVO";
+			}else if (estado == TREN_RETIRADO){
+				et = "RETIRADO";
+			}else if (estado == TREN_REVISION){
+				et = "REVISION";
+			}
+			sqlite3_stmt *stmt;
+			const char *sql = "UPDATE TRENES SET estado_mant = ? WHERE id_t = ?";
+			 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+				        sqlite3_bind_int(stmt, 1, et);
+				        sqlite3_bind_int(stmt, 2, id_t);
+				        sqlite3_step(stmt);
+				        sqlite3_finalize(stmt);
+				    }
+			 sqlite3_close(db);
+			 return 0;
+}
+
+/* ============================================================
+ *  VAGONES
+ * ============================================================ */
+
+int  insertar_vagon_db(Vagon v){
+	sqlite3 *db = abrir_bd();
+	    if (!db) return 1;
+
+	    sqlite3_stmt *stmt;
+	    const char *sql =
+	        "INSERT INTO VAGONES (id_vagon,id_tren,numero_vagon,clase,capacidad_total,vagon_PMR)"
+	        " VALUES (?,?,?,?,?);";
+
+	    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+	        sqlite3_close(db); return 1;
+	    }
+
+	    sqlite3_bind_int(stmt, 1, v.id_vagon);
+	    sqlite3_bind_int(stmt, 2, v.id_tren);
+	    sqlite3_bind_int (stmt, 3, v.numero_vagon);
+	    sqlite3_bind_text(stmt, 4, v.clase,   -1, SQLITE_TRANSIENT);
+	    sqlite3_bind_int(stmt, 5,v.capacidad_total);
+	    sqlite3_bind_int(stmt, 6,v.vagon_PMR);
+
+	    int rc = sqlite3_step(stmt);
+	    sqlite3_finalize(stmt);
+	    sqlite3_close(db);
+	    return (rc == SQLITE_DONE) ? 0 : 1;
+}
+
+void listar_vagones_tren(int id_tren) {
+    sqlite3 *db = abrir_bd(); if (!db) return;
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT numero_vagon,clase,capacidad_total,vagon_PMR FROM VAGONES WHERE id_tren=? ORDER BY numero_vagon;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_tren);
+    printf("\n  %-6s | %-5s | %-8s | PMR\n","VAGON","CLASE","CAPAC.");
+    printf("  -------+-------+----------+----\n");
+    while (sqlite3_step(stmt)==SQLITE_ROW)
+        printf("  %-6d | %-5s | %-8d | %s\n",
+               sqlite3_column_int(stmt,0),(const char*)sqlite3_column_text(stmt,1),
+               sqlite3_column_int(stmt,2),sqlite3_column_int(stmt,3)?"Si":"No");
+    sqlite3_finalize(stmt); sqlite3_close(db);
+}
+
 
 
 /* ============================================================
