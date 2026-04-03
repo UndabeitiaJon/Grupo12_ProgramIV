@@ -88,3 +88,7 @@
 [2026-04-03 11:36:34] [admin@trenfe.com] [LOGOUT] Sesion cerrada
 [2026-04-03 12:19:24] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-03 12:19:37] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 13:56:36] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 13:57:33] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 13:57:45] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-03 13:57:48] [SISTEMA] [FIN] Sistema detenido
