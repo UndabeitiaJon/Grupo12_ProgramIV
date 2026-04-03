@@ -672,6 +672,12 @@ int cambiar_contrasenia_db(const char *email, const char *nueva_pass){
 /* ============================================================
  *  TRENES
  * ============================================================ */
+
+static const char *estado_tren_str(EstadoMantenimiento e) {
+    const char *s[] = {"OPERATIVO","REVISION","AVERIA","RETIRADO"};
+    return (e>=0&&e<=3)?s[e]:"OPERATIVO";
+}
+
 int insertar_tren_db(Tren t) {
     sqlite3 *db = abrir_bd();
     if (!db) return 1;
@@ -837,7 +843,29 @@ void buscar_tren_por_modelo(const char *modelo) {
 
     sqlite3_finalize(stmt);
     sqlite3_close(db);
+
 }
+
+int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int anio, EstadoMantenimiento estado, const char *fecha_rev){
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return 1;
+	}
+	sqlite3_stmt *stmt;
+	const char *sql= "UPDATE TRENES SET nombre_modelo=?,num_serie=?,anio_fab=?,estado_mant=?,fecha_ultima_revision=? WHERE id_t=?;";
+	sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+	sqlite3_bind_text(stmt,1,modelo,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt,2,num_serie,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_int (stmt,3,anio);
+	sqlite3_bind_text(stmt,4,estado_tren_str(estado),-1,SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt,5,(fecha_rev&&strlen(fecha_rev)>0)?fecha_rev:NULL,-1,SQLITE_TRANSIENT); //Si el tren no tiene fecha le asigna un NULL
+	sqlite3_bind_int (stmt,6,id_t);
+	 int rc = sqlite3_step(stmt);
+	 sqlite3_finalize(stmt);
+	 sqlite3_close(db);
+	 return (rc==SQLITE_DONE)?0:1;
+}
+
 
 /* ============================================================
  *  ESTACIONES
@@ -1054,5 +1082,121 @@ int cargar_trayectos_csv (const char *ruta_csv){
 	    log_evento(cfg.log_path, NULL, "INSERT", mensaje_log);
 	    fclose(f);
 
-	    return insertados;
+	return insertados;
+}
+
+int modificar_trayecto_db(int id_tr, const char *hora_sal, const char *hora_ll, double precio, const char *dias){
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return 1;
 	}
+	sqlite3_stmt *stmt;
+	const char *sql="UPDATE TRAYECTOS SET hora_salida=?,hora_llegada=?,precio_base=?,dias_operacion=? WHERE id_tr=?;";
+	sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+	sqlite3_bind_text(stmt,1,hora_sal,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_text(stmt,2,hora_ll, -1,SQLITE_TRANSIENT);
+	sqlite3_bind_double(stmt,3,precio);
+	sqlite3_bind_text(stmt,4,dias,-1,SQLITE_TRANSIENT);
+	sqlite3_bind_int(stmt,5,id_tr);
+	int rc = sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return (rc==SQLITE_DONE)?0:1;
+}
+
+int cambiar_estado_trayecto_db(int id_tr, EstadoTrayecto estado){
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return 1;
+	}
+	sqlite3_stmt *stmt;
+	const char *sql="UPDATE TRAYECTOS SET estado=? WHERE id_tr=?;";
+	sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+	sqlite3_bind_text(stmt,1,estado==TRAYECTO_ACTIVO?"ACTIVO":"INACTIVO",-1,SQLITE_TRANSIENT);
+	sqlite3_bind_int (stmt,2,id_tr);
+	int rc = sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return (rc==SQLITE_DONE)?0:1;
+
+}
+
+Trayecto obtener_trayecto_por_id(int id_tr){
+	Trayecto tr;
+	memset(&tr,0,sizeof(tr));
+	tr.id_tr=-1;
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return tr;
+	}
+	sqlite3_stmt *stmt;
+	sqlite3_prepare_v2(db,
+	"SELECT id_tr,id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado FROM TRAYECTOS WHERE id_tr=?;",
+	-1,&stmt,NULL);
+	sqlite3_bind_int(stmt,1,id_tr);
+	if (sqlite3_step(stmt)==SQLITE_ROW) {
+		tr.id_tr=sqlite3_column_int(stmt,0);
+		tr.id_t=sqlite3_column_int(stmt,1);
+		tr.id_est_origen=sqlite3_column_int(stmt,2);
+		tr.id_est_destino=sqlite3_column_int(stmt,3);
+		strncpy(tr.hora_salida, (const char*)sqlite3_column_text(stmt,4),5);
+		strncpy(tr.hora_llegada,(const char*)sqlite3_column_text(stmt,5),5); //copia el texto que hemos encontrado y como maximo pega 5 letras
+		tr.duracion_min=sqlite3_column_int(stmt,6);
+		tr.precio_base=sqlite3_column_double(stmt,7);
+		strncpy(tr.dias_operacion,(const char*)sqlite3_column_text(stmt,8),7);
+		tr.estado=strcmp((const char*)sqlite3_column_text(stmt,9),"ACTIVO")==0?
+		TRAYECTO_ACTIVO:TRAYECTO_INACTIVO;
+
+	}
+
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return tr;
+}
+
+int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const char *clase){
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return 0;
+	}
+	sqlite3_stmt *stmt;
+	/* Determina día semana de la fecha */
+	sqlite3_prepare_v2(db,
+	"SELECT t.id_tr, eo.nombre, ed.nombre, t.hora_salida, t.hora_llegada,"
+	" t.duracion_min, t.precio_base, t.dias_operacion"
+	" FROM TRAYECTOS t"
+	" JOIN ESTACIONES eo ON t.id_est_origen=eo.id_est"
+	" JOIN ESTACIONES ed ON t.id_est_destino=ed.id_est"
+	" WHERE t.id_est_origen=? AND t.id_est_destino=? AND t.estado='ACTIVO'"
+	" ORDER BY t.hora_salida;",
+	-1,&stmt,NULL);
+	sqlite3_bind_int(stmt,1,id_origen);
+	sqlite3_bind_int(stmt,2,id_destino);
+	int n=0;
+	printf("\n  Trayectos disponibles de %d a %d el %s:\n",id_origen,id_destino,fecha);
+	printf("\n  %-3s | %-20s | %-20s | %5s | %5s | %5s | %8s\n",
+	       "ID","ORIGEN","DESTINO","SAL.","LLEGA","MIN","PRECIO");
+	printf("  ----+----------------------+----------------------+-------+-------+-------+----------\n");
+	while (sqlite3_step(stmt)==SQLITE_ROW) {
+	   double precio = sqlite3_column_double(stmt,6);
+	   if (strcmp(clase,"B")==0){
+		   //precio *= cfg.coef_business; En un futuro meterle el coeficiente business
+		   precio = 100;
+	   }
+	   printf("  %-3d | %-20s | %-20s | %-5s | %-5s | %-5d | %8.2f\n",
+	           sqlite3_column_int(stmt,0),
+	           (const char*)sqlite3_column_text(stmt,1),
+	           (const char*)sqlite3_column_text(stmt,2),
+	           (const char*)sqlite3_column_text(stmt,3),
+	           (const char*)sqlite3_column_text(stmt,4),
+	           sqlite3_column_int(stmt,5), precio);
+	    n++;
+	}
+	if (!n){
+		printf(" [No hay trayectos disponibles]\n");
+	}
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return n;
+}
+

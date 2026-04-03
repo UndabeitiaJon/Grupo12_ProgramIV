@@ -45,7 +45,23 @@ int modificar_estado_tren_db(int id_t, EstadoMantenimiento nuevo_estado);
 int eliminar_tren_db(int id_t);
 Tren obtener_tren_por_id(int id_t);
 void buscar_tren_por_modelo(const char *modelo);
+int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int anio, EstadoMantenimiento estado, const char *fecha_rev);
+void listar_trenes_con_vagones(void); //
+
+//ESTACIONES
+int insertar_estacion_db(Estacion e);
+void listar_estaciones_db();
+
 
 //TRAYECTOS
+int insertar_trayecto_db(Trayecto tr);
 int cargar_trayectos_csv(const char *ruta_csv);
+void listar_trayectos_db(void);
+int modificar_trayecto_db(int id_tr, const char *hora_sal, const char *hora_ll, double precio, const char *dias);
+int cambiar_estado_trayecto_db(int id_tr, EstadoTrayecto estado);
+Trayecto obtener_trayecto_por_id(int id_tr);
+/* Busca trayectos por origen/destino/fecha/clase */
+int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const char *clase);
+
+
 #endif /* SRC_DB_MANAGER_H_ */
