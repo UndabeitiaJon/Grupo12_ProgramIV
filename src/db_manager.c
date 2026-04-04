@@ -1031,6 +1031,136 @@ void listar_vagones_tren(int id_tren) {
     sqlite3_finalize(stmt); sqlite3_close(db);
 }
 
+int contar_asientos_libres(int id_tr, const char *fecha_viaje, int num_vagon, const char *clase) {
+    sqlite3 *db = abrir_bd();
+    if (!db) {
+        return -1;
+    }
+
+    Trayecto tr = obtener_trayecto_por_id(id_tr);
+    if (tr.id_tr == -1) {
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_stmt *stmt;
+    int capacidad = 0;
+    int ocupados  = 0;
+
+    const char *sql_cap =
+        "SELECT capacidad_total FROM VAGONES WHERE id_tren = ? AND numero_vagon = ? AND clase = ?;";
+
+    if (sqlite3_prepare_v2(db, sql_cap, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_int (stmt, 1, tr.id_t);
+        sqlite3_bind_int (stmt, 2, num_vagon);
+        sqlite3_bind_text(stmt, 3, clase, -1, SQLITE_TRANSIENT);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            capacidad = sqlite3_column_int(stmt, 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    if (capacidad == 0) {
+        sqlite3_close(db);
+        return 0;
+    }
+
+    // Asientos ocupados (reservas confirmadas o activas)
+    const char *sql_ocup =
+        "SELECT COUNT(*) FROM RESERVAS WHERE id_tr = ? AND fecha_viaje = ? AND num_vagon = ? AND estado NOT IN ('CANCELADA');";
+
+    if (sqlite3_prepare_v2(db, sql_ocup, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_int (stmt, 1, id_tr);
+        sqlite3_bind_text(stmt, 2, fecha_viaje, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int (stmt, 3, num_vagon);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            ocupados = sqlite3_column_int(stmt, 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    sqlite3_close(db);
+    return capacidad - ocupados;
+}
+
+void mostrar_mapa_asientos(int id_tr, const char *fecha_viaje, int num_vagon) {
+    sqlite3 *db = abrir_bd();
+    if (!db) {
+        return;
+    }
+
+    Trayecto tr = obtener_trayecto_por_id(id_tr);
+    if (tr.id_tr == -1) {
+        printf("[ERROR] Trayecto no encontrado.\n");
+        sqlite3_close(db);
+        return;
+    }
+
+    sqlite3_stmt *stmt;
+    int capacidad = 0;
+
+    const char *sql_cap =
+        "SELECT capacidad_total FROM VAGONES "
+        "WHERE id_tren = ? AND numero_vagon = ?;";
+
+    if (sqlite3_prepare_v2(db, sql_cap, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_int(stmt, 1, tr.id_t);
+        sqlite3_bind_int(stmt, 2, num_vagon);
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            capacidad = sqlite3_column_int(stmt, 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    if (capacidad == 0) {
+        printf("Vagon %d no encontrado o sin capacidad.\n", num_vagon);
+        sqlite3_close(db);
+        return;
+    }
+
+    int *asientos = malloc((capacidad + 1) * sizeof(int));
+    if (!asientos) {
+        sqlite3_close(db);
+        return;
+    }
+
+    for (int i = 1; i <= capacidad; i++) {
+        asientos[i] = 1;
+    }
+
+    const char *sql_ocup =
+        "SELECT num_asiento FROM RESERVAS "
+        "WHERE id_tr = ? AND fecha_viaje = ? AND num_vagon = ? "
+        "AND estado NOT IN ('CANCELADA');";
+
+    if (sqlite3_prepare_v2(db, sql_ocup, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_int (stmt, 1, id_tr);
+        sqlite3_bind_text(stmt, 2, fecha_viaje, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int (stmt, 3, num_vagon);
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            int num = sqlite3_column_int(stmt, 0);
+            if (num >= 1 && num <= capacidad) {
+                asientos[num] = 0;
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    printf("\n  Mapa de asientos - Vagon %d (Trayecto %d, Fecha: %s)\n",
+           num_vagon, id_tr, fecha_viaje);
+    printf("  [L] = Libre   [X] = Ocupado\n\n");
+
+    for (int i = 1; i <= capacidad; i++) {
+        if (asientos[i] == 1) {
+            printf("  Asiento %3d: [L]\n", i);
+        } else {
+            printf("  Asiento %3d: [X]\n", i);
+        }
+    }
+
+    free(asientos);
+    sqlite3_close(db);
+}
 
 
 /* ============================================================
@@ -1089,6 +1219,54 @@ void listar_estaciones_db() {
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+int  modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes){
+	 sqlite3 *db = abrir_bd(); if (!db) return 1;
+	    sqlite3_stmt *stmt;
+	    sqlite3_prepare_v2(db,
+	        "UPDATE ESTACIONES SET nombre=?,ciudad=?,provincia=?,num_andenes=? WHERE id_est=?;",
+	        -1,&stmt,NULL);
+	    sqlite3_bind_text(stmt,1,nombre,  -1,SQLITE_TRANSIENT);
+	    sqlite3_bind_text(stmt,2,ciudad,  -1,SQLITE_TRANSIENT);
+	    sqlite3_bind_text(stmt,3,provincia,-1,SQLITE_TRANSIENT);
+	    sqlite3_bind_int (stmt,4,num_andenes);
+	    sqlite3_bind_int (stmt,5,id_est);
+	    int rc = sqlite3_step(stmt);
+	    sqlite3_finalize(stmt); sqlite3_close(db);
+	    return (rc==SQLITE_DONE)?0:1;
+}
+
+Estacion obtener_estacion_por_id(int id_est) {
+	    Estacion e;
+	    sqlite3 *db = abrir_bd();
+	    if (!db) {
+	        return e;
+	    }
+
+	    sqlite3_stmt *stmt;
+	    const char *sql =
+	        "SELECT id_est, nombre, codigo_gtfs, ciudad, provincia, "
+	        "latitud, longitud, num_andenes, tiene_sala_club "
+	        "FROM ESTACIONES WHERE id_est = ?;";
+
+	    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+	        sqlite3_bind_int(stmt, 1, id_est);
+	        if (sqlite3_step(stmt) == SQLITE_ROW) {
+	            e.id_est = sqlite3_column_int(stmt, 0);
+	            strncpy(e.nombre, (const char*)sqlite3_column_text(stmt, 1), sizeof(e.nombre));
+	            strncpy(e.codigo_gtfs, (const char*)sqlite3_column_text(stmt, 2), sizeof(e.codigo_gtfs));
+	            strncpy(e.ciudad, (const char*)sqlite3_column_text(stmt, 3), sizeof(e.ciudad));
+	            strncpy(e.provincia, (const char*)sqlite3_column_text(stmt, 4), sizeof(e.provincia));
+	            e.latitud = sqlite3_column_double(stmt, 5);
+	            e.longitud = sqlite3_column_double(stmt, 6);
+	            e.num_andenes = sqlite3_column_int   (stmt, 7);
+	            e.tiene_sala_club = sqlite3_column_int  (stmt, 8);
+	        }
+	        sqlite3_finalize(stmt);
+	    }
+
+	    sqlite3_close(db);
+	    return e;
+	}
 
 /* ============================================================
  *  TRAYECTOS

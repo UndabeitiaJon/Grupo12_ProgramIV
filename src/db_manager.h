@@ -65,6 +65,8 @@ int  contar_asientos_libres(int id_tr, const char *fecha_viaje,
                              int num_vagon, const char *clase);
 /* Devuelve mapa de asientos (1=libre, 0=ocupado) para un vagón */
 void mostrar_mapa_asientos(int id_tr, const char *fecha_viaje, int num_vagon);
+int  modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes);
+Estacion  obtener_estacion_por_id(int id_est);
 
 //ESTACIONES
 int insertar_estacion_db(Estacion e);
