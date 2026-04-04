@@ -61,8 +61,7 @@ int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int an
 //VAGONES
 int  insertar_vagon_db(Vagon v);
 void listar_vagones_tren(int id_tren);
-int  contar_asientos_libres(int id_tr, const char *fecha_viaje,
-                             int num_vagon, const char *clase);
+int  contar_asientos_libres(int id_tr, const char *fecha_viaje, int num_vagon, const char *clase);
 /* Devuelve mapa de asientos (1=libre, 0=ocupado) para un vagón */
 void mostrar_mapa_asientos(int id_tr, const char *fecha_viaje, int num_vagon);
 int  modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes);
@@ -71,6 +70,9 @@ Estacion  obtener_estacion_por_id(int id_est);
 //ESTACIONES
 int insertar_estacion_db(Estacion e);
 void listar_estaciones_db();
+int modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes);
+int toggle_sala_club_db(int id_est);
+Estacion  obtener_estacion_por_id(int id_est);
 
 
 //TRAYECTOS
@@ -83,5 +85,10 @@ Trayecto obtener_trayecto_por_id(int id_tr);
 /* Busca trayectos por origen/destino/fecha/clase */
 int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const char *clase);
 
+
+//PARADAS INTERMEDIAS
+int insertar_parada_db(ParadaIntermedia p);
+void listar_paradas_trayecto(int id_tr);
+int eliminar_parada_db(int id_parada);//
 
 #endif /* SRC_DB_MANAGER_H_ */
