@@ -89,6 +89,28 @@ int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const 
 //PARADAS INTERMEDIAS
 int insertar_parada_db(ParadaIntermedia p);
 void listar_paradas_trayecto(int id_tr);
-int eliminar_parada_db(int id_parada);//
+int eliminar_parada_db(int id_parada);
+
+//RESERVAS
+int insertar_reserva_db(Reserva r);
+void listar_reservas_usuario(int id_u);
+void listar_reservas_activas_usuario(int id_u);
+void listar_historial_usuario(int id_u);
+int cancelar_reserva_db(int id_res, int id_u);
+Reserva obtener_reserva_por_id(int id_res);
+/* Genera código de validación único */
+void generar_codigo_validacion(char *buf, int len);
+/* Calcula precio final según clase, descuento y suplementos */
+double calcular_precio_final(int id_tr, const char *clase, TipoDescuento desc, double suplementos_extra);
+/* Comprueba si un asiento está libre en esa fecha/trayecto */
+bool asiento_libre(int id_tr, const char *fecha, int vagon, int asiento);
+
+//EQUIPAJE
+int insertar_equipaje_db(Equipaje eq);
+void listar_equipaje_reserva(int id_res);
+double calcular_suplemento_equipaje(TipoEquipaje tipo, double peso_kg,const char *clase);
+
+//LOGS
+void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario,const char *filtro_nivel);
 
 #endif /* SRC_DB_MANAGER_H_ */

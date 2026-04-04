@@ -21,7 +21,7 @@ static sqlite3* abrir_bd() {
         return NULL;
     }
     sqlite3_exec(db, "PRAGMA foreign_keys = ON;", 0, 0, 0);
-    sqlite3_exec(db, "PRAGMA journal_mode = WAL;",  0, 0, 0);
+    sqlite3_exec(db, "PRAGMA journal_mode = WAL;", 0, 0, 0);
     return db;
 }
 
@@ -328,9 +328,6 @@ int obtener_id_usuario(const char *email){
 	sqlite3_close(db);
 	return id;
 }
-
-
-
 
 
 Usuario obtener_usuario (const char *email){
@@ -1541,8 +1538,8 @@ int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const 
 	while (sqlite3_step(stmt)==SQLITE_ROW) {
 	   double precio = sqlite3_column_double(stmt,6);
 	   if (strcmp(clase,"B")==0){
-		   //precio *= cfg.coef_business; En un futuro meterle el coeficiente business
-		   precio = 100;
+		   precio *= cfg.coef_business;
+
 	   }
 	   printf("  %-3d | %-20s | %-20s | %-5s | %-5s | %-5d | %8.2f\n",
 	           sqlite3_column_int(stmt,0),
@@ -1550,7 +1547,8 @@ int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const 
 	           (const char*)sqlite3_column_text(stmt,2),
 	           (const char*)sqlite3_column_text(stmt,3),
 	           (const char*)sqlite3_column_text(stmt,4),
-	           sqlite3_column_int(stmt,5), precio);
+	           sqlite3_column_int(stmt,5),
+			   precio);
 	    n++;
 	}
 	if (!n){
@@ -1615,4 +1613,321 @@ void listar_paradas_trayecto(int id_tr) {
     }
     sqlite3_finalize(stmt);
     sqlite3_close(db);
+}
+
+int eliminar_parada_db(int id_parada) {
+	sqlite3 *db = abrir_bd();
+	if (!db){
+		return 1;
+	}
+	sqlite3_stmt *stmt;
+	sqlite3_prepare_v2(db,"DELETE FROM PARADAS_INTERMEDIAS WHERE id_parada=?;",-1,&stmt,NULL);
+	sqlite3_bind_int(stmt,1,id_parada);
+	int rc = sqlite3_step(stmt);
+	sqlite3_finalize(stmt);
+	sqlite3_close(db);
+	return (rc==SQLITE_DONE)?0:1;
+}
+
+//RESERVAS
+
+void generar_codigo_validacion(char *buf, int len) {
+    srand((unsigned int)time(NULL)+(unsigned int)(long)buf);
+    const char chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    int n = len-1;
+    for (int i=0;i<n;i++) buf[i]=chars[rand()%36];
+    buf[n]='\0';
+}
+
+double calcular_precio_final(int id_tr, const char *clase, TipoDescuento desc, double suplementos_extra) {
+    sqlite3 *db = abrir_bd();
+    if (!db) {
+    	return 0.0;
+    }
+    sqlite3_stmt *stmt;
+    double precio_base=0;
+    double coef_business=cfg.coef_business;
+    const char *sql="SELECT t.precio_base, COALESCE(ta.coef_business, ?) FROM TRAYECTOS t LEFT JOIN TARIFAS ta ON ta.id_tr=t.id_tr WHERE t.id_tr=?;";
+    sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    sqlite3_bind_double(stmt,1,cfg.coef_business);
+    sqlite3_bind_int   (stmt,2,id_tr);
+    if (sqlite3_step(stmt)==SQLITE_ROW) {
+        precio_base = sqlite3_column_double(stmt,0);
+        coef_business = sqlite3_column_double(stmt,1);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    double precio = precio_base;
+    if (strcmp(clase,"B")==0){
+    	precio *= coef_business;
+    }
+
+    double pct_desc = 0.0;
+    switch (desc) {
+        case DESCUENTO_JOVEN:    pct_desc = 20.0; break;
+        case DESCUENTO_DORADA:   pct_desc = 40.0; break;
+        case DESCUENTO_NUMEROSA: pct_desc = 20.0; break;
+        case DESCUENTO_ABONO:    pct_desc = 50.0; break;
+        default: break;
+    }
+    precio *= (1.0 - pct_desc/100.0);
+    precio += suplementos_extra;
+    return precio;
+}
+
+int insertar_reserva_db(Reserva r) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return -1;
+    }
+    sqlite3_stmt *stmt;
+    const char *sql = "INSERT INTO RESERVAS (id_u,id_tr,fecha_viaje,clase,num_vagon,num_asiento,precio_base,descuento_pct,precio_final,estado,codigo_validacion,fecha_reserva) VALUES (?,?,?,?,?,?,?,?,?,?,?,date('now'));";
+    sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,r.id_u);
+    sqlite3_bind_int(stmt,2,r.id_tr);
+    sqlite3_bind_text(stmt,3,r.fecha_viaje,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,4,r.clase,      -1,SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt,5,r.num_vagon);
+    sqlite3_bind_int(stmt,6,r.num_asiento);
+    sqlite3_bind_double(stmt,7,r.precio_base);
+    sqlite3_bind_double(stmt,8,r.descuento_pct);
+    sqlite3_bind_double(stmt,9,r.precio_final);
+    sqlite3_bind_text(stmt,10,"CONFIRMADA",-1,SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,11,r.codigo_validacion,-1,SQLITE_TRANSIENT);
+    int rc = sqlite3_step(stmt);
+    int new_id = (rc==SQLITE_DONE)?(int)sqlite3_last_insert_rowid(db):-1;
+    sqlite3_finalize(stmt);
+
+    /* Sumar puntos (1 punto por euro gastado) */
+    if (new_id > 0) {
+        int puntos = (int)r.precio_final;
+        char sql2[256];
+        snprintf(sql2,sizeof(sql2),
+            "UPDATE DATOS_PASAJERO SET puntos_fidelidad=puntos_fidelidad+%d WHERE id_u=%d;",
+            puntos, r.id_u);
+        sqlite3_exec(db,sql2,0,0,NULL);
+    }
+    sqlite3_close(db);
+    return new_id;
+}
+
+void listar_reservas_usuario(int id_u) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT r.id_res, eo.nombre, ed.nombre, r.fecha_viaje,"
+        " r.clase, r.num_vagon, r.num_asiento, r.precio_final,"
+        " r.estado, r.codigo_validacion"
+        " FROM RESERVAS r"
+        " JOIN TRAYECTOS t ON r.id_tr=t.id_tr"
+        " JOIN ESTACIONES eo ON t.id_est_origen=eo.id_est"
+        " JOIN ESTACIONES ed ON t.id_est_destino=ed.id_est"
+        " WHERE r.id_u=? ORDER BY r.fecha_viaje DESC;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_u);
+    printf("\n%-5s | %-18s | %-18s | %-10s | %5s | %-5s | %4s | %8s | %-12s | %s\n",
+           "ID","ORIGEN","DESTINO","FECHA","CLASE","VAGON","ASIE","PRECIO","ESTADO","COD. VALID.");
+    printf("------+--------------------+--------------------+------------+-------+-------+------+----------+--------------+----------\n");
+    int n=0;
+    while (sqlite3_step(stmt)==SQLITE_ROW) {
+        printf("%-5d | %-18s | %-18s | %-10s | %-5s | %-5d | %4d | %8.2f | %-12s | %s\n",
+               sqlite3_column_int(stmt,0),
+               (const char*)sqlite3_column_text(stmt,1),
+               (const char*)sqlite3_column_text(stmt,2),
+               (const char*)sqlite3_column_text(stmt,3),
+               (const char*)sqlite3_column_text(stmt,4),
+               sqlite3_column_int(stmt,5),sqlite3_column_int(stmt,6),
+               sqlite3_column_double(stmt,7),
+               (const char*)sqlite3_column_text(stmt,8),
+               (const char*)sqlite3_column_text(stmt,9));
+        n++;
+    }
+    if (!n){
+    	printf("  [Sin reservas]\n");
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
+
+void listar_reservas_activas_usuario(int id_u) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT r.id_res, eo.nombre, ed.nombre, r.fecha_viaje,"
+        " r.clase, r.num_vagon, r.num_asiento, r.precio_final, r.codigo_validacion"
+        " FROM RESERVAS r"
+        " JOIN TRAYECTOS t ON r.id_tr=t.id_tr"
+        " JOIN ESTACIONES eo ON t.id_est_origen=eo.id_est"
+        " JOIN ESTACIONES ed ON t.id_est_destino=ed.id_est"
+        " WHERE r.id_u=? AND r.estado='CONFIRMADA' AND r.fecha_viaje >= date('now')"
+        " ORDER BY r.fecha_viaje;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_u);
+    printf("\n  RESERVAS ACTIVAS:\n");
+    printf("  %-5s | %-18s | %-18s | %-10s | %5s | %-5s | %4s | %8s | %s\n",
+           "ID","ORIGEN","DESTINO","FECHA","CLASE","VAGON","ASIE","PRECIO","COD. VALID.");
+    printf("  ------+--------------------+--------------------+------------+-------+-------+------+----------+----------\n");
+    int n=0;
+    while (sqlite3_step(stmt)==SQLITE_ROW) {
+        printf("  %-5d | %-18s | %-18s | %-10s | %-5s | %-5d | %4d | %8.2f | %s\n",
+               sqlite3_column_int(stmt,0),
+               (const char*)sqlite3_column_text(stmt,1),
+               (const char*)sqlite3_column_text(stmt,2),
+               (const char*)sqlite3_column_text(stmt,3),
+               (const char*)sqlite3_column_text(stmt,4),
+               sqlite3_column_int(stmt,5),sqlite3_column_int(stmt,6),
+               sqlite3_column_double(stmt,7),
+               (const char*)sqlite3_column_text(stmt,8));
+        n++;
+    }
+    if (!n){
+    	printf("  [No tienes reservas activas]\n");
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
+
+void listar_historial_usuario(int id_u) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return;
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT r.id_res, eo.nombre, ed.nombre, r.fecha_viaje, r.clase, r.precio_final, r.estado"
+        " FROM RESERVAS r"
+        " JOIN TRAYECTOS t ON r.id_tr=t.id_tr"
+        " JOIN ESTACIONES eo ON t.id_est_origen=eo.id_est"
+        " JOIN ESTACIONES ed ON t.id_est_destino=ed.id_est"
+        " WHERE r.id_u=? ORDER BY r.fecha_viaje DESC;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_u);
+    printf("\n  HISTORIAL DE VIAJES:\n");
+    printf("  %-5s | %-18s | %-18s | %-10s | %5s | %8s | %s\n",
+           "ID","ORIGEN","DESTINO","FECHA","CLASE","PRECIO","ESTADO");
+    printf("  ------+--------------------+--------------------+------------+-------+----------+----------\n");
+    int n=0;
+    while (sqlite3_step(stmt)==SQLITE_ROW) {
+        printf("  %-5d | %-18s | %-18s | %-10s | %-5s | %8.2f | %s\n",
+               sqlite3_column_int(stmt,0),
+               (const char*)sqlite3_column_text(stmt,1),
+               (const char*)sqlite3_column_text(stmt,2),
+               (const char*)sqlite3_column_text(stmt,3),
+               (const char*)sqlite3_column_text(stmt,4),
+               sqlite3_column_double(stmt,5),
+               (const char*)sqlite3_column_text(stmt,6));
+        n++;
+    }
+    if (!n){
+    	printf("  [Sin historial de viajes]\n");
+    }
+    sqlite3_finalize(stmt); sqlite3_close(db);
+}
+
+int cancelar_reserva_db(int id_res, int id_u) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return 1;
+    sqlite3_stmt *stmt;
+    const char *sql="UPDATE RESERVAS SET estado='CANCELADA' WHERE id_res=? AND id_u=? AND estado='CONFIRMADA';";
+    sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_res);
+    sqlite3_bind_int(stmt,2,id_u);
+    int rc = sqlite3_step(stmt);
+    int changes = (int)sqlite3_changes(db);
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return (rc==SQLITE_DONE && changes>0)?0:1;
+}
+
+//EQUIPAJE
+
+int insertar_equipaje_db(Equipaje eq) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return 1;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "INSERT INTO EQUIPAJES (id_res,tipo,peso_kg,dimensiones,exceso_kg,suplemento_pago,facturado)"
+        " VALUES (?,?,?,?,?,?,0);", -1,&stmt,NULL);
+    const char *tipos[] = {"MANO","BODEGA","BICI","ESQUI"};
+    sqlite3_bind_int (stmt,1,eq.id_res);
+    sqlite3_bind_text (stmt,2,tipos[eq.tipo],-1,SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt,3,eq.peso_kg);
+    sqlite3_bind_text(stmt,4,eq.dimensiones,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_double(stmt,5,eq.exceso_kg);
+    sqlite3_bind_double(stmt,6,eq.suplemento_pago);
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return (rc==SQLITE_DONE)?0:1;
+}
+
+void listar_equipaje_reserva(int id_res) {
+    sqlite3 *db = abrir_bd();
+    if (!db) {
+    	return;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT tipo,peso_kg,exceso_kg,suplemento_pago FROM EQUIPAJES WHERE id_res=?;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_res);
+    printf("  %-7s | %-7s | %-9s | %s\n","TIPO","PESO","EXCESO","SUPL.");
+    while (sqlite3_step(stmt)==SQLITE_ROW)
+        printf("  %-7s | %7.2f | %9.2f | %.2f EUR\n",
+               (const char*)sqlite3_column_text(stmt,0),
+               sqlite3_column_double(stmt,1),
+			   sqlite3_column_double(stmt,2),
+               sqlite3_column_double(stmt,3));
+    sqlite3_finalize(stmt); sqlite3_close(db);
+}
+
+double calcular_suplemento_equipaje(TipoEquipaje tipo, double peso_kg, const char *clase) {
+    double sup = 0.0;
+    switch(tipo) {
+        case EQUIPAJE_MANO:
+            break;
+        case EQUIPAJE_BODEGA: {
+            double limite = (strcmp(clase,"B")==0) ? 25.0 : 15.0;
+            if (peso_kg > limite) sup = (peso_kg - limite) * cfg.exceso_kg_precio;
+            break;
+        }
+        case EQUIPAJE_BICI:
+        case EQUIPAJE_ESQUI:
+            sup = cfg.suplemento_bici;
+            break;
+    }
+    return sup;
+}
+
+//LOGS
+void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario, const char *filtro_nivel) {
+    FILE *f = fopen(cfg.log_path, "r");
+    if (!f) {
+    	printf("  [No se pudo abrir el fichero de logs]\n");
+    	return;
+    }
+    char linea[512];
+    int n=0;
+    printf("\n  LOGS DEL SISTEMA (%s)\n", cfg.log_path);
+    printf("  %-20s | %-20s | %-15s | %s\n","TIMESTAMP","USUARIO","TIPO","DESCRIPCION");
+    printf("  ---------------------+----------------------+-----------------+-------------------------\n");
+    while (fgets(linea,sizeof(linea),f)) {
+        /* Filtra si se pide */
+        if (filtro_fecha && strlen(filtro_fecha)>0 && !strstr(linea,filtro_fecha)) continue;
+        if (filtro_usuario && strlen(filtro_usuario)>0 && !strstr(linea,filtro_usuario)) continue;
+        if (filtro_nivel && strlen(filtro_nivel)>0 && !strstr(linea,filtro_nivel)) continue;
+        linea[strcspn(linea,"\r\n")]=0;
+        printf("  %s\n",linea);
+        n++;
+        if (n>=100) { printf("  [...truncado en 100 lineas...]\n"); break; }
+    }
+    if (n==0) printf("  [Sin resultados con los filtros indicados]\n");
+    fclose(f);
 }
