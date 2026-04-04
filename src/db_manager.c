@@ -730,7 +730,7 @@ TipoDescuento obtener_descuento_usuario(int id_u) {
             	desc = DESCUENTO_DORADA;
             }else if (strcmp(tipo, "NUMEROSA") == 0){
             	desc = DESCUENTO_NUMEROSA;
-            }else if (sftrcmp(tipo, "ABONO") == 0){
+            }else if (strcmp(tipo, "ABONO") == 0){
             	desc = DESCUENTO_ABONO;
             }
         }
@@ -1585,7 +1585,7 @@ int insertar_parada_db(ParadaIntermedia p) {
     return (rc == SQLITE_DONE) ? 0 : 1;
 }
 
-void listar_paradas_trayecto(int id_tr) {{
+void listar_paradas_trayecto(int id_tr) {
 	sqlite3 *db = abrir_bd();
 	if (!db) return;
     sqlite3_stmt *stmt;
@@ -1608,7 +1608,7 @@ void listar_paradas_trayecto(int id_tr) {{
 			   (const char*)sqlite3_column_text(stmt,2),
 			   (const char*)sqlite3_column_text(stmt,3),
                sqlite3_column_text(stmt,4));
-               n++;
+        n++;
     }
     if (!n){
     	printf("  [Sin paradas intermedias]\n");
