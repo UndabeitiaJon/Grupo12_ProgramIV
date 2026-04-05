@@ -89,6 +89,68 @@ int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const 
 //PARADAS INTERMEDIAS
 int insertar_parada_db(ParadaIntermedia p);
 void listar_paradas_trayecto(int id_tr);
-int eliminar_parada_db(int id_parada);//
+int eliminar_parada_db(int id_parada);
+
+//RESERVAS
+int insertar_reserva_db(Reserva r);
+void listar_reservas_usuario(int id_u);
+void listar_reservas_activas_usuario(int id_u);
+void listar_historial_usuario(int id_u);
+int cancelar_reserva_db(int id_res, int id_u);
+Reserva obtener_reserva_por_id(int id_res);
+/* Genera código de validación único */
+void generar_codigo_validacion(char *buf, int len);
+/* Calcula precio final según clase, descuento y suplementos */
+double calcular_precio_final(int id_tr, const char *clase, TipoDescuento desc, double suplementos_extra);
+/* Comprueba si un asiento está libre en esa fecha/trayecto */
+bool asiento_libre(int id_tr, const char *fecha, int vagon, int asiento);
+
+//EQUIPAJE
+int insertar_equipaje_db(Equipaje eq);
+void listar_equipaje_reserva(int id_res);
+double calcular_suplemento_equipaje(TipoEquipaje tipo, double peso_kg,const char *clase);
+
+//SERVICIOS OPERATIVOS
+int insertar_servicio_db(ServicioOperativo s);
+void listar_servicios_db(const char *filtro_fecha, int filtro_tren);
+int cancelar_servicio_db(int id_serv);
+int marcar_inicio_servicio(int id_serv);
+int marcar_fin_servicio(int id_serv);
+int actualizar_retraso_servicio(int id_serv, int minutos, const char *causa);
+ServicioOperativo obtener_servicio_por_id(int id_serv);
+/* Lista servicios asignados a un maquinista */
+void listar_servicios_maquinista(int id_u);
+
+//ASIGNACION DE PERSONAL
+int insertar_asignacion_db(AsignacionPersonal a);
+void listar_asignaciones_servicio(int id_serv);
+int eliminar_asignacion_db(int id_asig);
+
+//INCIDENCIAS
+int insertar_incidencia_db(Incidencia inc);
+void listar_incidencias_db(EstadoIncidencia filtro_estado, int todas);
+int resolver_incidencia_db(int id_inc, int id_u_resuelve);
+Incidencia obtener_incidencia_por_id(int id_inc);
+void ver_detalle_incidencia(int id_inc);
+
+//TARIFAS
+void listar_tarifas_db(void);
+int modificar_precio_base_trayecto(int id_tr, double nuevo_precio);
+int modificar_coef_business_db(int id_tr, double coef);
+int modificar_suplemento_bici_db(double precio);
+int modificar_exceso_kg_db(double precio_por_kg);
+
+//INFORMES
+void informe_ocupacion_tren(int id_tren);
+void informe_ingresos_trayecto(int id_tr);
+void informe_incidencias_periodo(const char *fecha_ini, const char *fecha_fin);
+void informe_empleados_activos(void);
+
+//LOGS
+void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario,const char *filtro_nivel);
+
+//IMPORTAR
+int importar_gtfs(const char *ruta_directorio);
+void resumen_ultima_importacion(void);
 
 #endif /* SRC_DB_MANAGER_H_ */

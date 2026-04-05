@@ -7,7 +7,10 @@ typedef struct {
     char admin_email[128];
     int  puerto_servidor;
     char host_servidor[128];
-    //Se puede añadir en un futuro las tarifas de los descuentos y suplementos
+    double coef_business;      /* default 1.80 */
+    double exceso_kg_precio;   /* default 12.0 */
+    double suplemento_bici;    /* default 30.0 */
+    double menu_turista;
 } ConfigApp;
 
 // Variable global accesible desde cualquier .c que incluya este .h

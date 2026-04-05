@@ -99,3 +99,12 @@
 [2026-04-04 14:55:27] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-04 14:55:30] [SISTEMA] [FIN] Sistema detenido
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-04 19:11:44] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-04 19:12:18] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-04 19:12:40] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-04 19:13:08] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-04 19:14:10] [pablo@trenfe.com] [INSERT] Usuario creado correctamente
+[2026-04-04 19:14:19] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-04 19:14:22] [SISTEMA] [FIN] Sistema detenido
+[2026-04-05 20:04:22] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-05 20:04:26] [SISTEMA] [FIN] Sistema detenido
