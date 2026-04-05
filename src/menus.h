@@ -21,7 +21,8 @@ void limpiar_pantalla ();
 void menu_principal_administrador(const char *email_logueado,const Usuario user);
 
 //Menu de pasajero
-void menu_principal_pasajero(int id_u, const char *email);
+void menu_principal_pasajero(const Usuario user);
 //Menu empleado
 void menu_principal_empleado(const Usuario user);
+
 #endif
