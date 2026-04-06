@@ -19,7 +19,7 @@ void limpiar_pantalla ();
 
 //Menu de administrador
 void menu_principal_administrador(const char *email_logueado,const Usuario user);
-
+void menu_gestion_trenes(const Usuario user);
 //Menu de pasajero
 void menu_principal_pasajero(const Usuario user);
 void menu_mis_reservas (const Usuario user);

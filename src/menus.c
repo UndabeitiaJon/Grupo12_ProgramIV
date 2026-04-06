@@ -56,6 +56,7 @@ void menu_principal_administrador(const char *email_logueado, const Usuario user
 
         switch(opcion) {
             case 1: menu_alta_usuario(); break;
+            case 2: menu_gestion_trenes(user); break;
             case 5:
                 importar_usuarios_csv("./data/usuarios.csv");
                 break;
@@ -67,6 +68,10 @@ void menu_principal_administrador(const char *email_logueado, const Usuario user
         }
     } while(opcion != 0);
 }
+void menu_gestion_trenes(const Usuario user){
+
+}
+
 //MENU REGISTRO
 void menu_alta_usuario(Usuario user) {
     char nombre[64], apellido[64], dni[16], email[128], telf[20], pass[256], fecha_nac[11];
