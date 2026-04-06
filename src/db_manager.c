@@ -412,50 +412,68 @@ Usuario obtener_usuario_por_email(const char *email) {
 
 int insertar_usuario_db(Usuario u) {
     sqlite3 *db = abrir_bd();
-    if (!db) return 1;
+    if (!db){
+    	return 1;
+    }
 
     sqlite3_stmt *stmt;
-    const char *sql =
+    const char *sql_usuario =
         "INSERT INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,"
-        "pass_hash,rol,activo,fecha_registro)"
-        " VALUES (?,?,?,?,?,?,?,?,?,date('now'));";
+        "pass_hash,rol,activo,fecha_registro) VALUES (?,?,?,?,?,?,?,?,?,date('now'));";
 
-    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) { sqlite3_close(db); return 1; }
+    if (sqlite3_prepare_v2(db, sql_usuario, -1, &stmt, NULL) != SQLITE_OK) {
+        sqlite3_close(db); return 1;
+    }
 
-    sqlite3_bind_text(stmt, 1, u.nombre,           -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 2, u.apellido,          -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, u.dni,               -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, u.email,             -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 5, u.telf,              -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 6, u.fecha_nac,         -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 7, u.pass_hash,         -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 8, rol_a_texto(u.rol),  -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int (stmt, 9, u.activo);
+    sqlite3_bind_text(stmt,1, u.nombre, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,2, u.apellido, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,3, u.dni, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,4, u.email, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,5, u.telf,-1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,6, u.fecha_nac, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,7, u.pass_hash, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt,8, rol_a_texto(u.rol),-1, SQLITE_TRANSIENT);
+    sqlite3_bind_int (stmt,9, u.activo);
 
-    int rc2 = sqlite3_step(stmt);
+    int rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
 
-    if(rc2 == SQLITE_DONE && u.rol == ROL_PASAJERO ){
-    	int nuevo_id = (int) sqlite3_last_insert_rowid(db);
-    	char sql2[256];
-    	snprintf(sql2, sizeof(sql2),
-    	"INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento)"
-    	" VALUES (%d,0,'NINGUNO');", nuevo_id); // snprintf En lugar de imprimir el texto en la pantalla, lo guarda dentro de tu variable sql2
-    	 sqlite3_exec(db, sql2, 0, 0, NULL);
-    }
-
-
-    sqlite3_close(db);
-
-    if (rc2 != SQLITE_DONE) {
-        printf("Error al insertar usuario: %s\n", sqlite3_errmsg(db));
+    if (rc != SQLITE_DONE) {
+        printf("[ERR] Error al registrar usuario (DNI/email duplicado?).\n");
+        sqlite3_close(db);
         return 1;
     }
-    printf("Usuario %s %s guardado correctamente.\n", u.nombre, u.apellido);
+
+    printf("[OK] Usuario %s %s registrado.\n", u.nombre, u.apellido);
+    int nuevo_id = (int)sqlite3_last_insert_rowid(db);
+
+    if (u.rol == ROL_PASAJERO) {
+        const char *sql_pasajero = "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u, puntos_fidelidad, tipo_descuento) VALUES (?, 0, 'NINGUNO');";
+        sqlite3_prepare_v2(db,sql_pasajero, -1, &stmt, NULL);
+        sqlite3_bind_int(stmt,1, nuevo_id);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+    } else if (u.rol == ROL_EMPLEADO) {
+
+        srand((unsigned int)time(NULL) ^ (unsigned int)nuevo_id); //Generador de usuario aleatorio
+        int num = 1000 + rand() % 9000;
+        char num_emp;
+        sprintf(num_emp, "EMP-%04d", num);
+
+        const char *sql_empleado = "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u, num_empleado, fecha_ingreso, rol_empleado, estado) VALUES (?, ?, date('now'), 'MAQUINISTA', 'ACTIVO');";
+        sqlite3_prepare_v2(db, sql_empleado, -1, &stmt, NULL);
+        sqlite3_bind_int(stmt, 1, nuevo_id);
+        sqlite3_bind_text(stmt, 2, num_emp, -1, SQLITE_TRANSIENT);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        printf("[OK] Numero de empleado asignado: %s\n", num_emp);
+    }
+
+    sqlite3_close(db);
     return 0;
 }
-
 void listar_usuarios_db() {
     sqlite3 *db = abrir_bd();
     if (!db) return;
@@ -533,7 +551,22 @@ int modificar_usuario_db(int id_u, const char *campo, const char *valor){
 }
 
 int deshabilitar_usuario_db(int id_u){
-	return modificar_usuario_db(id_u, "activo", "0");
+	int rc = modificar_usuario_db(id_u, "activo", "0");
+	    if (rc == 0) {
+
+	        sqlite3 *db = abrir_bd();
+	        if (db) {
+	            sqlite3_stmt *stmt;
+	            const char *sql = "UPDATE DATOS_EMPLEADO SET estado='INACTIVO' WHERE id_u=?;";
+	            if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+	                sqlite3_bind_int(stmt, 1, id_u);
+	                sqlite3_step(stmt);
+	                sqlite3_finalize(stmt);
+	            }
+	            sqlite3_close(db);
+	        }
+	    }
+	    return rc;
 }
 
 void buscar_usuario_db(const char *dni_o_nombre){
@@ -621,7 +654,7 @@ bool verificar_usuario(char *email, char *contrasenia) {
     return false;
 }
 
-bool comprobar_usuario_registrado(char *email) {
+bool comprobar_usuario_registrado(const char *email) {
     sqlite3 *db = abrir_bd();
     if (!db) return false;
 
@@ -636,7 +669,7 @@ bool comprobar_usuario_registrado(char *email) {
     return count > 0;
 }
 
-bool comprobar_contrasenia(char *email, char *contrasenia) {
+bool comprobar_contrasenia(const char *email, const char *contrasenia) {
     sqlite3 *db = abrir_bd();
     if (!db) return false;
 
@@ -772,6 +805,7 @@ static const char *estado_tren_str(EstadoMantenimiento e) {
     return (e>=0&&e<=3)?s[e]:"OPERATIVO";
 }
 
+
 int insertar_tren_db(Tren t) {
     sqlite3 *db = abrir_bd();
     if (!db) return 1;
@@ -824,32 +858,29 @@ void listar_trenes_db() {
     sqlite3_close(db);
 }
 Tren obtener_tren_por_id(int id_t) {
-    sqlite3 *db;
+    Tren t; memset(&t,0,sizeof(t)); t.id_t=-1;
+    sqlite3 *db = abrir_bd(); if (!db) return t;
     sqlite3_stmt *stmt;
-    Tren t;
-    memset(&t, 0, sizeof(t));
-
-    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return t;
-
-    char sql[256];
-    snprintf(sql, sizeof(sql),
-        "SELECT id_t, modelo, num_serie, anio_fab, estado_mant FROM TRENES WHERE id_t = %d;", id_t);
-
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-        sqlite3_close(db);
-        return t;
+    sqlite3_prepare_v2(db,
+        "SELECT id_t,nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision"
+        " FROM TRENES WHERE id_t=?;", -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_t);
+    if (sqlite3_step(stmt)==SQLITE_ROW) {
+        t.id_t = sqlite3_column_int(stmt,0);
+        strncpy(t.nombre_modelo,(const char*)sqlite3_column_text(stmt,1),63);
+        strncpy(t.num_serie,    (const char*)sqlite3_column_text(stmt,2),31);
+        t.anio_fab = sqlite3_column_int(stmt,3);
+        const char *em = (const char*)sqlite3_column_text(stmt,4);
+        if (!strcmp(em,"REVISION")) t.estado_mant=TREN_REVISION;
+        else if (!strcmp(em,"AVERIA"))  t.estado_mant=TREN_AVERIA;
+        else if (!strcmp(em,"RETIRADO"))t.estado_mant=TREN_RETIRADO;
+        else t.estado_mant=TREN_OPERATIVO;
+        if (sqlite3_column_text(stmt,5)) {
+            strncpy(t.fecha_ultima_revision,(const char*)sqlite3_column_text(stmt,5),10);
+            t.tiene_revision=1;
+        }
     }
-
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        t.id_t = sqlite3_column_int(stmt, 0);
-        strncpy(t.nombre_modelo, (const char*)sqlite3_column_text(stmt, 1), sizeof(t.nombre_modelo)-1);
-        strncpy(t.num_serie,     (const char*)sqlite3_column_text(stmt, 2), sizeof(t.num_serie)-1);
-        t.anio_fab    = sqlite3_column_int(stmt, 3);
-        t.estado_mant = texto_a_estado_tren((const char*)sqlite3_column_text(stmt, 4));
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
+    sqlite3_finalize(stmt); sqlite3_close(db);
     return t;
 }
 
@@ -862,7 +893,7 @@ int modificar_estado_tren_db(int id_t, EstadoMantenimiento nuevo_estado) {
     char sql[256];
     snprintf(sql, sizeof(sql),
         "UPDATE TRENES SET estado_mant = '%s' WHERE id_t = %d;",
-        estado_tren_a_texto(nuevo_estado), id_t);
+		estado_tren_str(nuevo_estado), id_t);
 
     int rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
     if (rc != SQLITE_OK) {
@@ -873,7 +904,7 @@ int modificar_estado_tren_db(int id_t, EstadoMantenimiento nuevo_estado) {
     }
 
     printf("[OK] Estado del tren %d actualizado a %s.\n",
-           id_t, estado_tren_a_texto(nuevo_estado));
+           id_t, estado_tren_str(nuevo_estado));
     sqlite3_close(db);
     return 0;
 }
@@ -1084,82 +1115,80 @@ int contar_asientos_libres(int id_tr, const char *fecha_viaje, int num_vagon, co
 }
 
 void mostrar_mapa_asientos(int id_tr, const char *fecha_viaje, int num_vagon) {
-    sqlite3 *db = abrir_bd();
-    if (!db) {
-        return;
-    }
-
-    Trayecto tr = obtener_trayecto_por_id(id_tr);
-    if (tr.id_tr == -1) {
-        printf("[ERROR] Trayecto no encontrado.\n");
-        sqlite3_close(db);
-        return;
-    }
+    sqlite3 *db = abrir_bd(); if (!db) return;
 
     sqlite3_stmt *stmt;
     int capacidad = 0;
+    sqlite3_prepare_v2(db,
+        "SELECT v.capacidad_total FROM VAGONES v "
+        "JOIN TRAYECTOS t ON t.id_t = v.id_tren "
+        "WHERE t.id_tr=? AND v.numero_vagon=?;",
+        -1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_tr); sqlite3_bind_int(stmt,2,num_vagon);
+    if (sqlite3_step(stmt)==SQLITE_ROW){
+    	capacidad = sqlite3_column_int(stmt,0);
+    }
+    sqlite3_finalize(stmt);
+    if (capacidad==0){
+    	capacidad=50;
+    }
 
-    const char *sql_cap =
-        "SELECT capacidad_total FROM VAGONES "
-        "WHERE id_tren = ? AND numero_vagon = ?;";
 
-    if (sqlite3_prepare_v2(db, sql_cap, -1, &stmt, NULL) == SQLITE_OK) {
-        sqlite3_bind_int(stmt, 1, tr.id_t);
-        sqlite3_bind_int(stmt, 2, num_vagon);
-        if (sqlite3_step(stmt) == SQLITE_ROW) {
-            capacidad = sqlite3_column_int(stmt, 0);
+    sqlite3_stmt *s2;
+    sqlite3_prepare_v2(db,
+        "SELECT num_asiento FROM RESERVAS WHERE id_tr=? AND fecha_viaje=?"
+        " AND num_vagon=? AND estado IN ('CONFIRMADA','PENDIENTE');",
+        -1,&s2,NULL);
+    sqlite3_bind_int (s2,1,id_tr);
+    sqlite3_bind_text(s2,2,fecha_viaje,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int (s2,3,num_vagon);
+    int ocupado[MAX_ASIENTOS+1]; memset(ocupado,0,sizeof(ocupado));
+    while (sqlite3_step(s2)==SQLITE_ROW) {
+        int a = sqlite3_column_int(s2,0);
+        if (a>0 && a<=MAX_ASIENTOS) ocupado[a]=1;
+    }
+    sqlite3_finalize(s2); sqlite3_close(db);
+
+
+    printf("\n  MAPA DE ASIENTOS  Vagon %d  (capacidad %d)\n", num_vagon, capacidad);
+    printf("  Numero = libre  |[XX]| = ocupado\n");
+    printf("  +-----+-----+-----+-----+\n");
+    printf("  |  A  |  B  |  C  |  D  |\n");
+    printf("  +-----+-----+-----+-----+\n");
+    int filas = (capacidad+3)/4;
+    for (int f=1; f<=filas; f++) {
+        printf("  |");
+        for (int c=0; c<4; c++) {
+            int asiento = (f-1)*4 + c + 1;
+            if (asiento <= capacidad) {
+                if (ocupado[asiento]){
+                	printf("[%2d] |", asiento);
+                }
+                else {
+                	printf(" %2d  |", asiento);
+                }
+            } else printf("     |");
         }
-        sqlite3_finalize(stmt);
+        printf(" F%02d\n", f);
     }
+    printf("  +-----+-----+-----+-----+\n");
+    printf("  Introduce el numero del asiento libre (ej: 1 equivale a A-F01,etc).\n");
+}
 
-    if (capacidad == 0) {
-        printf("Vagon %d no encontrado o sin capacidad.\n", num_vagon);
-        sqlite3_close(db);
-        return;
-    }
-
-    int *asientos = malloc((capacidad + 1) * sizeof(int));
-    if (!asientos) {
-        sqlite3_close(db);
-        return;
-    }
-
-    for (int i = 1; i <= capacidad; i++) {
-        asientos[i] = 1;
-    }
-
-    const char *sql_ocup =
-        "SELECT num_asiento FROM RESERVAS "
-        "WHERE id_tr = ? AND fecha_viaje = ? AND num_vagon = ? "
-        "AND estado NOT IN ('CANCELADA');";
-
-    if (sqlite3_prepare_v2(db, sql_ocup, -1, &stmt, NULL) == SQLITE_OK) {
-        sqlite3_bind_int (stmt, 1, id_tr);
-        sqlite3_bind_text(stmt, 2, fecha_viaje, -1, SQLITE_TRANSIENT);
-        sqlite3_bind_int (stmt, 3, num_vagon);
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            int num = sqlite3_column_int(stmt, 0);
-            if (num >= 1 && num <= capacidad) {
-                asientos[num] = 0;
-            }
-        }
-        sqlite3_finalize(stmt);
-    }
-
-    printf("\n  Mapa de asientos - Vagon %d (Trayecto %d, Fecha: %s)\n",
-           num_vagon, id_tr, fecha_viaje);
-    printf("  [L] = Libre   [X] = Ocupado\n\n");
-
-    for (int i = 1; i <= capacidad; i++) {
-        if (asientos[i] == 1) {
-            printf("  Asiento %3d: [L]\n", i);
-        } else {
-            printf("  Asiento %3d: [X]\n", i);
-        }
-    }
-
-    free(asientos);
-    sqlite3_close(db);
+bool asiento_libre(int id_tr, const char *fecha, int vagon, int asiento) {
+    sqlite3 *db = abrir_bd(); if (!db) return false;
+    sqlite3_stmt *stmt; int n=0;
+    sqlite3_prepare_v2(db,
+        "SELECT COUNT(*) FROM RESERVAS WHERE id_tr=? AND fecha_viaje=?"
+        " AND num_vagon=? AND num_asiento=? AND estado IN ('CONFIRMADA','PENDIENTE');",
+        -1,&stmt,NULL);
+    sqlite3_bind_int (stmt,1,id_tr);
+    sqlite3_bind_text(stmt,2,fecha,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int (stmt,3,vagon);
+    sqlite3_bind_int (stmt,4,asiento);
+    if (sqlite3_step(stmt)==SQLITE_ROW) n=sqlite3_column_int(stmt,0);
+    sqlite3_finalize(stmt); sqlite3_close(db);
+    return n==0;
 }
 
 
@@ -1439,25 +1468,35 @@ int cargar_trayectos_csv (const char *ruta_csv){
 	        strncpy(copia, linea, sizeof(copia));
 
 	        char *token = strtok(copia, ";");
-	        if (token == NULL) continue;  strncpy(id_tr,          token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(id_tr,          token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(id_t,           token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(id_t,           token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(id_est_origen,  token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(id_est_origen,  token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(id_est_destino, token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(id_est_destino, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(hora_salida,    token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(hora_salida, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(hora_llegada,   token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(hora_llegada, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(duracion_min,   token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(duracion_min, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(precio_base,    token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(precio_base, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(dias_operacion, token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(dias_operacion, token, MAX_CAMPO);
 	        token = strtok(NULL, ";");
-	        if (token == NULL) continue;  strncpy(estado,         token, MAX_CAMPO);
+	        if (token == NULL) continue;
+	        strncpy(estado, token, MAX_CAMPO);
 
 	        /* Construir la sentencia SQL */
 	        char sql[512];
@@ -1634,31 +1673,33 @@ int insertar_parada_db(ParadaIntermedia p) {
 }
 
 void listar_paradas_trayecto(int id_tr) {
-	sqlite3 *db = abrir_bd();
-	if (!db) return;
-    sqlite3_stmt *stmt;
-    const char *sql =
-    		"SELECT pi.orden, e.nombre, pi.hora_llegada, pi.hora_salida, pi.anden"
-    		" FROM PARADAS_INTERMEDIAS pi"
-	        " JOIN ESTACIONES e ON pi.id_est=e.id_est"
-   		    " WHERE pi.id_tr=? ORDER BY pi.orden;";
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-        sqlite3_close(db); return;
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return;
     }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT pi.id_parada, pi.orden, e.nombre, pi.hora_llegada, pi.hora_salida, pi.anden"
+        " FROM PARADAS_INTERMEDIAS pi"
+        " JOIN ESTACIONES e ON pi.id_est=e.id_est"
+        " WHERE pi.id_tr=? ORDER BY pi.orden;",
+        -1,&stmt,NULL);
     sqlite3_bind_int(stmt,1,id_tr);
-    printf("\n  %-5s | %-25s | %-7s | %-7s | %s\n","ORDEN","ESTACION","LLEGADA","SALIDA","ANDEN");
-    printf("-----+----------------------+----------------------+-------+-------+----------+--------\n");
+    printf("\n  %-7s | %-5s | %-25s | %-7s | %-7s | %s\n",
+           "ID_PAR","ORDEN","ESTACION","LLEGADA","SALIDA","ANDEN");
+    printf("  --------+-------+---------------------------+---------+---------+------\n");
     int n=0;
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        printf("%-5s | %-25s | %-7s | %-7s | %s \n",
-               sqlite3_column_int (stmt,0),
-			   (const char*)sqlite3_column_text(stmt,1),
-			   (const char*)sqlite3_column_text(stmt,2),
-			   (const char*)sqlite3_column_text(stmt,3),
-               sqlite3_column_text(stmt,4));
+    while (sqlite3_step(stmt)==SQLITE_ROW) {
+        printf("  %-7d | %-5d | %-25s | %-7s | %-7s | %d\n",
+               sqlite3_column_int(stmt,0),
+               sqlite3_column_int(stmt,1),
+               (const char*)sqlite3_column_text(stmt,2),
+               (const char*)sqlite3_column_text(stmt,3),
+               (const char*)sqlite3_column_text(stmt,4),
+               sqlite3_column_int(stmt,5));
         n++;
     }
-    if (!n){
+    if (!n) {
     	printf("  [Sin paradas intermedias]\n");
     }
     sqlite3_finalize(stmt);
@@ -1666,19 +1707,18 @@ void listar_paradas_trayecto(int id_tr) {
 }
 
 int eliminar_parada_db(int id_parada) {
-	sqlite3 *db = abrir_bd();
-	if (!db){
-		return 1;
-	}
-	sqlite3_stmt *stmt;
-	sqlite3_prepare_v2(db,"DELETE FROM PARADAS_INTERMEDIAS WHERE id_parada=?;",-1,&stmt,NULL);
-	sqlite3_bind_int(stmt,1,id_parada);
-	int rc = sqlite3_step(stmt);
-	sqlite3_finalize(stmt);
-	sqlite3_close(db);
-	return (rc==SQLITE_DONE)?0:1;
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return 1;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,"DELETE FROM PARADAS_INTERMEDIAS WHERE id_parada=?;",-1,&stmt,NULL);
+    sqlite3_bind_int(stmt,1,id_parada);
+    int rc = sqlite3_step(stmt);
+    int changes = (int)sqlite3_changes(db);
+    sqlite3_finalize(stmt); sqlite3_close(db);
+    return (rc==SQLITE_DONE && changes>0)?0:1;
 }
-
 //RESERVAS
 
 void generar_codigo_validacion(char *buf, int len) {
@@ -2027,18 +2067,22 @@ void listar_servicios_db(const char *filtro_fecha, int filtro_tren) {
 
 int cancelar_servicio_db(int id_serv) {
     sqlite3 *db = abrir_bd();
-    if (!db) {
+    if (!db){
     	return 1;
     }
     sqlite3_stmt *stmt;
-    const char *sql="UPDATE SERVICIOS_OPERATIVOS SET estado_serv='CANCELADO' WHERE id_serv=?;";
+    const char *sql ="UPDATE SERVICIOS_OPERATIVOS SET estado_serv='CANCELADO' WHERE id_serv=? AND estado_serv!='CANCELADO';";
     sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     sqlite3_bind_int(stmt,1,id_serv);
     int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-    return (rc==SQLITE_DONE)?0:1;
+    int changes = (int)sqlite3_changes(db);
+    sqlite3_finalize(stmt); sqlite3_close(db);
+    if (rc==SQLITE_DONE && changes==0){
+    	printf("  [AVISO] El servicio no existe o ya estaba cancelado.\n");
+    }
+    return (rc==SQLITE_DONE && changes>0)?0:1;
 }
+
 
 int marcar_inicio_servicio(int id_serv) {
     sqlite3 *db = abrir_bd();

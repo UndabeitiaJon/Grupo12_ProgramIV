@@ -7,6 +7,8 @@
 #define SRC_ESTRUCTURAS_H_
 #define MAX_PARADAS 30
 #define DIAS_SEMANA 7
+#define MAX_VAGONES 20
+#define MAX_ASIENTOS 100
 
 // ============================================================
 //  ENUMS
