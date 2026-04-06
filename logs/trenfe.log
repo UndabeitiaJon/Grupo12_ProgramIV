@@ -186,3 +186,9 @@
 [2026-04-06 20:25:22] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
 [2026-04-06 20:35:16] [SISTEMA] [INICIO] Sistema arrancado
 [2026-04-06 20:35:43] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-07 01:33:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 01:33:39] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 01:33:56] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 01:33:56] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\eclipse-workspace-C\proyecto_trenfe_local\data\gtfs
+[2026-04-07 01:34:59] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 01:35:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
