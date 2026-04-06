@@ -2,7 +2,7 @@
  * logs.c
  *
  *  Created on: 1 abr 2026
- *      Author: e.aranoa
+
  */
 #include <stdio.h>
 #include <time.h>

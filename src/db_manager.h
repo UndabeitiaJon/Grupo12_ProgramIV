@@ -1,8 +1,7 @@
 /*
  * db_manager.h
  *
- *  Created on: 30 mar 2026
- *      Author: ander.lecue
+
  */
 
 #ifndef SRC_DB_MANAGER_H_

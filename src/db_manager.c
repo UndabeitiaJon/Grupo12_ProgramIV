@@ -1,8 +1,7 @@
 /*
  * db_manager.c
  *
- *  Created on: 30 mar 2026
- *      Author: ander.lecue
+
  */
 #include <stdio.h>
 #include <stdlib.h>

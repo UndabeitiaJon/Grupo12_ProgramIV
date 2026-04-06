@@ -1,8 +1,7 @@
 /*
  * menus.h
  *
- *  Created on: 1 abr 2026
- *      Author: e.aranoa
+
  */
 
 #ifndef MENUS_H

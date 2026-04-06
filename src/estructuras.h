@@ -1,8 +1,6 @@
 /*
  * trenfe.h
  *
- *  Created on: 29 mar 2026
- *      Author: jon.undabeitia
  */
 
 #ifndef SRC_ESTRUCTURAS_H_
