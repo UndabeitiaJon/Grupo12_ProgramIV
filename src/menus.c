@@ -67,9 +67,7 @@ void menu_principal_administrador(const char *email_logueado, const Usuario user
         }
     } while(opcion != 0);
 }
-void menu_gestion_trenes(const Usuario user){
 
-}
 
 //MENU REGISTRO
 void menu_alta_usuario(Usuario user) {
