@@ -28,5 +28,7 @@ void menu_nuevas_reservas (const Usuario user);
 void menu_comprar_billete (const Usuario user);
 //Menu empleado
 void menu_principal_empleado(const Usuario user);
+void menu_datos_empleado(const Usuario user);
+
 
 #endif

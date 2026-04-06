@@ -265,8 +265,12 @@ void menu_principal_empleado(const Usuario user) {
         scanf("%d", &opcion);
 
         switch(opcion) {
-            case 1: printf("Mis datos (proximamente)\n"); break;
-            case 2: printf("Servicios (proximamente)\n"); break;
+            case 1:
+            	menu_datos_empleado(user);
+            	break;
+            case 2:
+            	listar_servicios_maquinista(user.id_u);
+            	break;
             case 0:
                 log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
                 printf("Hasta luego %s.\n", user.nombre);
@@ -275,6 +279,56 @@ void menu_principal_empleado(const Usuario user) {
         }
     } while(opcion != 0);
 }
+void menu_datos_empleado(const Usuario user){
+	int opcion;
+	limpiar_pantalla();
+	    do {
+	        printf("1. Ver perfil\n");
+	        printf("2. Cambiar contrasena\n");
+	        printf("0. Volver\n");
+	        printf("Opcion: ");
+	        scanf("%d", &opcion);
+	        switch (opcion) {
+	        case 1: {
+	            printf("\n  =========================================\n");
+	            printf("  PERFIL MAQUINISTA\n");
+	            printf("  =========================================\n");
+	            printf("  Nombre    : %s %s\n", user.nombre, user.apellido);
+	            printf("  DNI       : %s\n",    user.dni);
+	            printf("  Email     : %s\n",    user.email);
+	            printf("  Telefono  : %s\n",    user.telf);
+	            printf("  F. Nac.   : %s\n",    user.fecha_nac);
+	            printf("  Rol       : MAQUINISTA\n");
+	            printf("  =========================================\n");
+	            break;
+	        }
+	        case 2: {
+	            char actual[256], nueva[256], nueva2[256];
+	            printf("Introduzca la constraseña actual: ");
+	            scanf("%s", &actual);
+	            if (!comprobar_contrasenia(user.email, actual)) {
+	                printf("Contrasena actual incorrecta. \n");
+	            } else {
+	            	 printf("Introduzca la nueva contraseña: ");
+	            	 scanf("%s", &nueva);
+	            	 printf("Introduzca de nuevo la contraseña: ");
+	            	 scanf("%s", &nueva2);
+	                if (strcmp(nueva, nueva2) != 0) {
+	                    printf("Las contrasenas no coinciden.\n");
+	                } else if (cambiar_contrasenia_db(user.email, nueva) == 0) {
+	                    log_evento(cfg.log_path, user.email, "CAMBIO_PASS", "Contrasena maquinista cambiada");
+	                    printf("  Contrasena cambiada correctamente.\n");
+	                } else printf("Error al cambiar contrasena.\n");
+	            }
+	            break;
+	        }
+	        case 0: break;
+	        default: printf("  Opcion no valida.\n");
+	        }
+	    } while (opcion != 0);
+}
+
+
 
 void menu_login() {
     char email[128], pass[256];
