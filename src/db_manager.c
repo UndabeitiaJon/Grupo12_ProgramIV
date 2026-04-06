@@ -1350,6 +1350,54 @@ void listar_trayectos_db() {
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+void listar_trayectos_filtro(const char *estacion_origen, const char *estacion_destino) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return;
+
+    sqlite3_stmt *stmt;
+    const char *sql =
+        "SELECT t.id_tr, eo.nombre, ed.nombre, t.hora_salida, t.hora_llegada,"
+        " t.precio_base, t.estado"
+        " FROM TRAYECTOS t"
+        " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
+        " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
+        " WHERE LOWER(eo.ciudad) = LOWER(?1)"
+        "   AND LOWER(ed.ciudad) = LOWER(?2)"
+        " ORDER BY t.id_tr;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error al preparar consulta: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+    printf("[DEBUG] Buscando: '%s' -> '%s'\n", estacion_origen, estacion_destino);
+    sqlite3_bind_text(stmt, 1, estacion_origen,  -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, estacion_destino, -1, SQLITE_STATIC);
+
+    printf("\n%-4s | %-20s | %-20s | %-5s | %-5s | %-8s | %s\n",
+           "ID","ORIGEN","DESTINO","SAL","LLEGA","PRECIO","ESTADO");
+    printf("-----+----------------------+----------------------+-------+-------+----------+--------\n");
+
+    int encontrados = 0;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        printf("%-4d | %-20s | %-20s | %-5s | %-5s | %8.2f | %s\n",
+               sqlite3_column_int   (stmt, 0),
+               sqlite3_column_text  (stmt, 1),
+               sqlite3_column_text  (stmt, 2),
+               sqlite3_column_text  (stmt, 3),
+               sqlite3_column_text  (stmt, 4),
+               sqlite3_column_double(stmt, 5),
+               sqlite3_column_text  (stmt, 6));
+        encontrados++;
+    }
+
+    if (encontrados == 0)
+        printf("No se encontraron trayectos de '%s' a '%s'.\n",
+               estacion_origen, estacion_destino);
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
 #define MAX_CAMPO 128
 int cargar_trayectos_csv (const char *ruta_csv){
 	sqlite3 *db = abrir_bd();

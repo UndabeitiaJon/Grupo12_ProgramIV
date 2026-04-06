@@ -79,6 +79,7 @@ Estacion  obtener_estacion_por_id(int id_est);
 int insertar_trayecto_db(Trayecto tr);
 int cargar_trayectos_csv(const char *ruta_csv);
 void listar_trayectos_db(void);
+void listar_trayectos_filtro(const char *estacion_origen, const char *estacion_destino);
 int modificar_trayecto_db(int id_tr, const char *hora_sal, const char *hora_ll, double precio, const char *dias);
 int cambiar_estado_trayecto_db(int id_tr, EstadoTrayecto estado);
 Trayecto obtener_trayecto_por_id(int id_tr);

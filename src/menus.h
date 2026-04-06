@@ -22,6 +22,10 @@ void menu_principal_administrador(const char *email_logueado,const Usuario user)
 
 //Menu de pasajero
 void menu_principal_pasajero(const Usuario user);
+void menu_mis_reservas (const Usuario user);
+void mis_reservas_activas (const Usuario user);
+void menu_nuevas_reservas (const Usuario user);
+void menu_comprar_billete (const Usuario user);
 //Menu empleado
 void menu_principal_empleado(const Usuario user);
 

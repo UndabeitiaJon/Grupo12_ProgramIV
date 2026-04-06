@@ -36,7 +36,11 @@ void comprobar_rol_usuario(char *email,Usuario user){
 		    break;
 	}
 }
-//MENU PRINCIPAL DE ADMIN
+/*
+			MENU DE PASAJEROS
+*/
+
+//MENU PRINCIPAL
 void menu_principal_administrador(const char *email_logueado, const Usuario user) {
     int opcion;
     do {
@@ -111,7 +115,7 @@ void menu_alta_usuario(Usuario user) {
         printf("Error al dar de alta el usuario.\n");
     }
 }
-//Funcion para limpiar la terminal -- NO FUNCIONA ; )
+//Funcion para limpiar la terminal -- FUNCIONA SOLO SI SE EJECUTA POR CMD (CONSOLA NO) ; )
 void limpiar_pantalla(){
 	#ifdef _WIN32
         system("cls");
@@ -119,7 +123,11 @@ void limpiar_pantalla(){
         system("clear");
     #endif
 }
-//MENU DE PASAJEROS
+/*
+			MENU DE PASAJEROS
+*/
+
+//Menu Principal
 void menu_principal_pasajero(const Usuario user) {
     int opcion;
     limpiar_pantalla();
@@ -133,8 +141,8 @@ void menu_principal_pasajero(const Usuario user) {
         scanf("%d", &opcion);
 
         switch(opcion) {
-            case 1: printf("Mis reservas (proximamente)\n"); break;
-            case 2: printf("Nueva reserva (proximamente)\n"); break;
+            case 1: menu_mis_reservas(user); break;
+            case 2: menu_nuevas_reservas(user); break;
             case 3: printf("Mi Trenfe (proximamente)\n"); break;
             case 0:
                 log_evento(cfg.log_path, user.email, "LOGOUT", "Sesion cerrada");
@@ -143,8 +151,108 @@ void menu_principal_pasajero(const Usuario user) {
             default: printf("Opcion no valida.\n");
         }
     } while(opcion != 0);
+    return;
 }
+//Menu mis reservas
+void menu_mis_reservas (const Usuario user){
+	int opcion;
+	limpiar_pantalla();
 
+	listar_reservas_usuario(user.id_u);
+	do {
+		printf("1. Filtrar por activas\n");
+		printf("0. Atras\n");
+		printf("Opcion: ");
+		scanf("%d", &opcion);
+		switch (opcion) {
+			case 1:
+				mis_reservas_activas(user);
+				break;
+			case 0:
+				menu_principal_pasajero(user);
+				break;
+			default: printf("Opcion no valida.\n");
+		}
+	} while (opcion != 0);
+
+}
+void mis_reservas_activas (const Usuario user){
+	int opcion;
+	limpiar_pantalla();
+	listar_reservas_activas_usuario(user.id_u);
+	do {
+			printf("1. Mostrar todas las reservas\n");
+			printf("0. Atras\n");
+			printf("Opcion: ");
+			scanf("%d", &opcion);
+			switch (opcion) {
+				case 1:
+					menu_mis_reservas(user);
+					break;
+				case 0:
+					menu_principal_pasajero(user);
+					break;
+				default: printf("Opcion no valida.\n");
+			}
+		} while (opcion != 0);
+}
+void menu_nuevas_reservas (const Usuario user){
+    limpiar_pantalla();
+    char est_origen[128];
+    char est_destino[128];
+
+    printf("FILTROS PARA BUSCADOR DE BILLETES:\n");
+    fflush(stdout);
+
+    printf("→ Ciudad estacion origen: ");
+    fflush(stdout);
+    scanf(" %[^\n]", est_origen);
+
+    printf("→ Ciudad estacion destino: ");
+    fflush(stdout);
+    scanf(" %[^\n]", est_destino);
+
+
+    listar_trayectos_filtro(est_origen, est_destino);
+    int opcion;
+    do {
+    	printf("1. Comprar billete\n");
+   		printf("0. Atras\n");
+    	printf("Opcion: ");
+   		scanf("%d", &opcion);
+   		switch (opcion) {
+   			case 1:
+    			menu_comprar_billete(user);
+    			break;
+   			case 0:
+  				menu_principal_pasajero(user);
+  				break;
+  			default: printf("Opcion no valida.\n");
+   		}
+   	} while (opcion != 0);
+
+}
+void menu_comprar_billete (const Usuario user){
+	int id;
+	printf("Introduce el ID del trayecto que desees: ");
+	scanf("%d", id);
+	Trayecto trayecto_seleccionado  = obtener_trayecto_por_id(id);
+	Reserva r;
+	char opcion;
+	Estacion est_or = obtener_estacion_por_id(trayecto_seleccionado.id_est_origen);
+	Estacion est_des = obtener_estacion_por_id(trayecto_seleccionado.id_est_destino);
+	printf("¿ Seguro que deseas comprar un billete con origen: %[63]s, y destino: %[63]s. Con Precio-Base: %d ?\n", est_or.ciudad, est_des.ciudad, trayecto_seleccionado.precio_base);
+	printf("Respuesta (s/n):");
+	scanf(" %c", &opcion);
+	if (strcmp((unsigned char)opcion) == "s"){
+		r.id_u = user.id_u;
+		r.precio_base = trayecto_seleccionado.precio_base;
+
+	}
+}
+/*
+			MENU DE EMPLEADOS
+*/
 void menu_principal_empleado(const Usuario user) {
     int opcion;
     limpiar_pantalla();
@@ -191,3 +299,7 @@ void menu_login() {
     log_evento(cfg.log_path, email, "LOGIN_FAIL", "Demasiados intentos fallidos");
     printf("Demasiados intentos fallidos.\n");
 }
+
+
+
+
