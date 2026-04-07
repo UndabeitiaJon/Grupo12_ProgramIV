@@ -525,8 +525,11 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     p.orden  = leer_entero("  Orden (1,2..): ");
                     limpiar_buffer_entrada();
                     leer_cadena("  Hora llegada : ", p.hora_llegada, sizeof(p.hora_llegada));
-                    leer_cadena("  Hora salida  : ", p.hora_salida,  sizeof(p.hora_salida));
-                    p.anden = leer_entero("  Anden (0=N/D): ");
+
+                    printf("  Hora salida  : ");
+                    scanf("%s", p.hora_salida );
+                    printf("  Anden (0=N/D)  : ");
+                    scanf("%d", &p.anden);
                     p.tiene_anden = (p.anden > 0);
                     if (insertar_parada_db(p) == 0) {
                         log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia añadida");

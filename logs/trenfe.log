@@ -441,3 +441,17 @@
 [2026-04-07 22:00:40] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
 [2026-04-07 22:01:06] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
 [2026-04-07 22:02:28] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 22:07:45] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:07:58] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:09:44] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 22:14:57] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:15:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:15:50] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:16:02] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:17:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:17:16] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:18:08] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 22:18:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:18:56] [admin.trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 22:19:06] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:19:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
