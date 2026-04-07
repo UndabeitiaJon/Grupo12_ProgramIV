@@ -283,7 +283,6 @@ void seed_database(void) {
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('NUMEROSA',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);"
 
-<<<<<<< HEAD
         // Servicio operativo de ejemplo
         "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
         " VALUES (1,date('now'),'PROGRAMADO');"
@@ -291,12 +290,12 @@ void seed_database(void) {
         // Asignación maquinista al servicio
         "INSERT OR IGNORE INTO ASIGNACION_PERSONAL (id_serv,id_u,id_t,rol_servicio)"
         " VALUES (1,3,1,'CONDUCTOR');";
-=======
+
     	"INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
     	" VALUES (1,date('now'),'PROGRAMADO');";
 
 
->>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+
 
     if (sqlite3_exec(db, sql, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error: %s\n", err);
