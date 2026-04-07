@@ -217,3 +217,21 @@
 [2026-04-07 11:47:46] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
 [2026-04-07 11:49:54] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 11:50:13] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:25:58] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:26:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:27:13] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:13] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data
+[2026-04-07 12:27:52] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:52] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:28:52] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:29:05] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:10] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [BLOQUEO] Demasiados intentos de login
+[2026-04-07 12:29:13] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:29:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:30:02] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:30:16] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:30:16] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:30:27] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:30:30] [SISTEMA] [CIERRE] Administrador local TRENFE detenido

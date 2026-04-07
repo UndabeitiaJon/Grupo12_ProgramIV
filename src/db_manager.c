@@ -2663,7 +2663,7 @@ void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario, con
 }
 
 
-//IMPLEMENTADO CON IA DEBIDO A LA COMPLEJIDAD
+///IMPLEMENTADO CON IA DEBIDO A LA COMPLEJIDAD
 /* ============================================================
  *  IMPORTACION GTFS  (formato RENFE: stops.txt, routes.txt)
  * ============================================================ */
