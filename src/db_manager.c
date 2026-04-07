@@ -1401,9 +1401,9 @@ Estacion obtener_estacion_por_id(int id_est) {
 
 
 
-/* ============================================================
- *  TRAYECTOS
- * ============================================================ */
+
+ //  TRAYECTOS
+
 int insertar_trayecto_db(Trayecto tr) {
     sqlite3 *db = abrir_bd();
     if (!db) return 1;

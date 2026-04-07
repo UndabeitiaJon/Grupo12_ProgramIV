@@ -392,7 +392,7 @@ void menu_gestion_trenes(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 2. GESTIÓN DE TRAYECTOS ─── */
+// GESTIÓN DE TRAYECTOS
 void menu_gestion_trayectos(int id_admin, const char *email) {
     int op;
     do {
@@ -417,11 +417,42 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             listar_trenes_db();
             Trayecto tr; memset(&tr, 0, sizeof(tr));
             tr.id_t = leer_entero("\n  ID tren              : ");
-            listar_estaciones_db();
-            tr.id_est_origen  = leer_entero("\n  ID estacion origen   : ");
-            tr.id_est_destino = leer_entero("  ID estacion destino  : ");
+            char ciudad_orig[64];
+            leer_cadena("\n  Ciudad de origen: ", ciudad_orig, sizeof(ciudad_orig));
+            int id_unico_orig = -1;
+            int n_orig = listar_estaciones_ciudad_db(ciudad_orig, &id_unico_orig);
+            if (n_orig == 0) {
+                printf("  No se encontraron estaciones para esa ciudad.\n");
+                pausar_s(); return;
+            }
+
+            if (n_orig == 1) {
+            	tr.id_est_origen = id_unico_orig;
+                printf("  Estacion seleccionada automaticamente (ID %d).\n", tr.id_est_origen);
+            } else {
+            	tr.id_est_origen = leer_entero("  Selecciona ID estacion origen: ");
+            }
+
+            // Destino: buscar por ciudad
+
+            char ciudad_dest[64];
+            leer_cadena("\n  Ciudad de destino: ", ciudad_dest, sizeof(ciudad_dest));
+            int id_unico_dest = -1;
+            int n_dest = listar_estaciones_ciudad_db(ciudad_dest, &id_unico_dest);
+            if (n_dest == 0) {
+                printf("  No se encontraron estaciones para esa ciudad.\n");
+                pausar_s(); return;
+            }
+
+            if (n_dest == 1) {
+                tr.id_est_destino = id_unico_dest;
+                printf("  Estacion seleccionada automaticamente (ID %d).\n", tr.id_est_destino);
+            } else {
+            	tr.id_est_destino = leer_entero("  Selecciona ID estacion destino: ");
+            }
             leer_cadena("  Hora salida (HH:MM)  : ", tr.hora_salida,  sizeof(tr.hora_salida));
             leer_cadena("  Hora llegada (HH:MM) : ", tr.hora_llegada, sizeof(tr.hora_llegada));
+            printf("\n");
             tr.duracion_min = leer_entero("  Duracion (minutos)   : ");
             tr.precio_base  = leer_double("  Precio base Turista  : ");
             leer_cadena("  Dias operacion (ej LMXJVSD): ", tr.dias_operacion, sizeof(tr.dias_operacion));

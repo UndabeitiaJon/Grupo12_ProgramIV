@@ -343,3 +343,23 @@
 [2026-04-07 19:16:45] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
 [2026-04-07 19:16:54] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 19:16:56] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:21:53] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:22:25] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:24:07] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:24:09] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:24:22] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:24:33] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:26:01] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:26:05] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:28:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:28:16] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:31:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:31:47] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:32:21] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:32:47] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:32:50] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:33:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:33:17] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:33:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:33:56] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:33:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
