@@ -1,0 +1,1009 @@
+stop_id,nombre,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club
+17000,Madrid-Chamartín-Clara Campoamor,Madrid-Chamartín-Clara Campoamor,Madrid,40.4711789,-3.6829524,0,1
+37606,Badajoz,Badajoz,Badajoz,38.890696,-6.981753,0,0
+37603,Montijo,Montijo,Desconocida,38.913539,-6.598577,0,0
+37500,Mérida,Mérida,Badajoz,38.921503,-6.343794,0,0
+35400,Cáceres,Cáceres,Cáceres,39.461131,-6.385679,0,0
+30000,Monfragüe-Plasencia,Monfragüe-Plasencia,Desconocida,39.937464,-6.10091,0,0
+35206,Navalmoral De La Mata,Navalmoral De La Mata,Desconocida,39.894913,-5.545607,0,0
+35203,Oropesa De Toledo,Oropesa De Toledo,Desconocida,39.921746,-5.186137,0,0
+35200,Talavera De La Reina,Talavera De La Reina,Toledo,39.970674,-4.826512,0,0
+35105,Torrijos,Torrijos,Desconocida,39.979003,-4.283037,0,0
+18000,Madrid - Atocha Cercanías,Madrid - Atocha Cercanías,Madrid,40.4066191,-3.6894391,0,0
+35001,Leganés,Leganés,Desconocida,40.328643,-3.7713161,0,0
+30002,Plasencia,Plasencia,Cáceres,40.022282,-6.099397,0,0
+56312,Almeria,Almeria,Desconocida,36.834951,-2.455519,0,0
+56310,Huercal-Viator,Huercal-Viator,Desconocida,36.885155,-2.436718,0,0
+56200,Guadix,Guadix,Desconocida,37.316873,-3.127209,0,0
+56100,Moreda,Moreda,Desconocida,37.431216,-3.310516,0,0
+56009,Cabra del Santo Cristo Y Alicun,Cabra del Santo Cristo Y Alicun,Desconocida,37.6567129,-3.262623,0,0
+56004,Jodar-Ubeda,Jodar-Ubeda,Desconocida,37.913343,-3.34892,0,0
+50300,Linares-Baeza,Linares-Baeza,Desconocida,38.068864,-3.589396,0,0
+50207,Vilches,Vilches,Desconocida,38.215742,-3.517576,0,0
+60400,Alcazar de San Juan,Alcazar de San Juan,Desconocida,39.395628,-3.205744,0,0
+11200,Miranda De Ebro,Miranda De Ebro,Desconocida,42.691024,-2.940366,0,0
+13200,Bilbao-Abando Indalecio Prieto,Bilbao-Abando Indalecio Prieto,Bizkaia,43.2601304,-2.9285592,0,0
+13106,Llodio,Llodio,Desconocida,43.1423514,-2.9606511,0,0
+11511,San Sebastián/Donostia,San Sebastián/Donostia,Desconocida,43.3176961,-1.9767172,0,0
+11208,Vitoria/Gasteiz,Vitoria/Gasteiz,Desconocida,42.841517,-2.672601,0,0
+11300,Altsasu/Alsasua-Estación,Altsasu/Alsasua-Estación,Desconocida,42.894847,-2.181237,0,0
+11400,Zumarraga,Zumarraga,Desconocida,43.0870824,-2.3202298,0,0
+22308,Vigo Guixar,Vigo Guixar,Pontevedra,42.2392656,-8.7146089,0,0
+94346,Porto Campanha,Porto Campanha,Desconocida,41.1489,-8.58544,0,0
+94021,Nine,Nine,Desconocida,41.45534,-8.54513,0,0
+96122,BARCELOS,BARCELOS,Desconocida,41.53673,-8.60907,0,0
+94033,Viana D Castelo,Viana D Castelo,Desconocida,41.69517,-8.83134,0,0
+22402,Valenca Do Minho,Valenca Do Minho,Desconocida,42.024734,-8.639745,0,0
+71801,Barcelona-Sants,Barcelona-Sants,Barcelona,41.3798632,2.14101688,0,1
+4104,Camp Tarragona,Camp Tarragona,Desconocida,41.192066,1.272666,0,0
+78400,Lleida-Pirineus,Lleida-Pirineus,Lleida,41.62013,0.63365328,0,1
+4040,Zaragoza-Delicias,Zaragoza-Delicias,Zaragoza,41.6586576,-0.9112693,0,1
+81202,Tudela De Navarra,Tudela De Navarra,Desconocida,42.059434,-1.597931,0,0
+81200,Castejón De Ebro,Castejón De Ebro,Desconocida,42.172719,-1.692114,0,0
+81108,Calahorra,Calahorra,Desconocida,42.310458,-1.957755,0,0
+81100,Logroño,Logroño,La Rioja,42.457459,-2.442193,0,0
+81002,Haro,Haro,Desconocida,42.583635,-2.849396,0,0
+65000,Valencia-Estaciò Del Nord,Valencia-Estaciò Del Nord,Desconocida,39.4669305,-0.3772239,0,0
+65402,L'Aldea-Amposta,L'Aldea-Amposta,Desconocida,40.753564,0.61430923,0,0
+65312,Vinaròs,Vinaròs,Desconocida,40.471682,0.455727,0,0
+65311,Benicarló-Peñíscola,Benicarló-Peñíscola,Desconocida,40.427639,0.415217,0,0
+65300,Castelló,Castelló,Desconocida,39.9884736,-0.0523456,0,0
+80100,Pamplona/Iruña,Pamplona/Iruña,Desconocida,42.824877,-1.661419,0,0
+80108,Tafalla,Tafalla,Desconocida,42.525756,-1.671467,0,0
+20309,Lugo,Lugo,Lugo,43.015222,-7.552176,0,0
+22100,Ourense,Ourense,Ourense,42.350389,-7.872777,0,0
+20300,Monforte de Lemos,Monforte de Lemos,Desconocida,42.529682,-7.503589,0,0
+20305,Sarria,Sarria,Desconocida,42.784049,-7.418822,0,0
+60000,Madrid Pta.Atocha - Almudena Grandes,Madrid Pta.Atocha - Almudena Grandes,Madrid,40.406442,-3.690886,0,1
+4007,Guadalajara - Yebes,Guadalajara - Yebes,Desconocida,40.587315,-3.124301,0,0
+70600,Calatayud,Calatayud,Desconocida,41.346692,-1.63868,0,0
+11014,Burgos Rosa Manzano,Burgos Rosa Manzano,Burgos,42.371197,-3.666308,0,0
+14100,Palencia,Palencia,Palencia,42.015711,-4.534135,0,0
+15100,Leon,Leon,Desconocida,42.596048,-5.582428,0,0
+20100,Astorga,Astorga,Desconocida,42.459489,-6.047212,0,0
+20111,Bembibre,Bembibre,Desconocida,42.609558,-6.422048,0,0
+20200,Ponferrada,Ponferrada,Desconocida,42.545429,-6.602376,0,0
+20211,O Barco de Valdeorras,O Barco de Valdeorras,Desconocida,42.418301,-6.98503,0,0
+20213,A Rua-Petin,A Rua-Petin,Desconocida,42.39276,-7.113284,0,0
+20216,San Clodio-Quiroga,San Clodio-Quiroga,Desconocida,42.465271,-7.287198,0,0
+22200,Guillarei,Guillarei,Desconocida,42.065663,-8.62253,0,0
+22300,Redondela,Redondela,Desconocida,42.286005,-8.619402,0,0
+8224,Redondela Av,Redondela Av,Desconocida,42.286005,-8.619402,0,0
+8223,Vigo Urzaiz,Vigo Urzaiz,Pontevedra,42.234189,-8.713728,0,0
+31400,Santiago de Compostela,Santiago de Compostela,A Coruña,42.870842,-8.544697,0,0
+23008,Vilagarcia de Arousa,Vilagarcia de Arousa,Desconocida,42.602189,-8.762523,0,0
+23004,Pontevedra,Pontevedra,Pontevedra,42.421969,-8.635546,0,0
+22201,O Porriño,O Porriño,Desconocida,42.16419,-8.62202,0,0
+31412,A Coruña,A Coruña,A Coruña,43.3496932,-8.4155629,0,0
+30100,Salamanca,Salamanca,Salamanca,40.972235,-5.64899,0,0
+10600,Valladolid,Valladolid,Valladolid,41.642167,-4.726986,0,1
+10500,Medina Del Campo,Medina Del Campo,Desconocida,41.317617,-4.909923,0,0
+32002,El Carpio,El Carpio,Desconocida,41.215464,-5.114466,0,0
+32003,Fresno El Viejo,Fresno El Viejo,Desconocida,41.191351,-5.138061,0,0
+32004,Cantalapiedra,Cantalapiedra,Desconocida,41.133585,-5.182961,0,0
+10501,Pozaldez,Pozaldez,Desconocida,41.36792,-4.836001,0,0
+10502,Matapozuelos,Matapozuelos,Desconocida,41.422794,-4.801025,0,0
+10503,Valdestillas,Valdestillas,Desconocida,41.488729,-4.772937,0,0
+10504,Viana,Viana,Desconocida,41.52407,-4.754489,0,0
+50500,Cordoba,Cordoba,Desconocida,37.888291,-4.789453,0,0
+65422,Cambrils,Cambrils,Desconocida,41.0815642,1.04603752,0,0
+64100,Xàtiva,Xàtiva,Desconocida,38.992148,-0.5245402,0,0
+60600,Albacete-Los Llanos,Albacete-Los Llanos,Albacete,38.999384,-1.84845,0,1
+60500,Villarrobledo,Villarrobledo,Desconocida,39.260868,-2.598621,0,0
+60406,Socuellamos,Socuellamos,Desconocida,39.278776,-2.775571,0,0
+50100,Manzanares,Manzanares,Desconocida,39.005837,-3.370507,0,0
+50102,Valdepeñas,Valdepeñas,Desconocida,38.762868,-3.39572,0,0
+81110,Alfaro,Alfaro,Desconocida,42.186525,-1.747985,0,0
+81109,Rincón De Soto,Rincón De Soto,Desconocida,42.230011,-1.847473,0,0
+60911,Alicante/Alacant,Alicante/Alacant,Desconocida,38.3447127,-0.4955241,0,0
+4307,Figueres Vilafant,Figueres Vilafant,Girona,42.264771,2.943547,0,1
+79300,Girona,Girona,Girona,41.9793629,2.81693689,0,1
+65200,Sagunt/Sagunto,Sagunt/Sagunto,Desconocida,39.6758025,-0.271542,0,0
+65304,Orpesa/Oropesa Del Mar,Orpesa/Oropesa Del Mar,Desconocida,40.092258,0.139861,0,0
+71500,Tarragona,Tarragona,Tarragona,41.1115636,1.25322776,0,0
+60905,Elda-Petrer,Elda-Petrer,Desconocida,38.484879,-0.80109,0,0
+60902,Villena,Villena,Desconocida,38.631738,-0.867689,0,0
+65318,Benicàssim,Benicàssim,Desconocida,40.0579451,0.0577646,0,0
+61307,Cartagena,Cartagena,Desconocida,37.604967,-0.975122,0,0
+62103,Elche Parque/Elx Parc,Elche Parque/Elx Parc,Desconocida,38.2717809,-0.6952193,0,0
+62002,Orihuela-Miguel Hernández,Orihuela-Miguel Hernández,Desconocida,38.0779321,-0.944606,0,0
+61304,Torre-Pacheco,Torre-Pacheco,Desconocida,37.746905,-0.967078,0,0
+61303,Balsicas-Mar Menor,Balsicas-Mar Menor,Desconocida,37.81884,-0.950891,0,0
+61200,Murcia,Murcia,Murcia,37.9748243,-1.131508,0,0
+6006,Lorca Sutullena,Lorca Sutullena,Desconocida,37.6721129,-1.6962305,0,0
+6002,Alhama de Murcia,Alhama de Murcia,Desconocida,37.8494024,-1.4145141,0,0
+6003,Totana,Totana,Desconocida,37.7635424,-1.4956153,0,0
+51003,Sevilla-Santa Justa,Sevilla-Santa Justa,Sevilla,37.3924955,-5.9749269,0,1
+37200,Ciudad Real,Ciudad Real,Ciudad Real,38.9853,-3.913633,0,0
+37300,Puertollano,Puertollano,Ciudad Real,38.69128,-4.111655,0,1
+54413,Malaga Maria Zambrano,Malaga Maria Zambrano,Desconocida,36.7113388,-4.4313888,0,0
+37704,Villanueva de Cordoba-Los Pedroches,Villanueva de Cordoba-Los Pedroches,Desconocida,38.2554049,-4.570952,0,0
+2002,Puente Genil-Herrera,Puente Genil-Herrera,Desconocida,37.3579,-4.821638,0,0
+2003,Antequera-Santa Ana,Antequera-Santa Ana,Desconocida,37.069881,-4.719014,0,0
+5000,Granada,Granada,Granada,37.184038,-3.609154,0,0
+2030,Antequera AV,Antequera AV,Desconocida,37.0334437,-4.5612901,0,0
+5012,Loja,Loja,Desconocida,37.175372,-4.134841,0,0
+51405,Cádiz,Cádiz,Cádiz,36.528935,-6.2879716,0,0
+51406,San Fernando-Bahía Sur,San Fernando-Bahía Sur,Desconocida,36.4680834,-6.2067676,0,0
+51400,Puerto De Santa María,Puerto De Santa María,Desconocida,36.6040723,-6.2179261,0,0
+51300,Jerez De La Frontera,Jerez De La Frontera,Cádiz,36.680022,-6.1266032,0,0
+43019,Huelva,Huelva,Huelva,37.253079,-6.950971,0,0
+43011,La Palma del Condado,La Palma del Condado,Desconocida,37.390665,-6.554444,0,0
+74200,Huesca,Huesca,Huesca,42.133594,-0.409745,0,1
+78200,Tardienta,Tardienta,Desconocida,41.975716,-0.538223,0,0
+3216,Valencia Joaquin Sorolla,Valencia Joaquin Sorolla,Desconocida,39.459051,-0.382923,0,0
+3208,Cuenca Fernando Zobel,Cuenca Fernando Zobel,Desconocida,40.035192,-2.14441,0,0
+11500,Tolosa,Tolosa,Desconocida,43.1354472,-2.0790886,0,0
+15410,Gijón/Xixón,Gijón/Xixón,Desconocida,43.5377329,-5.6758089,0,0
+15211,Oviedo/Uviéu,Oviedo/Uviéu,Desconocida,43.3663577,-5.854838,0,0
+15122,Pola De Lena/La Pola,Pola De Lena/La Pola,Desconocida,43.15872,-5.8310263,0,0
+14223,Santander,Santander,Cantabria,43.4583981,-3.8109529,0,0
+3309,Villena Av,Villena Av,Desconocida,38.585302,-0.873295,0,0
+8004,Segovia Guiomar,Segovia Guiomar,Segovia,40.910577,-4.094564,0,1
+14114,Aguilar de Campoo,Aguilar de Campoo,Desconocida,42.785362,-4.233899,0,0
+14213,Torrelavega/Tanos,Torrelavega/Tanos,Desconocida,43.3276776,-4.0426871,0,0
+14202,Reinosa,Reinosa,Desconocida,42.9944991,-4.1409454,0,0
+15203,Mieres Puente,Mieres Puente,Desconocida,43.2500266,-5.7822622,0,0
+11600,Irun,Irun,Desconocida,43.3395365,-1.8012519,0,0
+20005,Veguellina,Veguellina,Desconocida,42.4335,-5.88756,0,0
+20104,Brañuelas,Brañuelas,Desconocida,42.632631,-6.201002,0,0
+16403,Avilés,Avilés,Desconocida,43.561339,-5.9228329,0,0
+8240,Medina del Campo Alta Velocidad,Medina del Campo Alta Velocidad,Desconocida,41.317459,-4.910071,0,0
+30200,Zamora,Zamora,Zamora,41.515892,-5.739675,0,0
+8247,Sanabria Alta Velocidad,Sanabria Alta Velocidad,Desconocida,42.0450532,-6.5631319,0,0
+8251,A Gudiña-Porta de Galicia,A Gudiña-Porta de Galicia,Desconocida,42.0635401,-7.1355604,0,0
+20113,San Miguel de Las Dueñas,San Miguel de Las Dueñas,Desconocida,42.586392,-6.523776,0,0
+20109,Torre del Bierzo,Torre del Bierzo,Desconocida,42.595578,-6.329083,0,0
+20102,Vega-Magaz,Vega-Magaz,Desconocida,42.55376,-6.068267,0,0
+3213,Requena Utiel,Requena Utiel,Desconocida,39.519834,-1.127601,0,0
+3410,ELX AV,ELX AV,Desconocida,38.24551,-0.76675,0,0
+92102,Toledo,Toledo,Toledo,39.862272,-4.011244,0,0
+3412,CALLOSA DE SEGURA - COX,CALLOSA DE SEGURA - COX,Desconocida,38.1227708,-0.8745727,0,0
+62001,Beniel,Beniel,Desconocida,38.0448608,-0.9994759,0,0
+99159,Santiago-Turistico,Santiago-Turistico,Desconocida,42.870842,-8.544697,0,0
+31416,Cerceda-Meirama,Cerceda-Meirama,Desconocida,43.2078791,-8.4467723,0,0
+23021,Padron-Barbanza,Padron-Barbanza,Desconocida,42.738967,-8.652614,0,0
+23002,Arcade,Arcade,Desconocida,42.340549,-8.611178,0,0
+99161,Pontevedra-Turistico,Pontevedra-Turistico,Desconocida,42.421969,-8.635546,0,0
+99143,A Coruna-Turistico,A Coruna-Turistico,Desconocida,43.352761,-8.409755,0,0
+55020,Algeciras,Algeciras,Desconocida,36.126831,-5.451108,0,0
+55018,San Roque-La Linea,San Roque-La Linea,Desconocida,36.214482,-5.432399,0,0
+55007,Ronda,Ronda,Desconocida,36.748401,-5.16197,0,0
+99117,Ourense Turistico,Ourense Turistico,Desconocida,42.350389,-7.872777,0,0
+87089,Marseille St Charles,Marseille St Charles,Desconocida,43.30349,5.382236,0,0
+87912,Aix en Provence,Aix en Provence,Desconocida,43.455268,5.31723,0,0
+87814,Avignon,Avignon,Desconocida,43.921938,4.785813,0,0
+87302,NIMES,NIMES,Desconocida,43.832291,4.365845,0,0
+87173,Montpellier,Montpellier,Desconocida,43.604852,3.880491,0,0
+87088,Narbonne,Narbonne,Desconocida,43.190253,3.005716,0,0
+87374,Perpignan,Perpignan,Desconocida,42.696421,2.880381,0,0
+87303,Lyon Part Dieu,Lyon Part Dieu,Desconocida,45.760281,4.859801,0,0
+87810,Valence,Valence,Desconocida,44.991545,4.978703,0,0
+61015,Archena-Fortuna,Archena-Fortuna,Desconocida,38.13132,-1.236037,0,0
+61012,Cieza,Cieza,Desconocida,38.246609,-1.421702,0,0
+61005,Hellin,Hellin,Desconocida,38.508776,-1.688437,0,0
+10610,Valladolid-Universidad,Valladolid-Universidad,Desconocida,41.660257,-4.704037,0,0
+10602,Cabezon del Pisuerga,Cabezon del Pisuerga,Desconocida,41.737276,-4.651294,0,0
+10603,Corcos-Aguilarejo,Corcos-Aguilarejo,Desconocida,41.766446,-4.623485,0,0
+10604,Cubillas de Santa Marta,Cubillas de Santa Marta,Desconocida,41.808861,-4.579754,0,0
+10605,Dueñas,Dueñas,Desconocida,41.87048,-4.541216,0,0
+11000,Venta De Baños,Venta De Baños,Desconocida,41.91736,-4.495844,0,0
+15001,Grijota,Grijota,Desconocida,42.049225,-4.583954,0,0
+15003,Becerril,Becerril,Desconocida,42.104706,-4.64712,0,0
+15004,Paredes de Nava,Paredes de Nava,Desconocida,42.150694,-4.697599,0,0
+15007,Villada,Villada,Desconocida,42.245238,-4.970589,0,0
+15008,Grajal,Grajal,Desconocida,42.323246,-5.013381,0,0
+15009,Sahagun,Sahagun,Desconocida,42.369329,-5.022667,0,0
+15012,El Burgo Ranero,El Burgo Ranero,Desconocida,42.425753,-5.208592,0,0
+15015,Palanquinos,Palanquinos,Desconocida,42.460716,-5.497584,0,0
+15106,La Robla,La Robla,Desconocida,42.804454,-5.626255,0,0
+15108,La Pola de Gordon,La Pola de Gordon,Desconocida,42.854099,-5.674524,0,0
+15109,Santa Lucia,Santa Lucia,Desconocida,42.87515,-5.639613,0,0
+15112,Villamanin,Villamanin,Desconocida,42.93671,-5.657637,0,0
+15113,Busdongo,Busdongo,Desconocida,42.984495,-5.705391,0,0
+15116,Linares-Congostinas,Linares-Congostinas,Desconocida,43.101743,-5.772162,0,0
+15401,La Calzada,La Calzada,Desconocida,43.5353848,-5.6971507,0,0
+15218,Llamaquique,Llamaquique,Desconocida,43.3588282,-5.8573201,0,0
+15200,Uxo,Uxo,Desconocida,43.2046962,-5.7926422,0,0
+15120,Campumanes,Campumanes,Desconocida,43.1100681,-5.8164466,0,0
+15118,Fierros,Fierros,Desconocida,43.0715986,-5.769465,0,0
+23000,Redondela-Picota,Redondela-Picota,Desconocida,42.286866,-8.607118,0,0
+23009,Catoira,Catoira,Desconocida,42.672166,-8.725291,0,0
+23010,Pontecesures,Pontecesures,Desconocida,42.722985,-8.65213,0,0
+23011,Padron,Padron,Desconocida,42.738967,-8.652614,0,0
+31415,Ordes,Ordes,Desconocida,43.037544,-8.448447,0,0
+31411,Uxes,Uxes,Desconocida,43.297374,-8.444404,0,0
+23005,Portela,Portela,Desconocida,42.517801,-8.654609,0,0
+23013,Osebe,Osebe,Desconocida,42.825298,-8.61584,0,0
+23018,Pontevedra-Universidad,Pontevedra-Universidad,Desconocida,42.4387499,-8.6304812,0,0
+23001,Cesantes,Cesantes,Desconocida,42.310258,-8.616541,0,0
+20002,Quintana-Raneros,Quintana-Raneros,Desconocida,42.550085,-5.637789,0,0
+20008,Villavante,Villavante,Desconocida,42.46458,-5.838914,0,0
+20006,Barrientos,Barrientos,Desconocida,42.414301,-5.963988,0,0
+20007,Nistal,Nistal,Desconocida,42.424462,-6.00803,0,0
+20103,Porqueros,Porqueros,Desconocida,42.598935,-6.108238,0,0
+20106,La Granja de San Vicente,La Granja de San Vicente,Desconocida,42.614874,-6.282495,0,0
+22110,Caldelas,Caldelas,Desconocida,42.055813,-8.566343,0,0
+22109,Salvaterra de Miño,Salvaterra de Miño,Desconocida,42.08164,-8.495141,0,0
+22108,As Neves,As Neves,Desconocida,42.075462,-8.420074,0,0
+22106,Arbo,Arbo,Desconocida,42.107058,-8.300247,0,0
+22104,Frieira,Frieira,Desconocida,42.154882,-8.201036,0,0
+22103,Filgueira,Filgueira,Desconocida,42.219917,-8.184788,0,0
+22102,Ribadavia,Ribadavia,Desconocida,42.2931,-8.139261,0,0
+22101,Barbantes,Barbantes,Desconocida,42.338376,-8.011721,0,0
+20212,Vilamartin de Valdeorras,Vilamartin de Valdeorras,Desconocida,42.411829,-7.061185,0,0
+20210,Sobradelo,Sobradelo,Desconocida,42.414859,-6.911951,0,0
+20208,Quereño,Quereño,Desconocida,42.420704,-6.829486,0,0
+20207,Covas,Covas,Desconocida,42.475326,-6.830878,0,0
+20204,Toral de Los Vados,Toral de Los Vados,Desconocida,42.541052,-6.776703,0,0
+20203,Villadepalos,Villadepalos,Desconocida,42.53686,-6.751109,0,0
+20214,Montefurado,Montefurado,Desconocida,42.39402,-7.1984,0,0
+20218,A Pobra Do Brollon,A Pobra Do Brollon,Desconocida,42.533682,-7.400088,0,0
+22001,Canabal,Canabal,Desconocida,42.482882,-7.587733,0,0
+22002,Areas,Areas,Desconocida,42.457799,-7.62879,0,0
+22003,San Estevo Do Sil,San Estevo Do Sil,Desconocida,42.426921,-7.661676,0,0
+22004,San Pedro Do Sil,San Pedro Do Sil,Desconocida,42.441353,-7.70412,0,0
+22005,Os Peares,Os Peares,Desconocida,42.451439,-7.735523,0,0
+22006,Barra de Miño,Barra de Miño,Desconocida,42.401095,-7.802567,0,0
+22105,Pousa-Crecente,Pousa-Crecente,Desconocida,42.136705,-8.234889,0,0
+22107,Sela,Sela,Desconocida,42.092092,-8.355998,0,0
+20410,Elviña-Universidade,Elviña-Universidade,Desconocida,43.335222,-8.413061,0,0
+20404,O Burgo Santiago,O Burgo Santiago,Desconocida,43.317841,-8.36875,0,0
+20403,Cambre,Cambre,Desconocida,43.290502,-8.352104,0,0
+20402,Cecebre,Cecebre,Desconocida,43.287913,-8.307767,0,0
+20400,Betanzos-Infesta,Betanzos-Infesta,Desconocida,43.270698,-8.225847,0,0
+20320,Oza Dos Rios,Oza Dos Rios,Desconocida,43.21877,-8.187111,0,0
+20319,Cesuras,Cesuras,Desconocida,43.173073,-8.2005,0,0
+20318,Piñoi,Piñoi,Desconocida,43.127922,-8.163498,0,0
+20317,Curtis,Curtis,Desconocida,43.127232,-8.143155,0,0
+20316,Teixeiro,Teixeiro,Desconocida,43.141411,-8.03769,0,0
+20314,Guitiriz,Guitiriz,Desconocida,43.179058,-7.895039,0,0
+20313,Parga,Parga,Desconocida,43.163644,-7.837383,0,0
+20312,Baamonde,Baamonde,Desconocida,43.173405,-7.756128,0,0
+20310,Rabade,Rabade,Desconocida,43.121378,-7.624835,0,0
+20306,Pedrelo-Celtigos,Pedrelo-Celtigos,Desconocida,42.832934,-7.393329,0,0
+21010,Ferrol,Ferrol,Desconocida,43.4880467,-8.2310664,0,0
+21008,Perlio,Perlio,Desconocida,43.472309,-8.174837,0,0
+21005,Cabanas-Areal,Cabanas-Areal,Desconocida,43.415585,-8.168828,0,0
+21004,Pontedeume,Pontedeume,Desconocida,43.411797,-8.180416,0,0
+21003,Perbes,Perbes,Desconocida,43.378197,-8.201106,0,0
+21002,Miño,Miño,Desconocida,43.349431,-8.207313,0,0
+21001,Betanzos-Cidade,Betanzos-Cidade,Desconocida,43.284137,-8.215874,0,0
+21007,Barallobre,Barallobre,Desconocida,43.462899,-8.188586,0,0
+21009,Neda,Neda,Desconocida,43.495351,-8.160967,0,0
+31308,Lalin,Lalin,Desconocida,42.63253,-8.142715,0,0
+31306,O Irixo,O Irixo,Desconocida,42.519719,-8.105174,0,0
+31304,O Carballiño,O Carballiño,Desconocida,42.43134,-8.068874,0,0
+31303,A Friela-Maside,A Friela-Maside,Desconocida,42.411401,-8.028967,0,0
+51401,Puerto Real,Puerto Real,Desconocida,36.5309155,-6.1853143,0,0
+51205,Jerez Aeropuerto,Jerez Aeropuerto,Desconocida,36.7515886,-6.0659384,0,0
+51203,Lebrija,Lebrija,Desconocida,36.9116378,-6.0948487,0,0
+51200,Utrera,Utrera,Desconocida,37.1848178,-5.7907537,0,0
+51103,Dos Hermanas,Dos Hermanas,Desconocida,37.2872259,-5.9235322,0,0
+51100,Sevilla-San Bernardo,Sevilla-San Bernardo,Desconocida,37.3777778,-5.9796142,0,0
+51110,Sevilla-Virgen Del Rocío,Sevilla-Virgen Del Rocío,Desconocida,37.3628091,-5.9760105,0,0
+3100,Jaen,Jaen,Desconocida,37.779827,-3.790798,0,0
+50504,Posadas,Posadas,Desconocida,37.803986,-5.106325,0,0
+50506,Palma del Rio,Palma del Rio,Desconocida,37.718081,-5.29276,0,0
+50507,Peñaflor,Peñaflor,Desconocida,37.707502,-5.341609,0,0
+50600,Lora Del Río,Lora Del Río,Desconocida,37.6613212,-5.5295514,0,0
+51202,Las Cabezas De San Juan,Las Cabezas De San Juan,Desconocida,37.0194897,-5.94658,0,0
+51409,Cádiz-Estadio,Cádiz-Estadio,Desconocida,36.5029461,-6.2720644,0,0
+51404,Segunda Aguada,Segunda Aguada,Desconocida,36.5135317,-6.2770128,0,0
+43021,San Juan del Puerto,San Juan del Puerto,Desconocida,37.311898,-6.841076,0,0
+43015,Niebla,Niebla,Desconocida,37.3587619,-6.6812578,0,0
+43009,Escacena,Escacena,Desconocida,37.397812,-6.39198,0,0
+43008,Carrion de Los Cespedes,Carrion de Los Cespedes,Desconocida,37.368955,-6.335088,0,0
+43005,Benacazón,Benacazón,Desconocida,37.3568512,-6.2082011,0,0
+43012,Villarrasa,Villarrasa,Desconocida,37.386999,-6.598819,0,0
+1007,Osuna,Osuna,Desconocida,37.233899,-5.115026,0,0
+51111,Bellavista,Bellavista,Desconocida,37.3215188,-5.9641924,0,0
+1003,Arahal,Arahal,Desconocida,37.268081,-5.548514,0,0
+1005,Marchena,Marchena,Desconocida,37.334282,-5.425519,0,0
+42008,Jabugo-Galaroza,Jabugo-Galaroza,Desconocida,37.928243,-6.773908,0,0
+42020,Gibraleon,Gibraleon,Desconocida,37.36852,-6.96207,0,0
+42019,Belmonte,Belmonte,Desconocida,37.461864,-6.947533,0,0
+42018,El Cobujon,El Cobujon,Desconocida,37.516509,-6.953428,0,0
+42016,Los Milanos,Los Milanos,Desconocida,37.586219,-6.919938,0,0
+42015,Calañas,Calañas,Desconocida,37.652007,-6.875841,0,0
+42013,El Tamujoso,El Tamujoso,Desconocida,37.720339,-6.900554,0,0
+42012,Valdelamusa,Valdelamusa,Desconocida,37.787111,-6.873729,0,0
+42009,Almonaster-Cortegana,Almonaster-Cortegana,Desconocida,37.901174,-6.797372,0,0
+40100,Zafra,Zafra,Desconocida,38.413635,-6.405083,0,0
+42006,Cumbres Mayores,Cumbres Mayores,Desconocida,38.053126,-6.631553,0,0
+42005,Fregenal de La Sierra,Fregenal de La Sierra,Desconocida,38.167613,-6.637909,0,0
+54403,El Chorro,El Chorro,Desconocida,36.907335,-4.759258,0,0
+54517,Málaga Centro Alameda,Málaga Centro Alameda,Desconocida,36.7159539,-4.4265335,0,0
+54501,Victoria Kent,Victoria Kent,Desconocida,36.7012229,-4.4544145,0,0
+54412,Los Prados,Los Prados,Desconocida,36.6986108,-4.47815,0,0
+54410,Campanillas,Campanillas,Desconocida,36.7050436,-4.5454825,0,0
+54408,Cártama,Cártama,Desconocida,36.7337392,-4.6083966,0,0
+54407,Aljaima,Aljaima,Desconocida,36.7330833,-4.6645001,0,0
+54406,Pizarra,Pizarra,Desconocida,36.7641515,-4.7118313,0,0
+54405,álora,álora,Desconocida,36.8198747,-4.6996105,0,0
+54404,Las Mellizas,Las Mellizas,Desconocida,36.873306,-4.719433,0,0
+50413,Alcolea de Cordoba (apt),Alcolea de Cordoba (apt),Desconocida,37.922326,-4.694751,0,0
+50417,Campus Universitario Rabanales/ Cordoba,Campus Universitario Rabanales/ Cordoba,Desconocida,37.91256,-4.72086,0,0
+50501,El Higueron (apt),El Higueron (apt),Desconocida,37.870271,-4.838942,0,0
+50502,Villarrubia de Cordoba,Villarrubia de Cordoba,Desconocida,37.847574,-4.915339,0,0
+50407,Villa del Rio,Villa del Rio,Desconocida,37.981331,-4.283788,0,0
+50403,Andujar,Andujar,Desconocida,38.028225,-4.066036,0,0
+50400,Espeluy,Espeluy,Desconocida,38.010247,-3.832726,0,0
+54400,Bobadilla,Bobadilla,Desconocida,37.037073,-4.727942,0,0
+1009,Pedrera,Pedrera,Desconocida,37.222396,-4.893519,0,0
+56308,Gador,Gador,Desconocida,36.951624,-2.487658,0,0
+56305,Gergal,Gergal,Desconocida,37.108847,-2.591556,0,0
+56301,Fiñana,Fiñana,Desconocida,37.184647,-2.839757,0,0
+56103,Benalua de Guadix,Benalua de Guadix,Desconocida,37.345277,-3.163177,0,0
+57003,Iznalloz,Iznalloz,Desconocida,37.395852,-3.527947,0,0
+60914,Universidad De Alicante,Universidad De Alicante,Desconocida,38.384165,-0.528411,0,0
+60913,Sant Vicent Centre,Sant Vicent Centre,Desconocida,38.3946533,-0.5287247,0,0
+65400,Tortosa,Tortosa,Desconocida,40.807333,0.5230136,0,0
+65003,Valencia-Cabanyal,Valencia-Cabanyal,Desconocida,39.4702456,-0.3346772,0,0
+65208,Vila-Real,Vila-Real,Desconocida,39.9330935,-0.0967681,0,0
+65306,Torreblanca,Torreblanca,Desconocida,40.212211,0.198779,0,0
+65308,Alcalà De Xivert,Alcalà De Xivert,Desconocida,40.30469,0.228717,0,0
+65314,Ulldecona-Alcanar-La Sénia,Ulldecona-Alcanar-La Sénia,Desconocida,40.5959267,0.44927448,0,0
+65206,Nules-La Vilavella,Nules-La Vilavella,Desconocida,39.8532354,-0.1527317,0,0
+62003,Callosa De Segura,Callosa De Segura,Desconocida,38.1227686,-0.8745747,0,0
+62100,Albatera-Catral,Albatera-Catral,Desconocida,38.1670209,-0.8380854,0,0
+62101,Crevillent,Crevillent,Desconocida,38.2245622,-0.7815283,0,0
+62102,Elche/Elx Carrús,Elche/Elx Carrús,Desconocida,38.2689783,-0.7063992,0,0
+62104,Torrellano,Torrellano,Desconocida,38.2896365,-0.5824572,0,0
+62109,Sant Gabriel,Sant Gabriel,Desconocida,38.3290647,-0.5086866,0,0
+60907,Novelda-Aspe,Novelda-Aspe,Desconocida,38.407086,-0.777744,0,0
+60904,Sax,Sax,Desconocida,38.544251,-0.813729,0,0
+60900,La Encina,La Encina,Desconocida,38.765344,-0.954244,0,0
+60800,Almansa,Almansa,Desconocida,38.867822,-1.105446,0,0
+64200,Silla,Silla,Desconocida,39.3619548,-0.4149813,0,0
+69011,Alcoy/Alcoi,Alcoy/Alcoi,Desconocida,38.709349,-0.470247,0,0
+64203,Alfafar-Benetússer,Alfafar-Benetússer,Desconocida,39.4224232,-0.392605,0,0
+64202,Massanassa,Massanassa,Desconocida,39.4091934,-0.3953073,0,0
+64201,Catarroja,Catarroja,Desconocida,39.4000447,-0.3992195,0,0
+64107,Benifaió-Almussafes,Benifaió-Almussafes,Desconocida,39.2843027,-0.4299537,0,0
+64105,Algemesí,Algemesí,Desconocida,39.1931484,-0.4409196,0,0
+64104,Alzira,Alzira,Desconocida,39.1531495,-0.4506011,0,0
+64103,Carcaixent,Carcaixent,Desconocida,39.1205251,-0.4544102,0,0
+64102,La Pobla Llarga,La Pobla Llarga,Desconocida,39.0833385,-0.4696592,0,0
+64007,L'ènova Manuel,L'ènova Manuel,Desconocida,39.0500727,-0.4776036,0,0
+69002,Benigánim,Benigánim,Desconocida,38.938499,-0.453424,0,0
+69006,Albaida,Albaida,Desconocida,38.845645,-0.518129,0,0
+69008,Ontinyent,Ontinyent,Desconocida,38.809692,-0.602457,0,0
+65002,Valencia F.s.l-Hospital La Fe,Valencia F.s.l-Hospital La Fe,Desconocida,39.4416052,-0.371422,0,0
+65008,Puçol,Puçol,Desconocida,39.6205367,-0.3031085,0,0
+65005,Albuixech,Albuixech,Desconocida,39.5435233,-0.3205526,0,0
+65007,El Puig,El Puig,Desconocida,39.588302,-0.3116645,0,0
+65202,Almenara,Almenara,Desconocida,39.7487737,-0.2183811,0,0
+65204,Chilches,Chilches,Desconocida,39.7826726,-0.1903295,0,0
+65207,Burriana-Alquerías Niño Perdido,Burriana-Alquerías Niño Perdido,Desconocida,39.8965088,-0.1038601,0,0
+65209,Almassora/Almazora,Almassora/Almazora,Desconocida,39.9549079,-0.0767713,0,0
+65205,Moncofa,Moncofa,Desconocida,39.8208891,-0.1626965,0,0
+65001,Roca-Cúper,Roca-Cúper,Desconocida,39.5262094,-0.3238405,0,0
+65006,Massalfassar-Albuixech,Massalfassar-Albuixech,Desconocida,39.5557532,-0.3183058,0,0
+65201,Les Valls,Les Valls,Desconocida,39.7193457,-0.2397602,0,0
+65203,La Llosa,La Llosa,Desconocida,39.7678109,-0.2029444,0,0
+71400,Reus,Reus,Desconocida,41.1605229,1.10008978,0,0
+79400,Barcelona-Estació De França,Barcelona-Estació De França,Desconocida,41.3844866,2.18534785,0,0
+71802,Barcelona-Passeig De Gracia,Barcelona-Passeig De Gracia,Desconocida,41.3920862,2.16533862,0,0
+71700,Vilanova I La Geltrú,Vilanova I La Geltrú,Desconocida,41.2203207,1.73077249,0,0
+71600,Sant Vicenç De Calders,Sant Vicenç De Calders,Desconocida,41.1862102,1.52480358,0,0
+71503,Torredembarra,Torredembarra,Desconocida,41.1427923,1.40578377,0,0
+71502,Altafulla-Tamarit,Altafulla-Tamarit,Desconocida,41.1366479,1.37341488,0,0
+71401,Vila-Seca,Vila-Seca,Desconocida,41.1128193,1.15037877,0,0
+71209,Riba-Roja D'ebre,Riba-Roja D'ebre,Desconocida,41.2485594,0.48103178,0,0
+71307,Les Borges Del Camp,Les Borges Del Camp,Desconocida,41.1665064,1.0221323,0,0
+71306,Riudecanyes-Botarell,Riudecanyes-Botarell,Desconocida,41.1400577,0.97574775,0,0
+71305,Duesaigües-L'argentera,Duesaigües-L'argentera,Desconocida,41.1436928,0.92087096,0,0
+71304,Pradell,Pradell,Desconocida,41.1333595,0.85865032,0,0
+71303,Marçà-Falset,Marçà-Falset,Desconocida,41.1309421,0.81041774,0,0
+71302,Capçanes,Capçanes,Desconocida,41.1020902,0.78036099,0,0
+71300,Móra La Nova,Móra La Nova,Desconocida,41.1065823,0.65321819,0,0
+71211,Ascó,Ascó,Desconocida,41.1823727,0.56902524,0,0
+71210,Flix,Flix,Desconocida,41.2293651,0.54010012,0,0
+71204,Caspe,Caspe,Desconocida,41.239738,-0.042701,0,0
+71208,Faió-La Pobla De Massaluca (fayón),Faió-La Pobla De Massaluca (fayón),Desconocida,41.2250555,0.35110259,0,0
+71207,Nonaspe,Nonaspe,Desconocida,41.213788,0.242472,0,0
+71206,Fabara,Fabara,Desconocida,41.234405,0.143284,0,0
+72101,Roda De Mar,Roda De Mar,Desconocida,41.1864204,1.45520767,0,0
+76004,Valls,Valls,Desconocida,41.2896079,1.25865179,0,0
+73100,La Plana-Picamoixons,La Plana-Picamoixons,Desconocida,41.3061987,1.19488293,0,0
+73008,Montblanc,Montblanc,Desconocida,41.3766254,1.16554869,0,0
+73007,L'espluga De Francolí,L'espluga De Francolí,Desconocida,41.4006616,1.10336094,0,0
+73006,Vimbodí,Vimbodí,Desconocida,41.4027277,1.04603327,0,0
+73005,Vinaixa,Vinaixa,Desconocida,41.425141,0.9703737,0,0
+73003,Les Borges Blanques,Les Borges Blanques,Desconocida,41.5213973,0.87791022,0,0
+73002,Juneda,Juneda,Desconocida,41.5439328,0.82554185,0,0
+76003,Nulles-Bràfim,Nulles-Bràfim,Desconocida,41.2503192,1.29750259,0,0
+76001,Salomó,Salomó,Desconocida,41.2234416,1.37662504,0,0
+76002,Vilabella,Vilabella,Desconocida,41.2395473,1.31749155,0,0
+73010,La Riba,La Riba,Desconocida,41.3184926,1.1813126,0,0
+73009,Vilaverd,Vilaverd,Desconocida,41.3376633,1.17653235,0,0
+73004,La Floresta,La Floresta,Desconocida,41.5042013,0.924432,0,0
+73001,Puigverd De Lleida-Artesa De Lleida,Puigverd De Lleida-Artesa De Lleida,Desconocida,41.5537015,0.73342706,0,0
+73102,La Selva Del Camp,La Selva Del Camp,Desconocida,41.2111544,1.14396003,0,0
+73101,Alcover,Alcover,Desconocida,41.2616066,1.17416002,0,0
+65411,Salou - Port Aventura,Salou - Port Aventura,Desconocida,41.0884798,1.14605195,0,0
+71205,Val De Pilas,Val De Pilas,Desconocida,41.230056,0.070145,0,0
+71201,Samper,Samper,Desconocida,41.182183,-0.368761,0,0
+71200,La Puebla De Híjar,La Puebla De Híjar,Desconocida,41.2244,-0.438595,0,0
+71108,La Zaida-Sástago,La Zaida-Sástago,Desconocida,41.320542,-0.427115,0,0
+71105,Quinto,Quinto,Desconocida,41.419528,-0.490673,0,0
+71103,Fuentes De Ebro,Fuentes De Ebro,Desconocida,41.515065,-0.618625,0,0
+70806,Zaragoza Portillo,Zaragoza Portillo,Desconocida,41.6527361,-0.8958759,0,0
+70807,Zaragoza Goya,Zaragoza Goya,Desconocida,41.6438779,-0.8912574,0,0
+71100,Zaragoza Miraflores,Zaragoza Miraflores,Desconocida,41.6334311,-0.8681653,0,0
+78302,Binefar,Binefar,Desconocida,41.849768,0.291478,0,0
+78301,Monzon-Rio Cinca,Monzon-Rio Cinca,Desconocida,41.913679,0.196939,0,0
+78203,Sariñena,Sariñena,Desconocida,41.817529,-0.17076,0,0
+78201,Grañen,Grañen,Desconocida,41.938033,-0.369329,0,0
+78005,Villanueva De Gállego,Villanueva De Gállego,Desconocida,41.76551,-0.822204,0,0
+78500,Cervera,Cervera,Desconocida,41.673611,1.274773,0,0
+78402,Bell-Lloc D'urgell,Bell-Lloc D'urgell,Desconocida,41.631619,0.781547,0,0
+78403,Mollerussa,Mollerussa,Desconocida,41.631779,0.896775,0,0
+78404,Golmés,Golmés,Desconocida,41.635929,0.930863,0,0
+78405,Castellnou De Seana,Castellnou De Seana,Desconocida,41.637464,0.967736,0,0
+78406,Bellpuig,Bellpuig,Desconocida,41.632545,1.012993,0,0
+78407,Anglesola,Anglesola,Desconocida,41.646448,1.079192,0,0
+78408,Tàrrega,Tàrrega,Desconocida,41.650387,1.138963,0,0
+78700,Terrassa Estacio Nord,Terrassa Estacio Nord,Desconocida,41.5697825,2.01435428,0,0
+78604,Sant Vicenç De Castellet,Sant Vicenç De Castellet,Desconocida,41.6688309,1.86264304,0,0
+78600,Manresa,Manresa,Desconocida,41.7203921,1.82648564,0,0
+78506,Rajadell,Rajadell,Desconocida,41.733159,1.696275,0,0
+78505,Aguilar De Segarra,Aguilar De Segarra,Desconocida,41.738917,1.62372,0,0
+78504,Seguers-Sant Pere Sallavinera,Seguers-Sant Pere Sallavinera,Desconocida,41.747991,1.574167,0,0
+78503,Calaf,Calaf,Desconocida,41.730334,1.515097,0,0
+78502,Sant Martí Sesgueioles,Sant Martí Sesgueioles,Desconocida,41.701217,1.486204,0,0
+78501,Sant Guim De Freixenet,Sant Guim De Freixenet,Desconocida,41.655924,1.42053,0,0
+74217,Canfranc,Canfranc,Desconocida,42.751471,-0.514641,0,0
+74216,Villanúa-Letranz,Villanúa-Letranz,Desconocida,42.688745,-0.52346,0,0
+74214,Castiello-Pueblo,Castiello-Pueblo,Desconocida,42.62811,-0.546291,0,0
+74213,Jaca,Jaca,Desconocida,42.578303,-0.539231,0,0
+74211,Sabiñánigo,Sabiñánigo,Desconocida,42.520446,-0.373085,0,0
+74209,Caldearenas-Aquilué,Caldearenas-Aquilué,Desconocida,42.397973,-0.499309,0,0
+74208,Anzánigo,Anzánigo,Desconocida,42.403289,-0.643344,0,0
+74207,Santa María Y La Peña,Santa María Y La Peña,Desconocida,42.38039,-0.695647,0,0
+74206,Riglos,Riglos,Desconocida,42.344756,-0.731599,0,0
+74204,Ayerbe,Ayerbe,Desconocida,42.27561,-0.682569,0,0
+79203,Caldes De Malavella,Caldes De Malavella,Desconocida,41.84111,2.80076692,0,0
+79202,Sils,Sils,Desconocida,41.8075996,2.74500729,0,0
+79200,Maçanet-Massanes,Maçanet-Massanes,Desconocida,41.7724212,2.67385865,0,0
+79104,Sant Celoni,Sant Celoni,Desconocida,41.6857928,2.49072799,0,0
+79009,Barcelona-El Clot,Barcelona-El Clot,Desconocida,41.4092979,2.18719759,0,0
+79309,Figueres,Figueres,Desconocida,42.2651134,2.96880074,0,0
+79303,Flaçà,Flaçà,Desconocida,42.047477,2.95740315,0,0
+79315,Portbou,Portbou,Desconocida,42.4245908,3.15801841,0,0
+79312,Llançà,Llançà,Desconocida,42.3666194,3.1489746,0,0
+79314,Colera,Colera,Desconocida,42.4068837,3.15434316,0,0
+79311,Vilajuïga,Vilajuïga,Desconocida,42.3256691,3.08754626,0,0
+79308,Vilamalla,Vilamalla,Desconocida,42.216362,2.97776423,0,0
+79306,Sant Miquel De Fluvià,Sant Miquel De Fluvià,Desconocida,42.1721019,2.98959828,0,0
+79305,Camallera,Camallera,Desconocida,42.1223297,2.96536522,0,0
+79304,Sant Jordi Desvalls,Sant Jordi Desvalls,Desconocida,42.0683023,2.96447664,0,0
+79302,Bordils-Juià,Bordils-Juià,Desconocida,42.0370568,2.91529561,0,0
+79301,Celrà,Celrà,Desconocida,42.0271984,2.87490587,0,0
+79205,Fornells De La Selva,Fornells De La Selva,Desconocida,41.935043,2.80978324,0,0
+79204,Riudellots,Riudellots,Desconocida,41.896297,2.81157037,0,0
+79107,Hostalric,Hostalric,Desconocida,41.747788,2.63165011,0,0
+79106,Riells I Viabrea-Breda,Riells I Viabrea-Breda,Desconocida,41.7263582,2.56889584,0,0
+79105,Gualba,Gualba,Desconocida,41.7181901,2.53878373,0,0
+79100,Granollers Centre,Granollers Centre,Desconocida,41.5997447,2.29126962,0,0
+79004,Barcelona-Sant Andreu,Barcelona-Sant Andreu,Desconocida,41.4361251,2.19319866,0,0
+79316,Cerbère,Cerbère,Desconocida,42.441664,3.16314935,0,0
+11203,Manzanos,Manzanos,Desconocida,42.742899,-2.867501,0,0
+11204,La Puebla De Arganzón,La Puebla De Arganzón,Desconocida,42.765245,-2.830385,0,0
+11205,Nanclares/Langraiz,Nanclares/Langraiz,Desconocida,42.816216,-2.804942,0,0
+11210,Alegría De álava-Dulantzi,Alegría De álava-Dulantzi,Desconocida,42.848723,-2.514668,0,0
+11212,Salvatierra/Agurain,Salvatierra/Agurain,Desconocida,42.84643,-2.38921,0,0
+11213,Araia,Araia,Desconocida,42.869599,-2.306807,0,0
+11305,Brinkola-Onyati,Brinkola-Onyati,Desconocida,43.0189865,-2.3346811,0,0
+11306,Legazpi,Legazpi,Desconocida,43.0510385,-2.3306103,0,0
+11402,Ormaiztegi,Ormaiztegi,Desconocida,43.0402752,-2.256462,0,0
+11404,Beasain,Beasain,Desconocida,43.0462687,-2.2022994,0,0
+11405,Ordizia/Ordicia,Ordizia/Ordicia,Desconocida,43.0527547,-2.1791923,0,0
+11501,Tolosa Centro,Tolosa Centro,Desconocida,43.1393963,-2.0741122,0,0
+11503,Villabona-Zizurkil,Villabona-Zizurkil,Desconocida,43.1891906,-2.0553722,0,0
+11504,Andoain Centro/Erdia,Andoain Centro/Erdia,Desconocida,43.2155738,-2.0204595,0,0
+11507,Hernani-Centro,Hernani-Centro,Desconocida,43.2664779,-1.9726232,0,0
+11516,Lezo-Errenteria,Lezo-Errenteria,Desconocida,43.3159364,-1.8994386,0,0
+11515,Pasaia,Pasaia,Desconocida,43.3189428,-1.9171727,0,0
+11514,Herrera (apd),Herrera (apd),Desconocida,43.3193537,-1.9370173,0,0
+11522,Intxaurrondo,Intxaurrondo,Desconocida,43.3200487,-1.9517673,0,0
+11513,Ategorrieta (apd),Ategorrieta (apd),Desconocida,43.3203225,-1.9598127,0,0
+11512,Gros,Gros,Desconocida,43.3218457,-1.9738835,0,0
+81205,Cortes De Navarra,Cortes De Navarra,Desconocida,41.915076,-1.420439,0,0
+81203,Ribaforada,Ribaforada,Desconocida,41.997038,-1.515097,0,0
+80115,Villafranca De Navarra,Villafranca De Navarra,Desconocida,42.280734,-1.745716,0,0
+80114,Marcilla De Navarra,Marcilla De Navarra,Desconocida,42.334851,-1.717418,0,0
+80109,Olite/Erriberri,Olite/Erriberri,Desconocida,42.484989,-1.649964,0,0
+80005,Uharte-Arakil,Uharte-Arakil,Desconocida,42.920606,-1.974814,0,0
+80003,Etxarri-Aranatz,Etxarri-Aranatz,Desconocida,42.911138,-2.071245,0,0
+80001,Altsasu/Alsasua-Pueblo,Altsasu/Alsasua-Pueblo,Desconocida,42.893283,-2.167429,0,0
+11109,Briviesca,Briviesca,Desconocida,42.542765,-3.319287,0,0
+11111,Pancorbo,Pancorbo,Desconocida,42.630486,-3.112307,0,0
+70801,Utebo,Utebo,Desconocida,41.7108644,-0.9985828,0,0
+70800,Casetas,Casetas,Desconocida,41.7226479,-1.0201916,0,0
+81210,Alagón,Alagón,Desconocida,41.771422,-1.112771,0,0
+81209,Cabanyas De Ebro,Cabanyas De Ebro,Desconocida,41.788065,-1.167533,0,0
+81208,Pedrola,Pedrola,Desconocida,41.805198,-1.201673,0,0
+81207,Luceni,Luceni,Desconocida,41.826116,-1.243536,0,0
+81206,Gallur,Gallur,Desconocida,41.867164,-1.321342,0,0
+81105,Alcanadre,Alcanadre,Desconocida,42.407437,-2.122094,0,0
+81102,Agoncillo,Agoncillo,Desconocida,42.443585,-2.291701,0,0
+60301,Quero,Quero,Desconocida,39.504173,-3.266072,0,0
+60300,Villacañas,Villacañas,Desconocida,39.622698,-3.33051,0,0
+60203,Villasequilla,Villasequilla,Desconocida,39.879535,-3.728453,0,0
+60202,Castillejo-Añover,Castillejo-Añover,Desconocida,39.949634,-3.738774,0,0
+60200,Aranjuez,Aranjuez,Desconocida,40.0350257,-3.6182534,0,0
+35207,Casatejada,Casatejada,Desconocida,39.891909,-5.677732,0,0
+35005,Illescas,Illescas,Desconocida,40.12088,-3.842262,0,0
+35002,Fuenlabrada,Fuenlabrada,Desconocida,40.2833784,-3.7994429,0,0
+35303,Cañaveral,Cañaveral,Desconocida,39.789124,-6.375031,0,0
+35302,Casas de Millan,Casas de Millan,Desconocida,39.811866,-6.326045,0,0
+35301,Mirabel,Mirabel,Desconocida,39.866229,-6.228969,0,0
+35406,Valencia de Alcantara,Valencia de Alcantara,Desconocida,39.426928,-7.230688,0,0
+35405,San Vicente de Alcantara,San Vicente de Alcantara,Desconocida,39.381561,-7.117075,0,0
+35402,Arroyo-Malpartida,Arroyo-Malpartida,Desconocida,39.468078,-6.533634,0,0
+50002,Cinco Casas,Cinco Casas,Desconocida,39.169282,-3.232663,0,0
+94002,Daimiel,Daimiel,Desconocida,39.061553,-3.604213,0,0
+94004,Almagro,Almagro,Desconocida,38.895323,-3.709777,0,0
+10400,Ávila,Ávila,Desconocida,40.657255,-4.683312,0,0
+18002,Madrid-Nuevos Ministerios,Madrid-Nuevos Ministerios,Desconocida,40.4466271,-3.6923468,0,0
+18001,Madrid-Recoletos,Madrid-Recoletos,Desconocida,40.4233731,-3.690931,0,0
+10000,Madrid-Principe Pio,Madrid-Principe Pio,Desconocida,40.4214895,-3.7189689,0,0
+10001,Aravaca (apd-Cgd),Aravaca (apd-Cgd),Desconocida,40.4484551,-3.7855547,0,0
+10002,Pozuelo,Pozuelo,Desconocida,40.4474569,-3.8002779,0,0
+10005,Las Rozas (apd),Las Rozas (apd),Desconocida,40.4942887,-3.8681747,0,0
+10100,Pinar De Las Rozas,Pinar De Las Rozas,Desconocida,40.5222672,-3.8822477,0,0
+10200,Villalba De Guadarrama,Villalba De Guadarrama,Desconocida,40.6264893,-4.0080301,0,0
+10201,San Yago,San Yago,Desconocida,40.6178953,-4.0310749,0,0
+10202,Las Zorreras-Navalquejigo,Las Zorreras-Navalquejigo,Desconocida,40.6093116,-4.0463626,0,0
+10203,El Escorial,El Escorial,Desconocida,40.5853675,-4.1324053,0,0
+10204,Zarzalejo,Zarzalejo,Desconocida,40.5389272,-4.1580662,0,0
+10205,Robledo De Chavela,Robledo De Chavela,Desconocida,40.5208244,-4.2467592,0,0
+10206,Santa María De La Alameda-Peguerinos,Santa María De La Alameda-Peguerinos,Desconocida,40.569001,-4.2691255,0,0
+10209,El Pimpollar,El Pimpollar,Desconocida,40.567587,-4.283541,0,0
+10207,Las Navas Del Marqués,Las Navas Del Marqués,Desconocida,40.589205,-4.362259,0,0
+10208,Navalperal,Navalperal,Desconocida,40.591152,-4.408382,0,0
+10300,Herradón-La Cañada,Herradón-La Cañada,Desconocida,40.599275,-4.495039,0,0
+97201,Madrid-Ramón Y Cajal,Madrid-Ramón Y Cajal,Desconocida,40.4881473,-3.6948037,0,0
+97200,Mirasierra-Paco De Lucía,Mirasierra-Paco De Lucía,Desconocida,40.499759,-3.7092505,0,0
+97100,Pitis,Pitis,Desconocida,40.4954173,-3.7261603,0,0
+10101,Las Matas,Las Matas,Desconocida,40.5523869,-3.8967664,0,0
+10103,Torrelodones,Torrelodones,Desconocida,40.574554,-3.9566013,0,0
+10104,Galapagar-La Navata,Galapagar-La Navata,Desconocida,40.6003138,-3.982259,0,0
+12100,Segovia,Segovia,Desconocida,40.93403,-4.11365,0,0
+12001,Los Negrales,Los Negrales,Desconocida,40.638567,-4.0218746,0,0
+12002,Alpedrete-Mataespesa,Alpedrete-Mataespesa,Desconocida,40.6581044,-4.0349719,0,0
+12004,Collado Mediano,Collado Mediano,Desconocida,40.6928982,-4.0359271,0,0
+12005,Los Molinos-Guadarrama,Los Molinos-Guadarrama,Desconocida,40.7066407,-4.0671991,0,0
+12006,Cercedilla,Cercedilla,Desconocida,40.7376129,-4.0662985,0,0
+12007,Tablada,Tablada,Desconocida,40.705648,-4.12531,0,0
+12008,Gudillos,Gudillos,Desconocida,40.716914,-4.157681,0,0
+12009,San Rafael,San Rafael,Desconocida,40.714944,-4.18143,0,0
+12010,El Espinar,El Espinar,Desconocida,40.740852,-4.189482,0,0
+12011,Los ángeles De San Rafael,Los ángeles De San Rafael,Desconocida,40.777909,-4.206933,0,0
+12012,Otero-Herreros,Otero-Herreros,Desconocida,40.80097,-4.203504,0,0
+12013,Ortigosa Del Monte,Ortigosa Del Monte,Desconocida,40.832771,-4.168094,0,0
+12014,Navas De Riofrío- La Losa,Navas De Riofrío- La Losa,Desconocida,40.856673,-4.141103,0,0
+10302,Guimorcondo,Guimorcondo,Desconocida,40.649062,-4.614987,0,0
+35012,Humanes,Humanes,Desconocida,40.2558101,-3.8287055,0,0
+10409,Arévalo,Arévalo,Desconocida,41.047123,-4.701988,0,0
+82100,Soria,Soria,Soria,41.754754,-2.476537,0,0
+84104,Quintana Redonda,Quintana Redonda,Desconocida,41.639726,-2.609682,0,0
+84103,Tardelcuende,Tardelcuende,Desconocida,41.593525,-2.639337,0,0
+84101,Almazan,Almazan,Desconocida,41.489019,-2.525375,0,0
+70400,Torralba,Torralba,Desconocida,41.136617,-2.492952,0,0
+70302,Siguenza,Siguenza,Desconocida,41.071417,-2.646407,0,0
+70209,Jadraque,Jadraque,Desconocida,40.930229,-2.935935,0,0
+70200,Guadalajara,Guadalajara,Desconocida,40.6441928,-3.1822602,0,0
+70103,Alcala De Henares,Alcala De Henares,Desconocida,40.4890814,-3.3662457,0,0
+70207,Espinosa De Henares,Espinosa De Henares,Desconocida,40.909686,-3.073157,0,0
+70208,Carrascosa De Henares,Carrascosa De Henares,Desconocida,40.90598,-3.014352,0,0
+70210,Matillas,Matillas,Desconocida,40.953808,-2.84326,0,0
+70300,Baides,Baides,Desconocida,41.004864,-2.785635,0,0
+70101,San Fernando Henares,San Fernando Henares,Desconocida,40.4427805,-3.5339866,0,0
+70102,Torrejón De Ardoz,Torrejón De Ardoz,Desconocida,40.4547895,-3.47973,0,0
+70107,Alcalá Henares-Universidad (apd),Alcalá Henares-Universidad (apd),Desconocida,40.5054303,-3.3353258,0,0
+70104,Meco (apd-Cgd),Meco (apd-Cgd),Desconocida,40.5346731,-3.2986806,0,0
+70105,Azuqueca,Azuqueca,Desconocida,40.561077,-3.265397,0,0
+70002,Asamblea De Mad. Entrevías,Asamblea De Mad. Entrevías,Desconocida,40.3818618,-3.6680454,0,0
+70003,El Pozo,El Pozo,Desconocida,40.3760377,-3.6561407,0,0
+70005,Vallecas,Vallecas,Desconocida,40.382364,-3.623042,0,0
+70109,Santa Eugenia,Santa Eugenia,Desconocida,40.3869545,-3.6089855,0,0
+70100,Vicálvaro,Vicálvaro,Desconocida,40.4012524,-3.595897,0,0
+70108,Coslada (apd),Coslada (apd),Desconocida,40.423237,-3.5611109,0,0
+70112,Soto Del Henares,Soto Del Henares,Desconocida,40.463964,-3.4414076,0,0
+70111,La Garena,La Garena,Desconocida,40.4805448,-3.3930055,0,0
+35109,Montearagón,Montearagón,Desconocida,39.960996,-4.647093,0,0
+37406,Villanueva de La Serena,Villanueva de La Serena,Desconocida,38.96886,-5.7965,0,0
+37407,Don Benito,Don Benito,Desconocida,38.96695,-5.862923,0,0
+37409,Valdetorres,Valdetorres,Desconocida,38.913301,-6.069407,0,0
+37410,Guareña,Guareña,Desconocida,38.896749,-6.128842,0,0
+37611,Garrovilla-Las Vegas,Garrovilla-Las Vegas,Desconocida,38.915763,-6.47408,0,0
+37608,Montijo-El Molino,Montijo-El Molino,Desconocida,38.913973,-6.618281,0,0
+37604,Guadiana del Caudillo,Guadiana del Caudillo,Desconocida,38.922099,-6.689998,0,0
+37311,Cabeza de Buey,Cabeza de Buey,Desconocida,38.72389,-5.227067,0,0
+37400,Almorchon,Almorchon,Desconocida,38.696631,-5.290496,0,0
+37402,Castuera,Castuera,Desconocida,38.735021,-5.541637,0,0
+37404,Campanario,Campanario,Desconocida,38.853395,-5.641415,0,0
+40002,Calamonte,Calamonte,Desconocida,38.886931,-6.382965,0,0
+40004,Almendralejo,Almendralejo,Desconocida,38.684662,-6.399815,0,0
+40005,Villafranca De Los Barros,Villafranca De Los Barros,Desconocida,38.564402,-6.352048,0,0
+40006,Los Santos De Maimona,Los Santos De Maimona,Desconocida,38.449724,-6.361749,0,0
+40008,Zafra Feria,Zafra Feria,Desconocida,38.424403,-6.410084,0,0
+50700,Los Rosales,Los Rosales,Desconocida,37.5899718,-5.7261208,0,0
+40122,Tocina,Tocina,Desconocida,37.6093044,-5.7316939,0,0
+40119,Villanueva Del Río-Minas,Villanueva Del Río-Minas,Desconocida,37.6617048,-5.7121543,0,0
+40115,Pedroso,Pedroso,Desconocida,37.8373919,-5.7624522,0,0
+40113,Cazalla-Constantina,Cazalla-Constantina,Desconocida,37.9328637,-5.704433,0,0
+40108,Guadalcanal,Guadalcanal,Desconocida,38.090197,-5.803388,0,0
+40107,Fuente Del Arco,Fuente Del Arco,Desconocida,38.16353,-5.900484,0,0
+40105,Llerena,Llerena,Desconocida,38.237,-6.009017,0,0
+11004,Magaz,Magaz,Desconocida,41.976561,-4.432114,0,0
+11006,Quintana Del Puente,Quintana Del Puente,Desconocida,42.079974,-4.19858,0,0
+11009,Villaquirán,Villaquirán,Desconocida,42.215717,-3.999396,0,0
+60507,La Gineta,La Gineta,Desconocida,39.111665,-2.000155,0,0
+60505,La Roda de Albacete,La Roda de Albacete,Desconocida,39.199594,-2.162547,0,0
+60503,Minaya,Minaya,Desconocida,39.240738,-2.348403,0,0
+60402,Campo de Criptana,Campo de Criptana,Desconocida,39.394343,-3.117746,0,0
+3001,Mengibar-Artichuela (apd-Cgd),Mengibar-Artichuela (apd-Cgd),Desconocida,37.978219,-3.803308,0,0
+50202,Almuradiel-Viso del Marques,Almuradiel-Viso del Marques,Desconocida,38.514267,-3.501935,0,0
+50200,Santa Cruz de Mudela,Santa Cruz de Mudela,Desconocida,38.644428,-3.451493,0,0
+60207,El Romeral,El Romeral,Desconocida,39.694516,-3.430502,0,0
+60206,Tembleque,Tembleque,Desconocida,39.722958,-3.497354,0,0
+65420,L'HOSPITALET DE L'INFANT,L'HOSPITALET DE L'INFANT,Desconocida,40.99939,0.91253887,0,0
+65405,L'ametlla De Mar,L'ametlla De Mar,Desconocida,40.8862,0.80045321,0,0
+65404,L'ampolla-Perelló-Deltebre,L'ampolla-Perelló-Deltebre,Desconocida,40.8119898,0.70826336,0,0
+65403,Camarles-Deltebre,Camarles-Deltebre,Desconocida,40.7747633,0.67176095,0,0
+65401,Camp-Redó,Camp-Redó,Desconocida,40.7591556,0.55584433,0,0
+81106,Féculas-Navarra,Féculas-Navarra,Desconocida,42.411148,-2.098196,0,0
+60901,Caudete,Caudete,Desconocida,38.716163,-0.959727,0,0
+14101,Monzon de Campos,Monzon de Campos,Desconocida,42.105538,-4.501677,0,0
+14117,El Carrion,El Carrion,Desconocida,42.1166417,-4.500692,0,0
+14102,Amusco,Amusco,Desconocida,42.178019,-4.480743,0,0
+14103,Piña,Piña,Desconocida,42.211747,-4.434689,0,0
+14104,Fromista,Fromista,Desconocida,42.2649,-4.402433,0,0
+14107,Osorno,Osorno,Desconocida,42.415077,-4.357367,0,0
+14108,Espinosa de Villagonzalo (apd),Espinosa de Villagonzalo (apd),Desconocida,42.452373,-4.367811,0,0
+14111,Herrera de Pisuerga,Herrera de Pisuerga,Desconocida,42.598477,-4.316683,0,0
+14112,Alar del Rey-San Quirce,Alar del Rey-San Quirce,Desconocida,42.656837,-4.311372,0,0
+14113,Mave,Mave,Desconocida,42.723726,-4.27616,0,0
+14115,Quintanilla de Las Torres,Quintanilla de Las Torres,Desconocida,42.81903,-4.202753,0,0
+14200,Mataporquera,Mataporquera,Desconocida,42.870901,-4.165406,0,0
+14206,Bárcena,Bárcena,Desconocida,43.1287054,-4.053473,0,0
+14210,Los Corrales De Buelna,Los Corrales De Buelna,Desconocida,43.2551009,-4.0639472,0,0
+14216,Renedo,Renedo,Desconocida,43.3531069,-3.9496471,0,0
+14220,Maliaño,Maliaño,Desconocida,43.4161415,-3.8410762,0,0
+14230,Valdecilla,Valdecilla,Desconocida,43.4540888,-3.8277628,0,0
+15006,Cisneros,Cisneros,Desconocida,42.19112,-4.850249,0,0
+15014,Santas Martas,Santas Martas,Desconocida,42.460004,-5.386777,0,0
+30110,Salamanca-La Alamedilla,Salamanca-La Alamedilla,Desconocida,40.966763,-5.656366,0,0
+32009,Moriscos,Moriscos,Desconocida,41.011633,-5.584713,0,0
+32008,Gomecello,Gomecello,Desconocida,41.041859,-5.541551,0,0
+32007,Pitiegua,Pitiegua,Desconocida,41.063741,-5.474174,0,0
+32006,El Pedroso de La Armuña,El Pedroso de La Armuña,Desconocida,41.079901,-5.406019,0,0
+32001,Campillo,Campillo,Desconocida,41.259509,-5.017791,0,0
+31200,Puebla de Sanabria,Puebla de Sanabria,Desconocida,42.045763,-6.626848,0,0
+31002,Nava del Rey,Nava del Rey,Desconocida,41.334716,-5.076818,0,0
+31006,Toro,Toro,Desconocida,41.512201,-5.384953,0,0
+31104,Carbajales de Alba,Carbajales de Alba,Desconocida,41.681542,-5.971906,0,0
+31106,Ferreruela de Tabara,Ferreruela de Tabara,Desconocida,41.764106,-6.0739,0,0
+31107,Abejera,Abejera,Desconocida,41.80942,-6.141851,0,0
+31108,Sarracin de Aliste,Sarracin de Aliste,Desconocida,41.848497,-6.20513,0,0
+31109,Cabañas de Aliste,Cabañas de Aliste,Desconocida,41.854595,-6.24635,0,0
+31112,Linarejos-Pedroso,Linarejos-Pedroso,Desconocida,41.946963,-6.484541,0,0
+37308,Guadalmez-Los Pedroches,Guadalmez-Los Pedroches,Desconocida,38.69921,-4.929771,0,0
+37305,Almadenejos-Almaden,Almadenejos-Almaden,Desconocida,38.740578,-4.730387,0,0
+37302,Brazatortas-Veredas,Brazatortas-Veredas,Desconocida,38.668758,-4.316468,0,0
+67200,Teruel,Teruel,Teruel,40.341029,-1.110284,0,0
+67004,Maria de Huerva,Maria de Huerva,Desconocida,41.539759,-0.998082,0,0
+67007,Arañales De Muel,Arañales De Muel,Desconocida,41.468946,-1.086394,0,0
+67009,Longares,Longares,Desconocida,41.404787,-1.158791,0,0
+67010,Cariñena,Cariñena,Desconocida,41.335586,-1.228422,0,0
+67021,Calamocha Nueva,Calamocha Nueva,Desconocida,40.903864,-1.299841,0,0
+67100,Caminreal-Fuentes Claras,Caminreal-Fuentes Claras,Desconocida,40.85111,-1.33765,0,0
+67101,Torrijo Del Campo,Torrijo Del Campo,Desconocida,40.826012,-1.340498,0,0
+67113,Monreal Del Campo,Monreal Del Campo,Desconocida,40.782321,-1.360792,0,0
+67103,Villafranca del Campo,Villafranca del Campo,Desconocida,40.683827,-1.357927,0,0
+67105,Santa Eulalia Del Campo,Santa Eulalia Del Campo,Desconocida,40.572917,-1.312995,0,0
+67107,Cella,Cella,Desconocida,40.455266,-1.244329,0,0
+67011,Encinacorba,Encinacorba,Desconocida,41.28865,-1.278534,0,0
+67013,Villarreal de Huerva,Villarreal de Huerva,Desconocida,41.196498,-1.287096,0,0
+67014,Villadoz,Villadoz,Desconocida,41.165482,-1.279339,0,0
+67015,Badules,Badules,Desconocida,41.13951,-1.251572,0,0
+67016,Villahermosa,Villahermosa,Desconocida,41.108492,-1.239803,0,0
+67017,Ferreruela,Ferreruela,Desconocida,41.06387,-1.239384,0,0
+67018,Cuencabuena,Cuencabuena,Desconocida,41.009293,-1.254641,0,0
+67019,Lechago,Lechago,Desconocida,40.957681,-1.269087,0,0
+67020,Navarrete,Navarrete,Desconocida,40.936721,-1.261733,0,0
+67203,Puebla De Valverde,Puebla De Valverde,Desconocida,40.213424,-0.944674,0,0
+67205,Sarrión,Sarrión,Desconocida,40.146339,-0.823631,0,0
+67206,Mora De Rubielos,Mora De Rubielos,Desconocida,40.123142,-0.786145,0,0
+67207,Rubielos De Mora,Rubielos De Mora,Desconocida,40.118006,-0.773463,0,0
+67208,Barracas,Barracas,Desconocida,40.01174,-0.696151,0,0
+67215,Segorbe,Segorbe,Desconocida,39.8471755,-0.4823544,0,0
+70403,Arcos De Jalón,Arcos De Jalón,Desconocida,41.215854,-2.278998,0,0
+70700,Ricla-La Almunia,Ricla-La Almunia,Desconocida,41.501394,-1.40345,0,0
+70505,Terrer,Terrer,Desconocida,41.322218,-1.709254,0,0
+70504,Ateca,Ateca,Desconocida,41.324659,-1.785268,0,0
+70502,Alhama De Aragón,Alhama De Aragón,Desconocida,41.294398,-1.904454,0,0
+70501,Cetina,Cetina,Desconocida,41.295978,-1.961811,0,0
+70500,Ariza,Ariza,Desconocida,41.3098,-2.059411,0,0
+70405,Monreal de Ariza,Monreal de Ariza,Desconocida,41.298767,-2.110448,0,0
+70404,Santa María De Huerta,Santa María De Huerta,Desconocida,41.264421,-2.177525,0,0
+70503,Bubierca,Bubierca,Desconocida,41.31719,-1.855198,0,0
+34010,Peñaranda de Bracamonte,Peñaranda de Bracamonte,Desconocida,40.898138,-5.206361,0,0
+34014,Aldealengua,Aldealengua,Desconocida,40.97989,-5.552951,0,0
+34013,San Morales,San Morales,Desconocida,40.984243,-5.492955,0,0
+34012,Babilafuente,Babilafuente,Desconocida,40.972426,-5.430593,0,0
+34011,Villar de Gallimazo,Villar de Gallimazo,Desconocida,40.951981,-5.296183,0,0
+34008,Narros del Castillo,Narros del Castillo,Desconocida,40.866641,-5.052869,0,0
+34007,Crespos,Crespos,Desconocida,40.87011,-4.96803,0,0
+34005,San Pedro del Arroyo,San Pedro del Arroyo,Desconocida,40.803841,-4.871407,0,0
+34002,Cardeñosa de Avila,Cardeñosa de Avila,Desconocida,40.73912,-4.75075,0,0
+70401,Medinaceli,Medinaceli,Desconocida,41.165207,-2.421241,0,0
+70204,Humanes De Mohernando,Humanes De Mohernando,Desconocida,40.831273,-3.13886,0,0
+70202,Yunquera De Henares,Yunquera De Henares,Desconocida,40.747013,-3.163226,0,0
+55019,Los Barrios,Los Barrios,Desconocida,36.173998,-5.460801,0,0
+55017,Almoraima,Almoraima,Desconocida,36.27751,-5.430529,0,0
+55015,Jimena de La Frontera,Jimena de La Frontera,Desconocida,36.4242,-5.434113,0,0
+55014,San Pablo,San Pablo,Desconocida,36.467952,-5.418921,0,0
+55013,Gaucin,Gaucin,Desconocida,36.540372,-5.386825,0,0
+55012,Cortes de La Frontera,Cortes de La Frontera,Desconocida,36.597364,-5.332784,0,0
+55011,Jimera de Libar,Jimera de Libar,Desconocida,36.660678,-5.281473,0,0
+55010,Benaojan-Montejaque,Benaojan-Montejaque,Desconocida,36.713753,-5.246366,0,0
+55008,Arriate,Arriate,Desconocida,36.7905949,-5.140757,0,0
+55005,Setenil,Setenil,Desconocida,36.863423,-5.121375,0,0
+55003,Almargen-Cañete La Real,Almargen-Cañete La Real,Desconocida,37.000985,-5.020111,0,0
+55001,Campillos,Campillos,Desconocida,37.032231,-4.863499,0,0
+70706,Grisen,Grisen,Desconocida,41.745261,-1.165924,0,0
+70703,Epila,Epila,Desconocida,41.60933,-1.301043,0,0
+70702,Salillas de Jalon,Salillas de Jalon,Desconocida,41.56794,-1.325848,0,0
+70701,Calatorao,Calatorao,Desconocida,41.528692,-1.360545,0,0
+70607,Morata de Jalon,Morata de Jalon,Desconocida,41.475467,-1.479721,0,0
+70606,Purroy,Purroy,Desconocida,41.477236,-1.540446,0,0
+70605,Mores,Mores,Desconocida,41.478667,-1.566238,0,0
+70604,Sabiñan,Sabiñan,Desconocida,41.443981,-1.571474,0,0
+70602,Embid de Jalon,Embid de Jalon,Desconocida,41.421676,-1.592127,0,0
+70603,Paracuellos-Sabiñan,Paracuellos-Sabiñan,Desconocida,41.42931,-1.567483,0,0
+69001,Genovés,Genovés,Desconocida,38.98773,-0.47988,0,0
+69003,La Pobla Del Duc,La Pobla Del Duc,Desconocida,38.907606,-0.453386,0,0
+69004,Montaverner,Montaverner,Desconocida,38.884135,-0.491619,0,0
+69005,Bufali,Bufali,Desconocida,38.867405,-0.510478,0,0
+69007,Agullent,Agullent,Desconocida,38.830569,-0.551183,0,0
+69009,Agres,Agres,Desconocida,38.796829,-0.521744,0,0
+69010,Cocentaina,Cocentaina,Desconocida,38.740618,-0.446789,0,0
+70705,Plasencia de Jalon,Plasencia de Jalon,Desconocida,41.68935,-1.234237,0,0
+70704,Rueda de Jalon-Lumpiaque,Rueda de Jalon-Lumpiaque,Desconocida,41.638892,-1.281667,0,0
+5193,Ribadeo,Ribadeo,Desconocida,43.53607,-7.055572,0,0
+5102,San Xoan,San Xoan,Desconocida,43.4945654,-8.2142733,0,0
+5104,Virxe Do Mar,Virxe Do Mar,Desconocida,43.4965254,-8.2048752,0,0
+5103,Santa Icía,Santa Icía,Desconocida,43.4997707,-8.1999226,0,0
+5108,O Alto Do Castiñeiro,O Alto Do Castiñeiro,Desconocida,43.5031794,-8.1955484,0,0
+5105,Piñeiros,Piñeiros,Desconocida,43.509483,-8.1839923,0,0
+5106,O Ponto,O Ponto,Desconocida,43.5147757,-8.1777808,0,0
+5107,Xuvia,Xuvia,Desconocida,43.5171911,-8.161282,0,0
+5109,Ferrerías,Ferrerías,Desconocida,43.5280178,-8.1504359,0,0
+5111,Sedes,Sedes,Desconocida,43.5426113,-8.1401903,0,0
+5113,Pedroso de Narón,Pedroso de Narón,Desconocida,43.5367071,-8.1091931,0,0
+5115,San Sadurniño,San Sadurniño,Desconocida,43.5460838,-8.0781099,0,0
+5117,Llamas,Llamas,Desconocida,43.5473064,-8.0490166,0,0
+5119,Apalla,Apalla,Desconocida,43.550457,-8.0186188,0,0
+5121,Moeche,Moeche,Desconocida,43.562132,-8.0027572,0,0
+5123,Labacengos,Labacengos,Desconocida,43.5652707,-7.9801882,0,0
+5125,Entrambarrías,Entrambarrías,Desconocida,43.5770633,-7.9542644,0,0
+5127,Cerdido,Cerdido,Desconocida,43.5873426,-7.9343099,0,0
+5129,A Cuqueria,A Cuqueria,Desconocida,43.6078292,-7.9219389,0,0
+5131,Santa Maria de Mera,Santa Maria de Mera,Desconocida,43.6409288,-7.9161904,0,0
+5133,Ponte Mera,Ponte Mera,Desconocida,43.666038,-7.9026205,0,0
+5135,San Clodio,San Clodio,Desconocida,43.6609443,-7.873478,0,0
+5137,Senra,Senra,Desconocida,43.668793,-7.8545534,0,0
+5139,Ortigueira,Ortigueira,Desconocida,43.6862217,-7.8495738,0,0
+5141,Espasante,Espasante,Desconocida,43.70888,-7.804897,0,0
+5143,Loiba,Loiba,Desconocida,43.730393,-7.750044,0,0
+5145,O Barqueiro,O Barqueiro,Desconocida,43.735649,-7.70288,0,0
+5147,O Vicedo,O Vicedo,Desconocida,43.731026,-7.673215,0,0
+5149,Mosende,Mosende,Desconocida,43.706194,-7.635477,0,0
+5151,Folgueiro,Folgueiro,Desconocida,43.692766,-7.635048,0,0
+5153,Covas de Viveiro,Covas de Viveiro,Desconocida,43.670275,-7.614613,0,0
+5155,Viveiro,Viveiro,Desconocida,43.6569,-7.60033,0,0
+5156,Viveiro Apdro.,Viveiro Apdro.,Desconocida,43.661435,-7.594532,0,0
+5157,Xuances,Xuances,Desconocida,43.687991,-7.553904,0,0
+5159,Xove Pobo,Xove Pobo,Desconocida,43.683567,-7.510921,0,0
+5161,Xove,Xove,Desconocida,43.681138,-7.495251,0,0
+5163,Lago,Lago,Desconocida,43.687108,-7.481942,0,0
+5165,Bidueiros,Bidueiros,Desconocida,43.696712,-7.468843,0,0
+5167,San Cibrao,San Cibrao,Desconocida,43.692319,-7.44177,0,0
+5169,Madeiro,Madeiro,Desconocida,43.686219,-7.412863,0,0
+5171,Burela,Burela,Desconocida,43.660607,-7.361183,0,0
+5173,Cangas de Foz,Cangas de Foz,Desconocida,43.626106,-7.333309,0,0
+5175,Nois,Nois,Desconocida,43.610309,-7.312222,0,0
+5177,Fazouro,Fazouro,Desconocida,43.600457,-7.299843,0,0
+5179,Marzán,Marzán,Desconocida,43.57475,-7.26936,0,0
+5181,Foz,Foz,Lugo,43.560886,-7.272235,0,0
+5183,Barreiros,Barreiros,Desconocida,43.547366,-7.225287,0,0
+5185,Reinante,Reinante,Desconocida,43.54987,-7.174315,0,0
+5187,Esteiro,Esteiro,Desconocida,43.551697,-7.146099,0,0
+5189,Os Castros,Os Castros,Desconocida,43.55157,-7.130895,0,0
+5191,Rinlo,Rinlo,Desconocida,43.549761,-7.108645,0,0
+5300,Vallobin,Vallobin,Desconocida,43.3652306,-5.8647984,0,0
+5301,Argañosa-Lavapiés,Argañosa-Lavapiés,Desconocida,43.3658311,-5.870018,0,0
+5302,Las Campas,Las Campas,Desconocida,43.3638889,-5.8833728,0,0
+5303,Las Mazas,Las Mazas,Desconocida,43.3587192,-5.8975568,0,0
+5304,San Claudio,San Claudio,Desconocida,43.3553535,-5.9178091,0,0
+5306,San Pedro Nora,San Pedro Nora,Desconocida,43.3687481,-5.9585951,0,0
+5308,Soto Udrion,Soto Udrion,Desconocida,43.3564364,-5.9650157,0,0
+5311,Trubia,Trubia,Desconocida,43.34857,-5.9677756,0,0
+5313,Santa Mª de Grado,Santa Mª de Grado,Desconocida,43.3842274,-5.9827075,0,0
+5315,Vega de Anzo,Vega de Anzo,Desconocida,43.38933,-6.0056834,0,0
+5316,Feve-Peñaflor de Grado,Feve-Peñaflor de Grado,Desconocida,43.4029267,-6.0453921,0,0
+5317,Grado,Grado,Asturias,43.3945424,-6.0637254,0,0
+5319,Sandiche,Sandiche,Desconocida,43.4256226,-6.0599341,0,0
+5320,Aces,Aces,Desconocida,43.4399142,-6.0657983,0,0
+5321,San Roman,San Roman,Desconocida,43.4488839,-6.0771641,0,0
+5323,Beifar,Beifar,Desconocida,43.4701379,-6.0988707,0,0
+5325,Pravia,Pravia,Desconocida,43.4908983,-6.1105373,0,0
+5243,Muros del Nalón,Muros del Nalón,Desconocida,43.5429728,-6.1110718,0,0
+5245,Cudillero,Cudillero,Desconocida,43.5509259,-6.1519305,0,0
+5249,La Magdalena,La Magdalena,Desconocida,43.559309,-6.184922,0,0
+5251,San Martin de Luiña,San Martin de Luiña,Desconocida,43.544753,-6.228702,0,0
+5255,Soto de Luiña,Soto de Luiña,Desconocida,43.559635,-6.234369,0,0
+5259,Novellana,Novellana,Desconocida,43.557795,-6.289593,0,0
+5261,Santa Marina,Santa Marina,Desconocida,43.552674,-6.305181,0,0
+5263,Ballota,Ballota,Desconocida,43.550716,-6.322812,0,0
+5265,Tablizo,Tablizo,Desconocida,43.547253,-6.351225,0,0
+5267,Cadavedo,Cadavedo,Desconocida,43.542952,-6.391612,0,0
+5269,San Cristóbal,San Cristóbal,Desconocida,43.547225,-6.415264,0,0
+5271,Canero,Canero,Desconocida,43.541913,-6.445878,0,0
+5275,Luarca,Luarca,Desconocida,43.537949,-6.536617,0,0
+5279,Villapedre,Villapedre,Desconocida,43.546723,-6.64587,0,0
+5283,Navia,Navia,Desconocida,43.536802,-6.719425,0,0
+5285,Medal,Medal,Desconocida,43.545692,-6.752994,0,0
+5291,La Caridad,La Caridad,Desconocida,43.547074,-6.827541,0,0
+5293,Tapia,Tapia,Desconocida,43.535026,-6.909329,0,0
+5299,Castropol,Castropol,Desconocida,43.5095861,-7.0147697,0,0
+5197,Vegadeo Pueblo,Vegadeo Pueblo,Desconocida,43.479667,-7.057327,0,0
+5239,Santianes,Santianes,Desconocida,43.503799,-6.0918391,0,0
+5241,Los Cavos,Los Cavos,Desconocida,43.5124147,-6.0974746,0,0
+5244,El Pito Piñera,El Pito Piñera,Desconocida,43.5469091,-6.1433417,0,0
+5247,Villademar,Villademar,Desconocida,43.557065,-6.155477,0,0
+5253,San Cosme,San Cosme,Desconocida,43.544069,-6.248091,0,0
+5257,Valdredo,Valdredo,Desconocida,43.56638,-6.263234,0,0
+5273,Barcia,Barcia,Desconocida,43.546813,-6.50828,0,0
+5277,Otur,Otur,Desconocida,43.540541,-6.593562,0,0
+5281,Piñera-Villaoril,Piñera-Villaoril,Desconocida,43.535685,-6.685414,0,0
+5287,Loza,Loza,Desconocida,43.551254,-6.771675,0,0
+5289,Cartavio,Cartavio,Desconocida,43.550714,-6.789622,0,0
+5295,Tol,Tol,Desconocida,43.527204,-6.952128,0,0
+5297,Las Campas de Castropol,Las Campas de Castropol,Desconocida,43.5202979,-6.9771022,0,0
+5199,Vilavedelle,Vilavedelle,Desconocida,43.490502,-7.038353,0,0
+5571,Llanes,Llanes,Desconocida,43.42094,-4.7587,0,0
+15217,La Corredoria,La Corredoria,Desconocida,43.388108,-5.8272527,0,0
+5504,Parque Principado,Parque Principado,Desconocida,43.3865865,-5.8087971,0,0
+5505,Colloto,Colloto,Desconocida,43.3795086,-5.792366,0,0
+5507,Meres,Meres,Desconocida,43.3809885,-5.7487209,0,0
+5508,Fonciello,Fonciello,Desconocida,43.3817779,-5.7297194,0,0
+5509,El Berron,El Berron,Desconocida,43.3827383,-5.7026774,0,0
+5511,La Carrera de Siero,La Carrera de Siero,Desconocida,43.3869214,-5.6753462,0,0
+5513,Pola de Siero,Pola de Siero,Desconocida,43.3881527,-5.6647718,0,0
+5515,Los Corros,Los Corros,Desconocida,43.3768432,-5.6013769,0,0
+5517,Lieres,Lieres,Desconocida,43.380583,-5.5826229,0,0
+5521,El Remedio,El Remedio,Desconocida,43.3750793,-5.5462394,0,0
+5522,Llames,Llames,Desconocida,43.3687796,-5.5252404,0,0
+5523,Nava,Nava,Desconocida,43.3611878,-5.5090986,0,0
+5525,Feve-Fuente Santa de Nava,Feve-Fuente Santa de Nava,Desconocida,43.3555699,-5.478379,0,0
+5527,Ceceda,Ceceda,Desconocida,43.3562226,-5.4511094,0,0
+5529,Carancos,Carancos,Desconocida,43.3555692,-5.4344422,0,0
+5531,Pintueles,Pintueles,Desconocida,43.3599234,-5.3841316,0,0
+5533,Infiesto,Infiesto,Desconocida,43.3517868,-5.3692019,0,0
+5534,Infiesto/apdro.,Infiesto/apdro.,Desconocida,43.3440407,-5.3606414,0,0
+5535,Villamayor,Villamayor,Desconocida,43.3631,-5.30285,0,0
+5537,Sebares,Sebares,Desconocida,43.36236,-5.2574,0,0
+5539,Soto de Dueñas,Soto de Dueñas,Desconocida,43.3583,-5.22689,0,0
+5541,Ozanes,Ozanes,Desconocida,43.368395,-5.185191,0,0
+5542,Policlinico,Policlinico,Desconocida,43.378622,-5.18603,0,0
+5543,Arriondas,Arriondas,Desconocida,43.387513,-5.188258,0,0
+5545,Fuentes,Fuentes,Desconocida,43.401443,-5.143117,0,0
+5547,Toraño,Toraño,Desconocida,43.412281,-5.118013,0,0
+5549,Cuevas,Cuevas,Desconocida,43.431144,-5.073302,0,0
+5551,Llovio,Llovio,Desconocida,43.440563,-5.055592,0,0
+5553,Ribadesella,Ribadesella,Desconocida,43.45945,-5.0545,0,0
+5555,Camango,Camango,Desconocida,43.44821,-5.01882,0,0
+5557,Feve-Belmonte de Pria,Feve-Belmonte de Pria,Desconocida,43.4398,-4.98228,0,0
+5559,Nueva,Nueva,Desconocida,43.440585,-4.935531,0,0
+5561,Villahormes,Villahormes,Desconocida,43.4420099,-4.90383,0,0
+5563,Posada,Posada,Desconocida,43.42483,-4.865,0,0
+5565,Balmori,Balmori,Desconocida,43.42147,-4.83583,0,0
+5567,Celorio,Celorio,Desconocida,43.42501,-4.81133,0,0
+5569,Poo,Poo,Desconocida,43.42429,-4.78189,0,0
+5621,Torrelavega-Centro,Torrelavega-Centro,Desconocida,43.3510014,-4.0511789,0,0
+5623,Puente San Miguel,Puente San Miguel,Desconocida,43.3586724,-4.0877667,0,0
+5637,Cabezon de La Sal,Cabezon de La Sal,Desconocida,43.3079038,-4.2319437,0,0
+5641,Treceño,Treceño,Desconocida,43.31828,-4.30902,0,0
+5643,Roiz,Roiz,Desconocida,43.32821,-4.34927,0,0
+5644,El Barcenal,El Barcenal,Desconocida,43.340347,-4.383335,0,0
+5645,San Vicente de la Barquera,San Vicente de la Barquera,Desconocida,43.367837,-4.404504,0,0
+5647,Pesués,Pesués,Desconocida,43.370289,-4.480174,0,0
+5649,Unquera,Unquera,Desconocida,43.37478,-4.51434,0,0
+5579,Colombres,Colombres,Desconocida,43.38272,-4.55709,0,0
+5577,Pendueles,Pendueles,Desconocida,43.39283,-4.63039,0,0
+5575,Vidiago,Vidiago,Desconocida,43.39647,-4.673,0,0
+5573,San Roque del Acebal,San Roque del Acebal,Desconocida,43.39473,-4.73013,0,0
+5451,Bilbao la Concordia,Bilbao la Concordia,Desconocida,43.2601901,-2.9263839,0,0
+13206,Ametzola,Ametzola,Desconocida,43.2547065,-2.9436598,0,0
+5455,Basurto Hospital,Basurto Hospital,Desconocida,43.2597699,-2.9538267,0,0
+5457,Feve-Zorroza Zorrozgoiti,Feve-Zorroza Zorrozgoiti,Desconocida,43.2740398,-2.9740116,0,0
+5461,Irauregui,Irauregui,Desconocida,43.248418,-2.9900734,0,0
+5463,Zaramillo,Zaramillo,Desconocida,43.2332894,-3.015904,0,0
+5467,Sodupe,Sodupe,Desconocida,43.2020301,-3.050517,0,0
+5473,Aranguren,Aranguren,Desconocida,43.2104561,-3.108399,0,0
+5484,Mimetiz,Mimetiz,Desconocida,43.2132627,-3.1352774,0,0
+5487,Traslaviña,Traslaviña,Desconocida,43.23329,-3.198304,0,0
+5489,Arzentales,Arzentales,Desconocida,43.25,-3.22,0,0
+5493,Villaverde de Trucios,Villaverde de Trucios,Desconocida,43.24128,-3.25054,0,0
+5497,Karrantza,Karrantza,Desconocida,43.238854,-3.357827,0,0
+5602,Valdecilla la Marga,Valdecilla la Marga,Desconocida,43.4529465,-3.8282409,0,0
+5651,Nueva Montaña,Nueva Montaña,Desconocida,43.4401845,-3.8493711,0,0
+5655,Maliaño Vidriera,Maliaño Vidriera,Desconocida,43.4160163,-3.8411016,0,0
+5657,Astillero,Astillero,Desconocida,43.4036508,-3.8206798,0,0
+5661,Heras,Heras,Desconocida,43.4008996,-3.7666376,0,0
+5663,Orejo,Orejo,Desconocida,43.3994776,-3.7383974,0,0
+5672,Puente Agüero,Puente Agüero,Desconocida,43.406489,-3.719342,0,0
+5673,Villaverde de Pontones,Villaverde de Pontones,Desconocida,43.411322,-3.703643,0,0
+5675,Hoz de Anero,Hoz de Anero,Desconocida,43.404885,-3.666883,0,0
+5677,Beranga,Beranga,Desconocida,43.41371,-3.57713,0,0
+5679,Gama,Gama,Desconocida,43.42315,-3.52472,0,0
+5681,Cicero,Cicero,Desconocida,43.417052,-3.49049,0,0
+5683,Treto,Treto,Desconocida,43.39409,-3.4692,0,0
+5685,Limpias,Limpias,Desconocida,43.35881,-3.43334,0,0
+5687,Marrón,Marrón,Desconocida,43.34661,-3.420918,0,0
+5689,Udalla,Udalla,Desconocida,43.31368,-3.44549,0,0
+5691,Gibaja,Gibaja,Desconocida,43.28219,-3.43831,0,0
+5652,Valle Real,Valle Real,Desconocida,43.4275399,-3.8405377,0,0
+5778,Feve-Leon,Feve-Leon,Desconocida,42.6024918,-5.5749341,0,0
+5803,La Asunción Universidad,La Asunción Universidad,Desconocida,42.6160983,-5.5660988,0,0
+5776,San Feliz,San Feliz,Desconocida,42.6823112,-5.5379086,0,0
+5770,Matallana,Matallana,Desconocida,42.841149,-5.5218718,0,0
+5767,La Vecilla,La Vecilla,Desconocida,42.8551158,-5.4121157,0,0
+5766,Boñar,Boñar,Desconocida,42.8627875,-5.3285261,0,0
+5763,La Ercina,La Ercina,Desconocida,42.808848,-5.2138924,0,0
+5761,Cistierna,Cistierna,Desconocida,42.80316,-5.1307925,0,0
+5790,Sorriba,Sorriba,Desconocida,42.786277,-5.1274758,0,0
+5760,Valle de Las Casas,Valle de Las Casas,Desconocida,42.767772,-5.0713669,0,0
+5755,La Llama de La Guzpeña,La Llama de La Guzpeña,Desconocida,42.7702481,-5.0412478,0,0
+5759,Prado de La Guzpeña,Prado de La Guzpeña,Desconocida,42.7832347,-5.0270973,0,0
+5799,Cerezal de La Guzpeña,Cerezal de La Guzpeña,Desconocida,42.7797744,-5.0055719,0,0
+5758,Puente Almuhey,Puente Almuhey,Desconocida,42.787632,-4.9718992,0,0
+5757,Valcuende,Valcuende,Desconocida,42.765578,-4.9292558,0,0
+5756,La Espina,La Espina,Desconocida,42.786856,-4.9052025,0,0
+5754,Guardo,Guardo,Desconocida,42.790995,-4.8519325,0,0
+5753,Guardo/apdro.,Guardo/apdro.,Desconocida,42.7877378,-4.845133,0,0
+5752,Santibañez de La Peña,Santibañez de La Peña,Desconocida,42.80204,-4.74145,0,0
+5751,Villaverde Tarilonte,Villaverde Tarilonte,Desconocida,42.818353,-4.685419,0,0
+5750,Castrejon de La Peña,Castrejon de La Peña,Desconocida,42.81199,-4.60162,0,0
+5749,Vado Cervera,Vado Cervera,Desconocida,42.83936,-4.49477,0,0
+5748,Salinas de Pisuerga,Salinas de Pisuerga,Desconocida,42.851271,-4.386209,0,0
+5747,Cillamayor,Cillamayor,Desconocida,42.857752,-4.279178,0,0
+5744,Los Carabeos,Los Carabeos,Desconocida,42.910329,-4.075211,0,0
+5743,Montes Claros,Montes Claros,Desconocida,42.934323,-4.050073,0,0
+5742,Feve-Las Rozas de Valdearroyo,Feve-Las Rozas de Valdearroyo,Desconocida,42.973605,-4.029864,0,0
+5741,Llano,Llano,Desconocida,42.988062,-3.982357,0,0
+5740,Arija,Arija,Desconocida,42.991292,-3.945006,0,0
+5739,Cabañas de Virtus,Cabañas de Virtus,Desconocida,42.996397,-3.858466,0,0
+5738,Soncillo,Soncillo,Desconocida,43.005809,-3.844888,0,0
+5737,Robredo Ahedo,Robredo Ahedo,Desconocida,43.019094,-3.809231,0,0
+5736,Dosante Cidad,Dosante Cidad,Desconocida,43.00125,-3.74525,0,0
+5735,Pedrosa,Pedrosa,Desconocida,43.012367,-3.737852,0,0
+5734,Sotoscueva,Sotoscueva,Desconocida,43.045292,-3.688253,0,0
+5733,Redondo,Redondo,Desconocida,43.062993,-3.607895,0,0
+5732,Espinosa de Los Monteros,Espinosa de Los Monteros,Desconocida,43.074252,-3.537116,0,0
+5731,Quintana de Los Prados,Quintana de Los Prados,Desconocida,43.08,-3.51,0,0
+5730,Bercedo Montija,Bercedo Montija,Desconocida,43.088479,-3.456,0,0
+5727,Cadagua,Cadagua,Desconocida,43.068171,-3.347339,0,0
+5724,Mercadillo-Villasana,Mercadillo-Villasana,Desconocida,43.105209,-3.264469,0,0
+5722,Ungo Nava,Ungo Nava,Desconocida,43.142894,-3.264716,0,0
+5721,Arla-Berron,Arla-Berron,Desconocida,43.166699,-3.227589,0,0
+5474,Aranguren-Apeadero,Aranguren-Apeadero,Desconocida,43.2103517,-3.1140505,0,0
+5475,Zalla,Zalla,Desconocida,43.2129096,-3.1333368,0,0
+5483,Balmaseda,Balmaseda,Bizkaia,43.1963551,-3.1899562,0,0
+7004,Aguilas,Aguilas,Desconocida,37.409865,-1.5725342,0,0                                                                                                                                                                                                                                                                                            

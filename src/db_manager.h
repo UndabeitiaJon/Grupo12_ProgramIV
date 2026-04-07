@@ -1,8 +1,7 @@
 /*
  * db_manager.h
  *
- *  Created on: 30 mar 2026
- *      Author: ander.lecue
+
  */
 
 #ifndef SRC_DB_MANAGER_H_
@@ -30,9 +29,9 @@ int deshabilitar_usuario_db(int id_u);
 void buscar_usuario_db(const char *dni_o_nombre);
 bool verificar_usuario(char *email, char *contraseniaIntroducida);
 //Funcion para comprobar si el usuario existe en la bbdd
-bool comprobar_usuario_registrado(char *email);
+bool comprobar_usuario_registrado(const char *email);
 //Funcion para comprobar la contraseña del usuario
-bool comprobar_contrasenia (char *email, char *contraseniaIntroducida);
+bool comprobar_contrasenia (const char *email, const char *contraseniaIntroducida);
 int cambiar_contrasenia_db(const char *email, const char *nueva_pass);
 void importar_usuarios_csv(const char* ruta_csv);
 Usuario obtener_usuario_por_id(int id_u);
@@ -79,6 +78,7 @@ Estacion  obtener_estacion_por_id(int id_est);
 int insertar_trayecto_db(Trayecto tr);
 int cargar_trayectos_csv(const char *ruta_csv);
 void listar_trayectos_db(void);
+void listar_trayectos_filtro(const char *estacion_origen, const char *estacion_destino);
 int modificar_trayecto_db(int id_tr, const char *hora_sal, const char *hora_ll, double precio, const char *dias);
 int cambiar_estado_trayecto_db(int id_tr, EstadoTrayecto estado);
 Trayecto obtener_trayecto_por_id(int id_tr);

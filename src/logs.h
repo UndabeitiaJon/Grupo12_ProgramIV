@@ -1,8 +1,7 @@
 /*
  * logs.h
  *
- *  Created on: 1 abr 2026
- *      Author: e.aranoa
+
  */
 
 #ifndef LOGS_H

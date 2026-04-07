@@ -1,76 +1,66 @@
 /*
- ============================================================================
- Name        :
- Author      : 
- Version     :
- Copyright   : Your copyright notice
- Description : Hello World in C, Ansi-style
- ============================================================================
+ * main.c  –  Sistema TRENFE  –  Fase 1
+ *
+ * Punto de entrada.  Secuencia de arranque:
+ *   1. Crea directorios data/ y logs/ si no existen
+ *   2. Carga config.cfg (o usa valores por defecto)
+ *   3. Inicializa BD SQLite con las 14 tablas
+ *   4. Carga datos de prueba (INSERT OR IGNORE → idempotente)
+ *   5. Registra arranque en log
+ *   6. Lanza menú inicial (Login / Registro / Salir)
  */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <direct.h>
+#include <string.h>
+
+/* ── compatibilidad Windows / Linux para mkdir ── */
+#ifdef _WIN32
+    #include <direct.h>
+    #define MKDIR(p) _mkdir(p)
+#else
+    #include <sys/stat.h>
+    #include <sys/types.h>
+    #define MKDIR(p) mkdir((p), 0755)
+#endif
+
 #include "estructuras.h"
 #include "db_manager.h"
 #include "config.h"
 #include "logs.h"
 #include "menus.h"
 
-#ifdef _WIN32
-    #include <direct.h>
-    #define crear_directorio(p) _mkdir(p)
-#else
-    #include <sys/stat.h>
-    #define crear_directorio(p) mkdir(p, 0755)
-#endif
-
+/* ─────────────────────────────────────────────── */
 int main(void) {
+    /* Sin buffering en stdout → salida inmediata en Eclipse/Windows */
     setvbuf(stdout, NULL, _IONBF, 0);
 
-    printf("=========================================\n");
-    printf("     BIENVENIDO AL SISTEMA TRENFE\n");
-    printf("=========================================\n");
+    /* 1. Crear directorios necesarios */
+    MKDIR("./data");
+    MKDIR("./logs");
 
-    crear_directorio("./data");
-    crear_directorio("./logs");
-
+    /* 2. Cargar configuración */
     cargar_config("./data/config.cfg", &cfg);
 
+    /* 3. Inicializar base de datos (crea tablas si no existen) */
     if (init_database() != 0) {
-        printf("Error: no se pudo inicializar la base de datos.\n");
+        fprintf(stderr, "ERROR CRITICO: no se pudo inicializar la BD.\n");
         return EXIT_FAILURE;
     }
 
+    /* 4. Insertar datos de prueba (seguro: INSERT OR IGNORE) */
     seed_database();
 
-    log_evento(cfg.log_path, NULL, "INICIO", "Sistema arrancado");
+    /* 5. Log de arranque */
+    log_evento(cfg.log_path, "SISTEMA", "ARRANQUE",
+               "Administrador local TRENFE iniciado");
 
-    int opcion;
+    /* 6. Menú principal */
+    menu_inicial();
 
-    do {
-        limpiar_pantalla();
-        printf("\n-----------------------------------------\n");
-        printf("     BIENVENIDO AL SISTEMA TRENFE\n");
-        printf("-----------------------------------------\n");
-        printf("  1. Iniciar sesion\n");
-        printf("  2. Registrar\n");
-        printf("  0. Salir\n");
-        printf("-----------------------------------------\n");
-        printf("Opcion: ");
-        scanf("%d", &opcion);
-
-        switch(opcion) {
-            case 1: limpiar_pantalla(); menu_login(); break;
-            case 2: limpiar_pantalla(); menu_alta_usuario(NULL); break;
-            case 0:
-                log_evento(cfg.log_path, NULL, "FIN", "Sistema detenido");
-                printf("Hasta luego.\n");
-                break;
-            default: printf("Opcion no valida.\n"); break;
-        }
-    } while(opcion != 0);
-
+    /* 7. Log de cierre */
+    log_evento(cfg.log_path, "SISTEMA", "CIERRE",
+               "Administrador local TRENFE detenido");
 
     return EXIT_SUCCESS;
 }
