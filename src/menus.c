@@ -874,8 +874,9 @@ void menu_importar_gtfs(int id_admin, const char *email) {
         switch (op) {
         case 1: {
             char ruta[256];
-            leer_cadena("  Ruta del directorio GTFS: ", ruta, sizeof(ruta));
-            printf("  Importando datos RENFE...\n");
+            leer_cadena("  Ruta del directorio GTFS (ENTER=./data): ", ruta, sizeof(ruta));
+            if (strlen(ruta) == 0) strcpy(ruta, "./data");
+            printf("  Importando datos RENFE desde '%s'...\n", ruta);
             if (importar_gtfs(ruta) == 0) {
                 log_evento(cfg.log_path, email, "IMPORT_GTFS", ruta);
                 printf("  Importacion completada correctamente.\n");
