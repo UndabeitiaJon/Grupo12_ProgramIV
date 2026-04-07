@@ -325,6 +325,9 @@
 [2026-04-07 13:35:55] [SISTEMA] [RETRASO] accidente
 [2026-04-07 13:36:13] [pedro@trenfe.com] [LOGOUT] Sesion maquinista cerrada
 [2026-04-07 13:36:31] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+<<<<<<< HEAD
+[2026-04-07 18:31:26] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+=======
 [2026-04-07 18:36:51] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 19:05:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 19:05:57] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
@@ -343,6 +346,7 @@
 [2026-04-07 19:16:45] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
 [2026-04-07 19:16:54] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 19:16:56] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
 [2026-04-07 19:21:53] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 19:22:25] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
 [2026-04-07 19:24:07] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
@@ -363,3 +367,6 @@
 [2026-04-07 19:33:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
 [2026-04-07 19:33:56] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 19:33:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
