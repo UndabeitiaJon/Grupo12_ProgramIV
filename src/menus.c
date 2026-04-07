@@ -529,7 +529,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 3. GESTIÓN DE ESTACIONES ─── */
+// GESTIÓN DE ESTACIONES
 void menu_gestion_estaciones(int id_admin, const char *email) {
     int op;
     do {
@@ -625,7 +625,7 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 4. GESTIÓN DE PERSONAL ─── */
+// GESTIÓN DE PERSONAL
 void menu_gestion_personal(int id_admin, const char *email) {
     int op;
     do {
@@ -730,7 +730,7 @@ void menu_gestion_personal(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 5. GESTIÓN DE PASAJEROS ─── */
+// GESTIÓN DE PASAJEROS
 void menu_gestion_pasajeros(int id_admin, const char *email) {
     int op;
     do {
@@ -807,7 +807,7 @@ void menu_gestion_pasajeros(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 6. GESTIÓN DE SERVICIOS OPERATIVOS ─── */
+// GESTIÓN DE SERVICIOS OPERATIVOS
 void menu_gestion_servicios(int id_admin, const char *email) {
     int op;
     do {
@@ -888,7 +888,7 @@ void menu_gestion_servicios(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 7. GESTIÓN DE TARIFAS ─── */
+// GESTIÓN DE TARIFAS
 void menu_gestion_tarifas(int id_admin, const char *email) {
     int op;
     do {
@@ -980,7 +980,7 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 8. IMPORTAR GTFS ─── */
+// IMPORTAR
 void menu_importar_gtfs(int id_admin, const char *email) {
     int op;
     do {
@@ -1017,7 +1017,7 @@ void menu_importar_gtfs(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 9. INCIDENCIAS ─── */
+// INCIDENCIAS
 void menu_incidencias(int id_admin, const char *email) {
     int op;
     do {
@@ -1062,7 +1062,7 @@ void menu_incidencias(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 10. INFORMES ─── */
+// 10. INFORMES
 void menu_informes(int id_admin, const char *email) {
     int op;
     do {
@@ -1107,7 +1107,7 @@ void menu_informes(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 11. LOGS ─── */
+//LOGS
 void menu_logs(int id_admin, const char *email) {
     int op;
     do {
@@ -1143,7 +1143,7 @@ void menu_logs(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 12. CONFIGURACIÓN ─── */
+// CONFIGURACIÓN
 void menu_configuracion(int id_admin, const char *email) {
     int op;
     do {
@@ -1515,7 +1515,7 @@ void menu_buscar_trayecto(int id_u) {
     pausar_s();
 }
 
-/* ─── MIS RESERVAS ─── */
+//MIS RESERVAS
 void menu_mis_reservas(int id_u) {
     int op;
     do {
@@ -1553,7 +1553,7 @@ void menu_mis_reservas(int id_u) {
     } while (op != 0);
 }
 
-/* ─── PUNTOS DE FIDELIZACIÓN ─── */
+// PUNTOS DE FIDELIZACIÓN
 void menu_puntos_fidelizacion(int id_u) {
     int op;
     do {
@@ -1577,7 +1577,7 @@ void menu_puntos_fidelizacion(int id_u) {
     } while (op != 0);
 }
 
-/* ─── MIS DATOS PASAJERO ─── */
+// MIS DATOS PASAJERO
 void menu_mis_datos_pasajero(int id_u, const char *email) {
     int op;
     do {
@@ -1673,7 +1673,7 @@ void menu_principal_maquinista(int id_u, const char *email) {
     } while (op != 0);
 }
 
-/* ─── CUADRANTE DE SERVICIOS ─── */
+//CUADRANTE DE SERVICIOS
 void menu_cuadrante_servicios(int id_u) {
     int op;
     do {
@@ -1797,7 +1797,7 @@ void menu_cuadrante_servicios(int id_u) {
     } while (op != 0);
 }
 
-/* ─── MIS DATOS MAQUINISTA ─── */
+//MIS DATOS MAQUINISTA
 void menu_mis_datos_maquinista(int id_u, const char *email) {
     int op;
     do {
