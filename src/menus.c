@@ -458,8 +458,10 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             }
             limpiar_buffer_entrada();
             leer_cadena("  Hora salida (HH:MM)  : ", tr.hora_salida,  sizeof(tr.hora_salida));
-            leer_cadena("  Hora llegada (HH:MM) : ", tr.hora_llegada, sizeof(tr.hora_llegada));
-            tr.duracion_min = leer_entero("  Duracion (minutos)   : ");
+            printf("  Hora llegada (HH:MM)  : ");
+            scanf("%s", tr.hora_llegada);
+            printf("  Duracion(minutos)  : ");
+            scanf("%d", &tr.duracion_min);
             tr.precio_base  = leer_double("  Precio base Turista  : ");
             leer_cadena("  Dias operacion (ej LMXJVSD): ", tr.dias_operacion, sizeof(tr.dias_operacion));
             if (strlen(tr.dias_operacion) == 0) strcpy(tr.dias_operacion, "LMXJVSD");
