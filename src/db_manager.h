@@ -69,6 +69,8 @@ Estacion  obtener_estacion_por_id(int id_est);
 //ESTACIONES
 int insertar_estacion_db(Estacion e);
 void listar_estaciones_db();
+void listar_ciudades_db(void);
+int  listar_estaciones_ciudad_db(const char *ciudad, int *id_unico);
 int modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes);
 int toggle_sala_club_db(int id_est);
 Estacion  obtener_estacion_por_id(int id_est);
