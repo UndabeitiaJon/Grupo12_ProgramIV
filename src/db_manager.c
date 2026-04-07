@@ -3098,3 +3098,24 @@ int importar_gtfs(const char *ruta_directorio) {
     log_evento(cfg.log_path, "SISTEMA", "GTFS", "Importacion completada");
     return 0;
 }
+
+void resumen_ultima_importacion(void) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return;
+    sqlite3_stmt *s;
+    printf("\n[GTFS] ── RESUMEN BD ──────────────────\n");
+    sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM TRENES;",    -1,&s,NULL);
+    if (sqlite3_step(s)==SQLITE_ROW) printf("[GTFS]  Trenes      : %d\n",sqlite3_column_int(s,0));
+    sqlite3_finalize(s);
+    sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM ESTACIONES;",-1,&s,NULL);
+    if (sqlite3_step(s)==SQLITE_ROW) printf("[GTFS]  Estaciones  : %d\n",sqlite3_column_int(s,0));
+    sqlite3_finalize(s);
+    sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM TRAYECTOS;", -1,&s,NULL);
+    if (sqlite3_step(s)==SQLITE_ROW) printf("[GTFS]  Trayectos   : %d\n",sqlite3_column_int(s,0));
+    sqlite3_finalize(s);
+    sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM PARADAS_INTERMEDIAS;",-1,&s,NULL);
+    if (sqlite3_step(s)==SQLITE_ROW) printf("[GTFS]  Paradas int.: %d\n",sqlite3_column_int(s,0));
+    sqlite3_finalize(s);
+    printf("[GTFS] ───────────────────────────────\n");
+    sqlite3_close(db);
+}
