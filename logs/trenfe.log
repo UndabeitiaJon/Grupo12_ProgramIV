@@ -235,3 +235,38 @@
 [2026-04-07 12:30:16] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
 [2026-04-07 12:30:27] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 12:30:30] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:34:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:34:39] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:34:54] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:34:54] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:35:02] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:35:04] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:39:00] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:39:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:39:38] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:39:38] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:39:56] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:40:00] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:41:21] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:41:40] [ADMIN@TRENFE.COM] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:41:51] [ADMIN@TRENFE.COM] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:42:04] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:42:07] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:42:12] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:42:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:43:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:43:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:43:47] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:43:50] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:43:53] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:46:49] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:46:51] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:47:06] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:47:08] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:48:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:48:23] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:48:31] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:48:34] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:54:48] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:55:46] [ander@trenfe.com] [REGISTRO] Nuevo pasajero registrado
+[2026-04-07 12:55:52] [SISTEMA] [CIERRE] Administrador local TRENFE detenido

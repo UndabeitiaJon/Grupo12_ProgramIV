@@ -27,21 +27,18 @@ static sqlite3* abrir_bd() {
     return db;
 }
 
-/* ============================================================
- *  INIT Y SEED
- * ============================================================ */
-int init_database() {
+int init_database(void) {
     sqlite3 *db;
-    char *err = 0;
+    char *err = NULL;
 
-    int rc = sqlite3_open(cfg.db_path, &db);
-    if (rc != SQLITE_OK) {
-        printf("Error al abrir la BD: %s\n", sqlite3_errmsg(db));
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) {
+        fprintf(stderr, "[BD] Error al abrir: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         return 1;
     }
 
     const char *sql =
+        // USUARIOS
         "CREATE TABLE IF NOT EXISTS USUARIOS ("
         "id_u INTEGER PRIMARY KEY AUTOINCREMENT,"
         "nombre TEXT NOT NULL, apellido TEXT NOT NULL,"
@@ -50,31 +47,43 @@ int init_database() {
         "rol TEXT CHECK(rol IN ('ADMIN','PASAJERO','MAQUINISTA')),"
         "activo INTEGER DEFAULT 1, fecha_registro TEXT);"
 
-    	"CREATE TABLE IF NOT EXISTS DATOS_PASAJERO ("
-    	"id_u INTEGER PRIMARY KEY,"
-    	"puntos_fidelidad INTEGER DEFAULT 0,"
-    	"tipo_descuento TEXT DEFAULT 'NINGUNO',"
-    	"num_tarjeta_fidelizacion TEXT,"
-    	"necesidad_asistencia_pmr INTEGER DEFAULT 0,"
-    	"FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
+        // DATOS_PASAJERO
+        "CREATE TABLE IF NOT EXISTS DATOS_PASAJERO ("
+        "id_u INTEGER PRIMARY KEY,"
+        "puntos_fidelidad INTEGER DEFAULT 0,"
+        "tipo_descuento TEXT DEFAULT 'NINGUNO',"
+        "num_tarjeta_fidelizacion TEXT,"
+        "necesidad_asistencia_pmr INTEGER DEFAULT 0,"
+        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
 
-    	"CREATE TABLE IF NOT EXISTS DATOS_EMPLEADO ("
-    	"id_u INTEGER PRIMARY KEY,"
-    	"num_empleado TEXT UNIQUE,"
-    	"num_ss TEXT,"
+        // DATOS_EMPLEADO
+        "CREATE TABLE IF NOT EXISTS DATOS_EMPLEADO ("
+        "id_u INTEGER PRIMARY KEY,"
+        "num_empleado TEXT UNIQUE,"
+        "num_ss TEXT,"
         "fecha_ingreso TEXT,"
-    	"rol_empleado TEXT,"
-    	"anios_exp INTEGER DEFAULT 0,"
-    	"telf_empresa TEXT,"
-    	"estado TEXT DEFAULT 'ACTIVO',"
-    	"FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
+        "rol_empleado TEXT,"
+        "anios_exp INTEGER DEFAULT 0,"
+        "telf_empresa TEXT,"
+        "estado TEXT DEFAULT 'ACTIVO',"
+        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
 
+        // TRENES
         "CREATE TABLE IF NOT EXISTS TRENES ("
         "id_t INTEGER PRIMARY KEY AUTOINCREMENT,"
         "nombre_modelo TEXT NOT NULL, num_serie TEXT UNIQUE,"
         "anio_fab INTEGER, estado_mant TEXT DEFAULT 'OPERATIVO',"
         "fecha_ultima_revision TEXT);"
 
+        // VAGONES
+        "CREATE TABLE IF NOT EXISTS VAGONES ("
+        "id_vagon INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "id_tren INTEGER, numero_vagon INTEGER,"
+        "clase TEXT, capacidad_total INTEGER DEFAULT 50,"
+        "vagon_PMR INTEGER DEFAULT 0,"
+        "FOREIGN KEY(id_tren) REFERENCES TRENES(id_t));"
+
+        // ESTACIONES
         "CREATE TABLE IF NOT EXISTS ESTACIONES ("
         "id_est INTEGER PRIMARY KEY AUTOINCREMENT,"
         "nombre TEXT NOT NULL, codigo_gtfs TEXT,"
@@ -83,6 +92,7 @@ int init_database() {
         "num_andenes INTEGER DEFAULT 1,"
         "tiene_sala_club INTEGER DEFAULT 0);"
 
+        // TRAYECTOS
         "CREATE TABLE IF NOT EXISTS TRAYECTOS ("
         "id_tr INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_t INTEGER, id_est_origen INTEGER, id_est_destino INTEGER,"
@@ -91,9 +101,18 @@ int init_database() {
         "dias_operacion TEXT DEFAULT 'LMXJVSD',"
         "estado TEXT DEFAULT 'ACTIVO',"
         "FOREIGN KEY(id_t) REFERENCES TRENES(id_t),"
-        "FOREIGN KEY(id_est_origen) REFERENCES ESTACIONES(id_est),"
+        "FOREIGN KEY(id_est_origen)  REFERENCES ESTACIONES(id_est),"
         "FOREIGN KEY(id_est_destino) REFERENCES ESTACIONES(id_est));"
 
+        // PARADAS_INTERMEDIAS
+        "CREATE TABLE IF NOT EXISTS PARADAS_INTERMEDIAS ("
+        "id_parada INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "id_tr INTEGER, id_est INTEGER, orden INTEGER,"
+        "hora_llegada TEXT, hora_salida TEXT, anden INTEGER,"
+        "FOREIGN KEY(id_tr)  REFERENCES TRAYECTOS(id_tr),"
+        "FOREIGN KEY(id_est) REFERENCES ESTACIONES(id_est));"
+
+        // RESERVAS
         "CREATE TABLE IF NOT EXISTS RESERVAS ("
         "id_res INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_u INTEGER, id_tr INTEGER, fecha_viaje TEXT,"
@@ -101,33 +120,58 @@ int init_database() {
         "precio_base REAL, descuento_pct REAL DEFAULT 0,"
         "precio_final REAL, estado TEXT DEFAULT 'CONFIRMADA',"
         "codigo_validacion TEXT, fecha_reserva TEXT,"
-        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u),"
+        "FOREIGN KEY(id_u)  REFERENCES USUARIOS(id_u),"
         "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
 
-        "CREATE TABLE IF NOT EXISTS EQUIPAJE ("
+        // EQUIPAJES
+        "CREATE TABLE IF NOT EXISTS EQUIPAJES ("
         "id_eq INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "id_res INTEGER, tipo TEXT, peso_kg REAL,"
-        "exceso_kg REAL DEFAULT 0, suplemento_pago REAL DEFAULT 0,"
+        "id_res INTEGER, tipo TEXT, peso_kg REAL DEFAULT 0,"
+        "dimensiones TEXT, exceso_kg REAL DEFAULT 0,"
+        "suplemento_pago REAL DEFAULT 0, facturado INTEGER DEFAULT 0,"
         "FOREIGN KEY(id_res) REFERENCES RESERVAS(id_res));"
+
+        // SERVICIOS_OPERATIVOS
+        "CREATE TABLE IF NOT EXISTS SERVICIOS_OPERATIVOS ("
+        "id_serv INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "id_tr INTEGER, fecha TEXT,"
+        "estado_serv TEXT DEFAULT 'PROGRAMADO',"
+        "hora_inicio_real TEXT, hora_fin_real TEXT,"
+        "minutos_retraso INTEGER DEFAULT 0,"
+        "causa_retraso TEXT,"
+        "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
 
         "CREATE TABLE IF NOT EXISTS ASIGNACION_PERSONAL ("
         "id_asig INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "id_u INTEGER, id_t INTEGER, id_tr INTEGER, fecha TEXT,"
-        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u),"
-        "FOREIGN KEY(id_t) REFERENCES TRENES(id_t),"
-        "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
+        "id_serv INTEGER, id_u INTEGER, id_t INTEGER,"
+        "rol_servicio TEXT, observaciones TEXT,"
+        "FOREIGN KEY(id_serv) REFERENCES SERVICIOS_OPERATIVOS(id_serv),"
+        "FOREIGN KEY(id_u)    REFERENCES USUARIOS(id_u),"
+        "FOREIGN KEY(id_t)    REFERENCES TRENES(id_t));"
 
+        // INCIDENCIAS
         "CREATE TABLE IF NOT EXISTS INCIDENCIAS ("
         "id_inc INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "id_u_reporta INTEGER, id_tr INTEGER, fecha TEXT,"
-        "tipo TEXT, descripcion TEXT, prioridad TEXT DEFAULT 'MEDIA',"
+        "id_serv INTEGER, id_u_reporta INTEGER,"
+        "tipo TEXT, descripcion TEXT,"
+        "prioridad TEXT DEFAULT 'MEDIA',"
         "estado TEXT DEFAULT 'ABIERTA',"
-        "FOREIGN KEY(id_u_reporta) REFERENCES USUARIOS(id_u));"
+        "fecha_reporte TEXT, fecha_resolucion TEXT,"
+        "id_u_resuelve INTEGER,"
+        "FOREIGN KEY(id_serv)       REFERENCES SERVICIOS_OPERATIVOS(id_serv),"
+        "FOREIGN KEY(id_u_reporta)  REFERENCES USUARIOS(id_u),"
+        "FOREIGN KEY(id_u_resuelve) REFERENCES USUARIOS(id_u));"
 
-        "CREATE TABLE IF NOT EXISTS LOGS ("
+        // LOGS_OPERATIVOS
+        "CREATE TABLE IF NOT EXISTS LOGS_OPERATIVOS ("
         "id_log INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "fecha TEXT, id_u INTEGER, tipo_evento TEXT, descripcion TEXT);"
+        "timestamp TEXT, id_u INTEGER,"
+        "accion TEXT, entidad_afectada TEXT, id_entidad INTEGER,"
+        "ip_origen TEXT DEFAULT '127.0.0.1',"
+        "nivel TEXT DEFAULT 'INFO', detalle_json TEXT,"
+        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
 
+        // TARIFAS
         "CREATE TABLE IF NOT EXISTS TARIFAS ("
         "id_tarifa INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_tr INTEGER UNIQUE, precio_base REAL,"
@@ -137,154 +181,128 @@ int init_database() {
         "exceso_kg_precio REAL DEFAULT 12.0,"
         "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
 
-        "CREATE TABLE IF NOT EXISTS PUNTOS_FIDELIDAD ("
-        "id_u INTEGER PRIMARY KEY,"
-        "saldo_actual INTEGER DEFAULT 0,"
-        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));"
-
-        "CREATE TABLE IF NOT EXISTS VAGONES ("
-        "id_vagon INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "id_tren INTEGER, numero_vagon INTEGER,"
-        "clase TEXT, capacidad_total INTEGER,"
-        "vagon_PMR INTEGER DEFAULT 0,"
-        "FOREIGN KEY(id_tren) REFERENCES TRENES(id_t));"
-
-        "CREATE TABLE IF NOT EXISTS PARADAS_INTERMEDIAS ("
-        "id_parada INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "id_tr INTEGER, id_est INTEGER, orden INTEGER,"
-        "hora_llegada TEXT, hora_salida TEXT,"
-        "FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr),"
-        "FOREIGN KEY(id_est) REFERENCES ESTACIONES(id_est));"
-
-    	"CREATE TABLE IF NOT EXISTS SERVICIOS_OPERATIVOS ("
-    	"id_serv INTEGER PRIMARY KEY AUTOINCREMENT,"
-    	"id_tr INTEGER, fecha TEXT,"
-    	"estado_serv TEXT DEFAULT 'PROGRAMADO',"
-    	"hora_inicio_real TEXT, hora_fin_real TEXT,"
-    	"minutos_retraso INTEGER DEFAULT 0,"
-    	"causa_retraso TEXT,"
-    	"FOREIGN KEY(id_tr) REFERENCES TRAYECTOS(id_tr));"
-
+        // DESCUENTOS
         "CREATE TABLE IF NOT EXISTS DESCUENTOS ("
-        "tipo_descuento TEXT PRIMARY KEY,"
-        "porcentaje REAL);";
+        "tipo_descuento TEXT PRIMARY KEY, porcentaje REAL);"
 
-    rc = sqlite3_exec(db, sql, 0, 0, &err);
+        //PUNTOS_FIDELIDAD_HISTORIAL
+        "CREATE TABLE IF NOT EXISTS PUNTOS_HISTORIAL ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "id_u INTEGER, fecha TEXT, delta INTEGER, concepto TEXT,"
+        "FOREIGN KEY(id_u) REFERENCES USUARIOS(id_u));";
+
+    int rc = sqlite3_exec(db, sql, 0, 0, &err);
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error creando tablas: %s\n", err);
+        fprintf(stderr, "[BD] Error creando tablas: %s\n", err);
         sqlite3_free(err);
         sqlite3_close(db);
         return 1;
     }
-
-    printf("[OK] Base de datos conectada y tablas listas.\n");
+    printf("[OK] Base de datos conectada: %s\n", cfg.db_path);
     sqlite3_close(db);
     return 0;
 }
 
-void seed_database() {
+/* ============================================================
+ *  SEED  (datos de prueba realistas)
+ * ============================================================ */
+void seed_database(void) {
     sqlite3 *db = abrir_bd();
-    if (!db) return;
+    if (!db){
+    	return;
+    }
 
-    printf("[BD] Usando base de datos: %s\n", cfg.db_path);
-
-    /* INSERT OR IGNORE: si ya existe (por DNI/email UNIQUE) no falla */
-    char *err = 0;
+    char *err = NULL;
     const char *sql =
-        "INSERT OR IGNORE INTO USUARIOS "
-        "(nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Admin','Trenfe','00000000A','admin@trenfe.com',"
-        "'600000000','1980-01-01','admin123','ADMIN',1,date('now'));"
+        // Usuarios
+        "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
+        " VALUES ('Admin','Trenfe','00000000A','admin@trenfe.com','600000000','1980-01-01','admin123','ADMIN',1,date('now'));"
+        "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
+        " VALUES ('Juan','Garcia','12345678B','juan@trenfe.com','611222333','1995-06-15','pass123','PASAJERO',1,date('now'));"
+        "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
+        " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com','622333444','1985-03-20','maq123','MAQUINISTA',1,date('now'));"
+        "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
+        " VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com','633444555','2000-09-10','pass456','PASAJERO',1,date('now'));"
 
-        "INSERT OR IGNORE INTO USUARIOS "
-        "(nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Juan','Garcia','12345678B','juan@trenfe.com',"
-        "'611222333','1995-06-15','pass123','PASAJERO',1,date('now'));"
+        // Datos pasajeros
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) VALUES (2,150,'JOVEN');"
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) VALUES (4,0,'NINGUNO');"
 
-        "INSERT OR IGNORE INTO USUARIOS "
-        "(nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com',"
-        "'622333444','1985-03-20','maq123','MAQUINISTA',1,date('now'));"
+        //Datos empleados
+        "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
+        " VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
 
-    	"INSERT OR IGNORE INTO USUARIOS "
-    	"(nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-    	" VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com',"
-    	"'633444555','2000-09-10','pass456','PASAJERO',1,date('now'));"
-
-    	"INSERT OR IGNORE INTO DATOS_PASAJERO "
-    	"(id_u,puntos_fidelidad,tipo_descuento) "
-    	"VALUES (2,150,'JOVEN');"
-
-    	"INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento)"
-    	" VALUES (4,0,'NINGUNO');"
-
-    	"INSERT OR IGNORE INTO DATOS_EMPLEADO "
-    	"(id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
-    	" VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
-
-        "INSERT OR IGNORE INTO TRENES "
-        "(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+        // Trenes
+        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
         " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
-
-        "INSERT OR IGNORE INTO TRENES "
-        "(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
         " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
+        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
 
-        "INSERT OR IGNORE INTO ESTACIONES "
-        "(nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+        // Vagones tren 1
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,1,'T',50,0);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,2,'T',50,1);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,3,'B',30,0);"
+        // Vagones tren 2
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,1,'T',60,0);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,2,'B',24,0);"
+
+        //Estaciones
+        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
         " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
-
-        "INSERT OR IGNORE INTO ESTACIONES "
-        "(nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
         " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
-
-        "INSERT OR IGNORE INTO ESTACIONES "
-        "(nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
         " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
+        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
+        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
 
-        "INSERT OR IGNORE INTO TRAYECTOS "
-        "(id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,"
-        "duracion_min,precio_base,dias_operacion,estado)"
+        // Trayectos
+        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
         " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
-
-        "INSERT OR IGNORE INTO TRAYECTOS "
-        "(id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,"
-        "duracion_min,precio_base,dias_operacion,estado)"
+        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
         " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
+        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
+        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
 
-    	"INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
-    	" VALUES (1,45.50,1.0,1.8,30.0,12.0);"
-    	"INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
-    	" VALUES (2,32.00,1.0,1.8,30.0,12.0);"
+        // Tarifas
+        "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
+        " VALUES (1,45.50,1.0,1.8,30.0,12.0);"
+        "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
+        " VALUES (2,32.00,1.0,1.8,30.0,12.0);"
 
+        // Descuentos
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('JOVEN',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('DORADA',40.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('NUMEROSA',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);"
 
-    	"INSERT OR IGNORE INTO ASIGNACIONES_PERSONAL (id_serv,id_u,id_t,rol_servicio)"
-    	" VALUES (1,3,1,'CONDUCTOR');"
+        // Servicio operativo de ejemplo
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
+        " VALUES (1,date('now'),'PROGRAMADO');"
 
-    	"INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
-        " VALUES (1,date('now'),'PROGRAMADO');";
+        // Asignación maquinista al servicio
+        "INSERT OR IGNORE INTO ASIGNACION_PERSONAL (id_serv,id_u,id_t,rol_servicio)"
+        " VALUES (1,3,1,'CONDUCTOR');";
 
     if (sqlite3_exec(db, sql, 0, 0, &err) != SQLITE_OK) {
-        fprintf(stderr, "[SEED] Error insertando datos: %s\n", err);
+        fprintf(stderr, "[SEED] Error: %s\n", err);
         sqlite3_free(err);
     } else {
-        printf("[SEED] Credenciales de acceso:\n");
-        printf("       Admin:      admin@trenfe.com  / admin123\n");
-        printf("       Pasajero:   juan@trenfe.com   / pass123\n");
-        printf("       Maquinista: pedro@trenfe.com  / maq123\n");
-        printf("       Pasajero:   maria@trenfe.com  / pass456\n");
+        printf("[SEED] Datos de prueba cargados.\n");
+        printf("       admin@trenfe.com / admin123\n");
+        printf("       juan@trenfe.com  / pass123\n");
+        printf("       pedro@trenfe.com / maq123\n");
     }
-
     sqlite3_close(db);
 }
 
-/* ============================================================
- *  USUARIOS
- * ============================================================ */
+//USUARIOSS
 const char* rol_a_texto(RolUsuario rol) {
     if (rol == ROL_ADMIN)    return "ADMIN";
     if (rol == ROL_EMPLEADO) return "MAQUINISTA";
@@ -2150,7 +2168,7 @@ void listar_servicios_maquinista(int id_u) {
     sqlite3_prepare_v2(db,
         "SELECT so.id_serv, so.fecha, eo.nombre, ed.nombre,"
         " t.hora_salida, t.hora_llegada, so.estado_serv, so.minutos_retraso"
-        " FROM ASIGNACIONES_PERSONAL ap"
+        " FROM ASIGNACION_PERSONAL ap"
         " JOIN SERVICIOS_OPERATIVOS so ON ap.id_serv=so.id_serv"
         " JOIN TRAYECTOS t ON so.id_tr=t.id_tr"
         " JOIN ESTACIONES eo ON t.id_est_origen=eo.id_est"
@@ -2241,7 +2259,7 @@ int insertar_asignacion_db(AsignacionPersonal a) {
     }
     sqlite3_stmt *stmt;
     const char *roles[]={"CONDUCTOR","REVISOR","TECNICO","SERVICIO"};
-    const char *sql="INSERT INTO ASIGNACIONES_PERSONAL (id_serv,id_u,id_t,rol_servicio,observaciones) VALUES (?,?,?,?,?);";
+    const char *sql="INSERT INTO ASIGNACION_PERSONAL (id_serv,id_u,id_t,rol_servicio,observaciones) VALUES (?,?,?,?,?);";
     sqlite3_prepare_v2(db,sql, -1,&stmt,NULL);
     sqlite3_bind_int (stmt,1,a.id_serv);
     sqlite3_bind_int (stmt,2,a.id_u);
@@ -2262,7 +2280,7 @@ void listar_asignaciones_servicio(int id_serv) {
     sqlite3_stmt *stmt;
     sqlite3_prepare_v2(db,
         "SELECT ap.id_asig, u.nombre, u.apellido, ap.rol_servicio, ap.observaciones"
-        " FROM ASIGNACIONES_PERSONAL ap"
+        " FROM ASIGNACION_PERSONAL ap"
         " JOIN USUARIOS u ON ap.id_u=u.id_u"
         " WHERE ap.id_serv=?;", -1,&stmt,NULL);
     sqlite3_bind_int(stmt,1,id_serv);
@@ -2284,7 +2302,7 @@ int eliminar_asignacion_db(int id_asig) {
     	return 1;
     }
     sqlite3_stmt *stmt;
-    const char *sql="DELETE FROM ASIGNACIONES_PERSONAL WHERE id_asig=?;";
+    const char *sql="DELETE FROM ASIGNACION_PERSONAL WHERE id_asig=?;";
     sqlite3_prepare_v2(db,sql,-1,&stmt,NULL);
     sqlite3_bind_int(stmt,1,id_asig);
     int rc = sqlite3_step(stmt);
@@ -2617,7 +2635,7 @@ void informe_empleados_activos(void) {
         "SELECT u.nombre, u.apellido, u.email,"
         " COUNT(ap.id_asig) as servicios_asignados"
         " FROM USUARIOS u"
-        " LEFT JOIN ASIGNACIONES_PERSONAL ap ON u.id_u=ap.id_u"
+        " LEFT JOIN ASIGNACION_PERSONAL ap ON u.id_u=ap.id_u"
         " WHERE u.rol='MAQUINISTA' AND u.activo=1"
         " GROUP BY u.id_u ORDER BY servicios_asignados DESC;",
         -1,&stmt,NULL);
@@ -2663,7 +2681,7 @@ void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario, con
 }
 
 
-///IMPLEMENTADO CON IA DEBIDO A LA COMPLEJIDAD
+//IMPLEMENTADO CON IA DEBIDO A LA COMPLEJIDAD
 /* ============================================================
  *  IMPORTACION GTFS  (formato RENFE: stops.txt, routes.txt)
  * ============================================================ */
