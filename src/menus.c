@@ -144,8 +144,10 @@ void menu_registro_pasajero(void) {
     leer_cadena("  Email             : ", email,    sizeof(email));
     leer_cadena("  Telefono          : ", telf,     sizeof(telf));
     leer_cadena("  F. Nac(AAAA-MM-DD): ", fecha_nac,sizeof(fecha_nac));
-    leer_cadena("  Contrasena        : ", pass,     sizeof(pass));
-    leer_cadena("  Repite contrasena : ", pass2,    sizeof(pass2));
+    printf("Contrasena: ");
+    scanf("%s", pass);
+    printf("Repita la contrasena: ");
+    scanf("%s", pass2);
 
     if (strcmp(pass, pass2) != 0) {
         printf("  ERROR: Las contrasenas no coinciden.\n");
@@ -196,7 +198,7 @@ void menu_principal_admin(int id_admin, const char *email) {
         printf("   4. Gestion de Personal\n");
         printf("   5. Gestion de Pasajeros\n");
         printf("   6. Gestion de Servicios Operativos\n");
-        printf("   7. Gestion de Tarifas\n");
+        //printf("   7. Gestion de Tarifas\n");
         printf("   8. Importar Datos GTFS\n");
         printf("   9. Incidencias\n");
         printf("  10. Informes\n");

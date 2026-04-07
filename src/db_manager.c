@@ -483,7 +483,7 @@ int insertar_usuario_db(Usuario u) {
 
         srand((unsigned int)time(NULL) ^ (unsigned int)nuevo_id); //Generador de usuario aleatorio
         int num = 1000 + rand() % 9000;
-        char num_emp;
+        char num_emp[16];
         sprintf(num_emp, "EMP-%04d", num);
 
         const char *sql_empleado = "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u, num_empleado, fecha_ingreso, rol_empleado, estado) VALUES (?, ?, date('now'), 'MAQUINISTA', 'ACTIVO');";
@@ -2821,7 +2821,7 @@ int importar_gtfs(const char *ruta_directorio) {
     }
 
     /* ══ FASE 1 – stops.txt → ESTACIONES ══ */
-    snprintf(ruta, sizeof(ruta), "%s/stops.txt", ruta_directorio);
+    snprintf(ruta, sizeof(ruta), "%s/estaciones.txt", ruta_directorio);
     FILE *f = fopen(ruta, "r");
     if (!f) {
         printf("[GTFS] ERROR: no se encontro stops.txt en '%s'\n", ruta_directorio);

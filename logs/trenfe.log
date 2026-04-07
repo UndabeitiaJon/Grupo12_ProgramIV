@@ -293,3 +293,35 @@
 =======
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 13:05:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:05:46] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:07:58] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:08:17] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:08:30] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 13:08:30] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\unai.erdoiza\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 13:09:44] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 13:10:10] [markel.trigo2006@gmail.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 13:10:22] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:16:28] [SISTEMA] [RESERVA] KQ3CYBH72OF
+[2026-04-07 13:17:01] [SISTEMA] [CANCELAR_RES] Reserva cancelada por pasajero
+[2026-04-07 13:17:28] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 13:19:36] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:22:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:22:42] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:24:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:24:53] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:28:16] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:28:28] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:30:02] [pedro@trenfe.com] [LOGOUT] Sesion maquinista cerrada
+[2026-04-07 13:30:13] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:31:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:32:13] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:32:39] [admin@trenfe.com] [INSERT_EMPLEADO] adfa
+[2026-04-07 13:33:52] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 13:34:28] [admin@trenfe.com] [INSERT_SERVICIO] 2026-04-08
+[2026-04-07 13:35:12] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 13:35:17] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 13:35:30] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:35:55] [SISTEMA] [RETRASO] accidente
+[2026-04-07 13:36:13] [pedro@trenfe.com] [LOGOUT] Sesion maquinista cerrada
+[2026-04-07 13:36:31] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
