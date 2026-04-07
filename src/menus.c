@@ -279,11 +279,11 @@ void menu_gestion_trenes(int id_admin, const char *email) {
     do {
         titulo("GESTION DE TRENES");
         printf("  1. Listar trenes\n");
-        printf("  2. Anyadir tren\n");
+        printf("  2. Añadir tren\n");
         printf("  3. Modificar tren\n");
         printf("  4. Cambiar estado de mantenimiento\n");
         printf("  5. Ver vagones de un tren\n");
-        printf("  6. Anyadir vagon\n");
+        printf("  6. Añadir vagon\n");
         printf("  0. Volver\n");
         sep();
         op = leer_entero("  Opcion: ");
@@ -295,11 +295,11 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR TREN");
+            titulo("AÑADIR TREN");
             Tren t; memset(&t, 0, sizeof(t));
             leer_cadena("  Modelo           : ", t.nombre_modelo, sizeof(t.nombre_modelo));
             leer_cadena("  Num. serie        : ", t.num_serie,    sizeof(t.num_serie));
-            t.anio_fab = leer_entero("  Anyo fabricacion  : ");
+            t.anio_fab = leer_entero("  Año fabricacion  : ");
             printf("  Estado (0=Operativo 1=Revision 2=Averia 3=Retirado): ");
             int e = leer_entero("");
             t.estado_mant = (EstadoMantenimiento)(e >= 0 && e <= 3 ? e : 0);
@@ -308,7 +308,7 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             t.tiene_revision = (strlen(t.fecha_ultima_revision) > 0);
             if (insertar_tren_db(t) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_TREN", t.nombre_modelo);
-                printf("  Tren anyadido correctamente.\n");
+                printf("  Tren añadido correctamente.\n");
             } else{
             	printf("  Error al insertar tren (num_serie duplicado?).\n");
             }
@@ -331,7 +331,7 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             if (strlen(buf) > 0) {
             	strncpy(t.num_serie, buf, 31);
             }
-            int anio = leer_entero("  Nuevo anyo (0=mantener): ");
+            int anio = leer_entero("  Nuevo año (0=mantener): ");
             if (anio > 0){
             	t.anio_fab = anio;
             }
@@ -384,8 +384,8 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             v.capacidad_total = leer_entero("  Capacidad   : ");
             v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
             if (insertar_vagon_db(v) == 0) {
-                log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
-                printf("  Vagon anyadido.\n");
+                log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon añadido");
+                printf("  Vagon añadido.\n");
             } else {
             	printf("  Error al insertar vagon.\n");
             }
@@ -405,7 +405,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
     do {
         titulo("GESTION DE TRAYECTOS");
         printf("  1. Listar trayectos\n");
-        printf("  2. Anyadir trayecto\n");
+        printf("  2. Añadir trayecto\n");
         printf("  3. Modificar trayecto\n");
         printf("  4. Gestionar paradas intermedias\n");
         printf("  5. Cambiar estado trayecto\n");
@@ -420,7 +420,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR TRAYECTO");
+            titulo("AÑADIR TRAYECTO");
             listar_trenes_db();
             Trayecto tr; memset(&tr, 0, sizeof(tr));
             tr.id_t = leer_entero("\n  ID tren              : ");
@@ -514,7 +514,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             do {
                 titulo("PARADAS INTERMEDIAS");
                 listar_paradas_trayecto(id_tr);
-                printf("\n  1. Anyadir parada  2. Eliminar parada  0. Volver\n");
+                printf("\n  1. Añadir parada  2. Eliminar parada  0. Volver\n");
                 sub = leer_entero("  Opcion: ");
                 if (sub == 1) {
                     ParadaIntermedia p; memset(&p, 0, sizeof(p));
@@ -528,8 +528,8 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     p.anden = leer_entero("  Anden (0=N/D): ");
                     p.tiene_anden = (p.anden > 0);
                     if (insertar_parada_db(p) == 0) {
-                        log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia anyadida");
-                        printf("  Parada anyadida.\n");
+                        log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia añadida");
+                        printf("  Parada añadida.\n");
                     } else {
                     	printf("  Error.\n");
                     }
@@ -574,7 +574,7 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
     do {
         titulo("GESTION DE ESTACIONES");
         printf("  1. Listar estaciones\n");
-        printf("  2. Anyadir estacion\n");
+        printf("  2. Añadir estacion\n");
         printf("  3. Modificar estacion\n");
         printf("  4. Activar/Desactivar Sala Club\n");
         printf("  0. Volver\n");
@@ -588,7 +588,7 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR ESTACION");
+            titulo("AÑADIR ESTACION");
             Estacion e; memset(&e, 0, sizeof(e));
             leer_cadena("  Nombre        : ", e.nombre,     sizeof(e.nombre));
             leer_cadena("  Codigo GTFS   : ", e.codigo_gtfs,sizeof(e.codigo_gtfs));
@@ -670,7 +670,7 @@ void menu_gestion_personal(int id_admin, const char *email) {
     do {
         titulo("GESTION DE PERSONAL");
         printf("  1. Listar personal (maquinistas)\n");
-        printf("  2. Anyadir empleado / maquinista\n");
+        printf("  2. Añadir empleado / maquinista\n");
         printf("  3. Modificar datos de empleado\n");
         printf("  4. Dar de baja empleado\n");
         printf("  5. Asignar empleado a servicio operativo\n");
@@ -685,7 +685,7 @@ void menu_gestion_personal(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR EMPLEADO");
+            titulo("AÑADIR EMPLEADO");
             char nombre[64], apellido[64], dni[16], em[128];
             char telf[20], fn[11], pass[256];
             leer_cadena("  Nombre         : ", nombre,   sizeof(nombre));
@@ -1025,7 +1025,7 @@ void menu_importar_gtfs(int id_admin, const char *email) {
     int op;
     do {
         titulo("IMPORTAR DATOS GTFS  (formato RENFE)");
-        printf("  1. Importar desde directorio local (stops.txt)\n");
+        printf("  1. Importar desde directorio local (estaciones.txt)\n");
         printf("  2. Ver resumen de la ultima importacion\n");
         printf("  0. Volver\n");
         sep();
@@ -1033,14 +1033,14 @@ void menu_importar_gtfs(int id_admin, const char *email) {
         switch (op) {
         case 1: {
             char ruta[256];
-            leer_cadena("  Ruta del directorio GTFS (ENTER=./data): ", ruta, sizeof(ruta));
-            if (strlen(ruta) == 0) strcpy(ruta, "./data");
+            leer_cadena("  Ruta del directorio GTFS (ENTER=./data/importar): ", ruta, sizeof(ruta));
+            if (strlen(ruta) == 0) strcpy(ruta, "./data/importar");
             printf("  Importando datos RENFE desde '%s'...\n", ruta);
             if (importar_gtfs(ruta) == 0) {
                 log_evento(cfg.log_path, email, "IMPORT_GTFS", ruta);
                 printf("  Importacion completada correctamente.\n");
             } else {
-                printf("  ERROR. Verifique que la ruta contiene stops.txt en formato GTFS.\n");
+                printf("  ERROR. Verifique que la ruta contiene estaciones.txt en formato GTFS.\n");
                 printf("  Descargue los datos de: https://www.renfe.com/content/dam/renfe/es/General/ficheros/opendata/google_transit.zip\n");
             }
             pausar_s();
@@ -1740,7 +1740,7 @@ void menu_cuadrante_servicios(int id_u) {
                 printf("\n  — DATOS TECNICOS DEL TREN —\n");
                 printf("  Modelo     : %s\n", t.nombre_modelo);
                 printf("  Num. serie : %s\n", t.num_serie);
-                printf("  Anyo fab.  : %d\n", t.anio_fab);
+                printf("  Año fab.  : %d\n", t.anio_fab);
                 const char *es[] = {"OPERATIVO","REVISION","AVERIA","RETIRADO"};
                 printf("  Estado     : %s\n", es[t.estado_mant]);
                 printf("\n  — VAGONES —\n");
@@ -1756,7 +1756,7 @@ void menu_cuadrante_servicios(int id_u) {
                 printf("  2. Marcar FIN   de trayecto\n");
                 printf("  3. Reportar RETRASO\n");
                 printf("  4. Reportar AVERIA\n");
-                printf("  5. Anyadir observacion\n");
+                printf("  5. Añadir observacion\n");
                 printf("  0. Volver\n");
                 sep();
                 sub = leer_entero("  Opcion: ");
