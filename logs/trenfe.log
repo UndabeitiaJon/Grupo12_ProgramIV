@@ -370,3 +370,25 @@
 =======
 >>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 19:52:46] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:53:08] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:54:06] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:57:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:57:20] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:58:35] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:57] [admin@trenfe.com] [UPDATE_TRAYECTO] Trayecto modificado
+[2026-04-07 19:59:41] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia anyadida
+[2026-04-07 20:01:30] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:01:55] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:02:37] [admin@trenfe.com] [INSERT_EMPLEADO] kross8@gmail.com
+[2026-04-07 20:04:34] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:04:43] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:05:26] [admin@trenfe.com] [INSERT_EMPLEADO] markeltrigo@gmail.com
+[2026-04-07 20:07:33] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:40] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:50] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:08:31] [admin@trenfe.com] [INSERT_EMPLEADO] markel@gmail.com
+[2026-04-07 20:08:37] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:08:47] [markel@gmail.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:09:02] [markel@gmail.com] [LOGIN] Sesion iniciada correctamente

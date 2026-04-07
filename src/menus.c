@@ -93,6 +93,13 @@ double leer_double(const char *prompt) {
         }
     return v;
 }
+static void limpiar_buffer_entrada(void) {
+	printf("Enter para continuar...");
+    int c = getchar();
+    if (c != '\n' && c != EOF) {
+        ungetc(c, stdin); // No era residual, lo devolvemos
+    }
+}
 
 void leer_cadena(const char *prompt, char *buf, int max) {
     printf("%s", prompt);
@@ -450,9 +457,9 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             } else {
             	tr.id_est_destino = leer_entero("  Selecciona ID estacion destino: ");
             }
+            limpiar_buffer_entrada();
             leer_cadena("  Hora salida (HH:MM)  : ", tr.hora_salida,  sizeof(tr.hora_salida));
             leer_cadena("  Hora llegada (HH:MM) : ", tr.hora_llegada, sizeof(tr.hora_llegada));
-            printf("\n");
             tr.duracion_min = leer_entero("  Duracion (minutos)   : ");
             tr.precio_base  = leer_double("  Precio base Turista  : ");
             leer_cadena("  Dias operacion (ej LMXJVSD): ", tr.dias_operacion, sizeof(tr.dias_operacion));
@@ -515,6 +522,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     listar_estaciones_db();
                     p.id_est = leer_entero("\n  ID estacion  : ");
                     p.orden  = leer_entero("  Orden (1,2..): ");
+                    limpiar_buffer_entrada();
                     leer_cadena("  Hora llegada : ", p.hora_llegada, sizeof(p.hora_llegada));
                     leer_cadena("  Hora salida  : ", p.hora_salida,  sizeof(p.hora_salida));
                     p.anden = leer_entero("  Anden (0=N/D): ");
@@ -686,7 +694,8 @@ void menu_gestion_personal(int id_admin, const char *email) {
             leer_cadena("  Email          : ", em,       sizeof(em));
             leer_cadena("  Telefono       : ", telf,     sizeof(telf));
             leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,    sizeof(fn));
-            leer_cadena("  Contrasena     : ", pass,     sizeof(pass));
+            printf("  Contraseña: ");
+            scanf("%s", pass);
             Usuario u = crearUsuario(nombre, apellido, dni, em,
                                       telf, pass, fn, ROL_EMPLEADO);
             if (insertar_usuario_db(u) == 0) {
