@@ -93,6 +93,13 @@ double leer_double(const char *prompt) {
         }
     return v;
 }
+static void limpiar_buffer_entrada(void) {
+	printf("Enter para continuar...");
+    int c = getchar();
+    if (c != '\n' && c != EOF) {
+        ungetc(c, stdin); // No era residual, lo devolvemos
+    }
+}
 
 void leer_cadena(const char *prompt, char *buf, int max) {
     printf("%s", prompt);
@@ -235,7 +242,7 @@ void menu_principal_admin(int id_admin, const char *email) {
         printf("   4. Gestion de Personal\n");
         printf("   5. Gestion de Pasajeros\n");
         printf("   6. Gestion de Servicios Operativos\n");
-        //printf("   7. Gestion de Tarifas\n");
+        printf("   7. Gestion de Tarifas\n");
         printf("   8. Importar Datos GTFS\n");
         printf("   9. Incidencias\n");
         printf("  10. Informes\n");
@@ -272,11 +279,11 @@ void menu_gestion_trenes(int id_admin, const char *email) {
     do {
         titulo("GESTION DE TRENES");
         printf("  1. Listar trenes\n");
-        printf("  2. Anyadir tren\n");
+        printf("  2. Añadir tren\n");
         printf("  3. Modificar tren\n");
         printf("  4. Cambiar estado de mantenimiento\n");
         printf("  5. Ver vagones de un tren\n");
-        printf("  6. Anyadir vagon\n");
+        printf("  6. Añadir vagon\n");
         printf("  0. Volver\n");
         sep();
         op = leer_entero("  Opcion: ");
@@ -288,11 +295,11 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR TREN");
+            titulo("AÑADIR TREN");
             Tren t; memset(&t, 0, sizeof(t));
             leer_cadena("  Modelo           : ", t.nombre_modelo, sizeof(t.nombre_modelo));
             leer_cadena("  Num. serie        : ", t.num_serie,    sizeof(t.num_serie));
-            t.anio_fab = leer_entero("  Anyo fabricacion  : ");
+            t.anio_fab = leer_entero("  Año fabricacion  : ");
             printf("  Estado (0=Operativo 1=Revision 2=Averia 3=Retirado): ");
             int e = leer_entero("");
             t.estado_mant = (EstadoMantenimiento)(e >= 0 && e <= 3 ? e : 0);
@@ -301,7 +308,7 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             t.tiene_revision = (strlen(t.fecha_ultima_revision) > 0);
             if (insertar_tren_db(t) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_TREN", t.nombre_modelo);
-                printf("  Tren anyadido correctamente.\n");
+                printf("  Tren añadido correctamente.\n");
             } else{
             	printf("  Error al insertar tren (num_serie duplicado?).\n");
             }
@@ -324,7 +331,7 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             if (strlen(buf) > 0) {
             	strncpy(t.num_serie, buf, 31);
             }
-            int anio = leer_entero("  Nuevo anyo (0=mantener): ");
+            int anio = leer_entero("  Nuevo año (0=mantener): ");
             if (anio > 0){
             	t.anio_fab = anio;
             }
@@ -367,24 +374,23 @@ void menu_gestion_trenes(int id_admin, const char *email) {
         }
 
         case 6: {
-            Vagon v; memset(&v, 0, sizeof(v));
-            listar_trenes_db();
-            v.id_tren      = leer_entero("\n  ID tren    : ");
-            v.numero_vagon = leer_entero("  Num. vagon  : ");
-            char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
-            cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
-            strncpy(v.clase, cl, 3);
-            v.capacidad_total = leer_entero("  Capacidad   : ");
-            v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
-            if (insertar_vagon_db(v) == 0) {
-                log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
-                printf("  Vagon anyadido.\n");
-            } else {
-            	printf("  Error al insertar vagon.\n");
-            }
-            pausar_s();
-            break;
-        }
+                Vagon v; memset(&v, 0, sizeof(v));
+                listar_trenes_db();
+                v.id_tren  = leer_entero("\n  ID tren    : ");
+                v.numero_vagon = leer_entero("  Num. vagon  : ");
+                char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
+                cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
+                strncpy(v.clase, cl, 3);
+                v.capacidad_total = leer_entero("  Capacidad   : ");
+                v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
+                if (insertar_vagon_db(v) == 0) {
+                    log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
+                    printf("  Vagon anyadido.\n");
+               } else printf("  Error al insertar vagon.\n");
+                     pausar_s();
+                 break;
+               }
+
 
         case 0: break;
         default: printf("  Opcion no valida.\n");
@@ -392,13 +398,13 @@ void menu_gestion_trenes(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 2. GESTIÓN DE TRAYECTOS ─── */
+// GESTIÓN DE TRAYECTOS
 void menu_gestion_trayectos(int id_admin, const char *email) {
     int op;
     do {
         titulo("GESTION DE TRAYECTOS");
         printf("  1. Listar trayectos\n");
-        printf("  2. Anyadir trayecto\n");
+        printf("  2. Añadir trayecto\n");
         printf("  3. Modificar trayecto\n");
         printf("  4. Gestionar paradas intermedias\n");
         printf("  5. Cambiar estado trayecto\n");
@@ -413,13 +419,44 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR TRAYECTO");
+            titulo("AÑADIR TRAYECTO");
             listar_trenes_db();
             Trayecto tr; memset(&tr, 0, sizeof(tr));
             tr.id_t = leer_entero("\n  ID tren              : ");
-            listar_estaciones_db();
-            tr.id_est_origen  = leer_entero("\n  ID estacion origen   : ");
-            tr.id_est_destino = leer_entero("  ID estacion destino  : ");
+            char ciudad_orig[64];
+            leer_cadena("\n  Ciudad de origen: ", ciudad_orig, sizeof(ciudad_orig));
+            int id_unico_orig = -1;
+            int n_orig = listar_estaciones_ciudad_db(ciudad_orig, &id_unico_orig);
+            if (n_orig == 0) {
+                printf("  No se encontraron estaciones para esa ciudad.\n");
+                pausar_s(); return;
+            }
+
+            if (n_orig == 1) {
+            	tr.id_est_origen = id_unico_orig;
+                printf("  Estacion seleccionada automaticamente (ID %d).\n", tr.id_est_origen);
+            } else {
+            	tr.id_est_origen = leer_entero("  Selecciona ID estacion origen: ");
+            }
+
+            // Destino: buscar por ciudad
+
+            char ciudad_dest[64];
+            leer_cadena("\n  Ciudad de destino: ", ciudad_dest, sizeof(ciudad_dest));
+            int id_unico_dest = -1;
+            int n_dest = listar_estaciones_ciudad_db(ciudad_dest, &id_unico_dest);
+            if (n_dest == 0) {
+                printf("  No se encontraron estaciones para esa ciudad.\n");
+                pausar_s(); return;
+            }
+
+            if (n_dest == 1) {
+                tr.id_est_destino = id_unico_dest;
+                printf("  Estacion seleccionada automaticamente (ID %d).\n", tr.id_est_destino);
+            } else {
+            	tr.id_est_destino = leer_entero("  Selecciona ID estacion destino: ");
+            }
+            limpiar_buffer_entrada();
             leer_cadena("  Hora salida (HH:MM)  : ", tr.hora_salida,  sizeof(tr.hora_salida));
             leer_cadena("  Hora llegada (HH:MM) : ", tr.hora_llegada, sizeof(tr.hora_llegada));
             tr.duracion_min = leer_entero("  Duracion (minutos)   : ");
@@ -476,7 +513,7 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             do {
                 titulo("PARADAS INTERMEDIAS");
                 listar_paradas_trayecto(id_tr);
-                printf("\n  1. Anyadir parada  2. Eliminar parada  0. Volver\n");
+                printf("\n  1. Añadir parada  2. Eliminar parada  0. Volver\n");
                 sub = leer_entero("  Opcion: ");
                 if (sub == 1) {
                     ParadaIntermedia p; memset(&p, 0, sizeof(p));
@@ -484,13 +521,14 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     listar_estaciones_db();
                     p.id_est = leer_entero("\n  ID estacion  : ");
                     p.orden  = leer_entero("  Orden (1,2..): ");
+                    limpiar_buffer_entrada();
                     leer_cadena("  Hora llegada : ", p.hora_llegada, sizeof(p.hora_llegada));
                     leer_cadena("  Hora salida  : ", p.hora_salida,  sizeof(p.hora_salida));
                     p.anden = leer_entero("  Anden (0=N/D): ");
                     p.tiene_anden = (p.anden > 0);
                     if (insertar_parada_db(p) == 0) {
-                        log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia anyadida");
-                        printf("  Parada anyadida.\n");
+                        log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia añadida");
+                        printf("  Parada añadida.\n");
                     } else {
                     	printf("  Error.\n");
                     }
@@ -529,13 +567,13 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 3. GESTIÓN DE ESTACIONES ─── */
+// GESTIÓN DE ESTACIONES
 void menu_gestion_estaciones(int id_admin, const char *email) {
     int op;
     do {
         titulo("GESTION DE ESTACIONES");
         printf("  1. Listar estaciones\n");
-        printf("  2. Anyadir estacion\n");
+        printf("  2. Añadir estacion\n");
         printf("  3. Modificar estacion\n");
         printf("  4. Activar/Desactivar Sala Club\n");
         printf("  0. Volver\n");
@@ -549,7 +587,7 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR ESTACION");
+            titulo("AÑADIR ESTACION");
             Estacion e; memset(&e, 0, sizeof(e));
             leer_cadena("  Nombre        : ", e.nombre,     sizeof(e.nombre));
             leer_cadena("  Codigo GTFS   : ", e.codigo_gtfs,sizeof(e.codigo_gtfs));
@@ -625,13 +663,13 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 4. GESTIÓN DE PERSONAL ─── */
+// GESTIÓN DE PERSONAL
 void menu_gestion_personal(int id_admin, const char *email) {
     int op;
     do {
         titulo("GESTION DE PERSONAL");
         printf("  1. Listar personal (maquinistas)\n");
-        printf("  2. Anyadir empleado / maquinista\n");
+        printf("  2. Añadir empleado / maquinista\n");
         printf("  3. Modificar datos de empleado\n");
         printf("  4. Dar de baja empleado\n");
         printf("  5. Asignar empleado a servicio operativo\n");
@@ -646,7 +684,7 @@ void menu_gestion_personal(int id_admin, const char *email) {
             break;
 
         case 2: {
-            titulo("ANYADIR EMPLEADO");
+            titulo("AÑADIR EMPLEADO");
             char nombre[64], apellido[64], dni[16], em[128];
             char telf[20], fn[11], pass[256];
             leer_cadena("  Nombre         : ", nombre,   sizeof(nombre));
@@ -655,7 +693,8 @@ void menu_gestion_personal(int id_admin, const char *email) {
             leer_cadena("  Email          : ", em,       sizeof(em));
             leer_cadena("  Telefono       : ", telf,     sizeof(telf));
             leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,    sizeof(fn));
-            leer_cadena("  Contrasena     : ", pass,     sizeof(pass));
+            printf("  Contraseña: ");
+            scanf("%s", pass);
             Usuario u = crearUsuario(nombre, apellido, dni, em,
                                       telf, pass, fn, ROL_EMPLEADO);
             if (insertar_usuario_db(u) == 0) {
@@ -730,7 +769,7 @@ void menu_gestion_personal(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 5. GESTIÓN DE PASAJEROS ─── */
+// GESTIÓN DE PASAJEROS
 void menu_gestion_pasajeros(int id_admin, const char *email) {
     int op;
     do {
@@ -807,7 +846,7 @@ void menu_gestion_pasajeros(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 6. GESTIÓN DE SERVICIOS OPERATIVOS ─── */
+// GESTIÓN DE SERVICIOS OPERATIVOS
 void menu_gestion_servicios(int id_admin, const char *email) {
     int op;
     do {
@@ -888,7 +927,7 @@ void menu_gestion_servicios(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 7. GESTIÓN DE TARIFAS ─── */
+// GESTIÓN DE TARIFAS
 void menu_gestion_tarifas(int id_admin, const char *email) {
     int op;
     do {
@@ -980,12 +1019,12 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 8. IMPORTAR GTFS ─── */
+// IMPORTAR
 void menu_importar_gtfs(int id_admin, const char *email) {
     int op;
     do {
         titulo("IMPORTAR DATOS GTFS  (formato RENFE)");
-        printf("  1. Importar desde directorio local (stops.txt)\n");
+        printf("  1. Importar desde directorio local (estaciones.txt)\n");
         printf("  2. Ver resumen de la ultima importacion\n");
         printf("  0. Volver\n");
         sep();
@@ -993,14 +1032,14 @@ void menu_importar_gtfs(int id_admin, const char *email) {
         switch (op) {
         case 1: {
             char ruta[256];
-            leer_cadena("  Ruta del directorio GTFS (ENTER=./data): ", ruta, sizeof(ruta));
-            if (strlen(ruta) == 0) strcpy(ruta, "./data");
+            leer_cadena("  Ruta del directorio GTFS (ENTER=./data/importar): ", ruta, sizeof(ruta));
+            if (strlen(ruta) == 0) strcpy(ruta, "./data/importar");
             printf("  Importando datos RENFE desde '%s'...\n", ruta);
             if (importar_gtfs(ruta) == 0) {
                 log_evento(cfg.log_path, email, "IMPORT_GTFS", ruta);
                 printf("  Importacion completada correctamente.\n");
             } else {
-                printf("  ERROR. Verifique que la ruta contiene stops.txt en formato GTFS.\n");
+                printf("  ERROR. Verifique que la ruta contiene estaciones.txt en formato GTFS.\n");
                 printf("  Descargue los datos de: https://www.renfe.com/content/dam/renfe/es/General/ficheros/opendata/google_transit.zip\n");
             }
             pausar_s();
@@ -1017,7 +1056,7 @@ void menu_importar_gtfs(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 9. INCIDENCIAS ─── */
+// INCIDENCIAS
 void menu_incidencias(int id_admin, const char *email) {
     int op;
     do {
@@ -1062,7 +1101,7 @@ void menu_incidencias(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 10. INFORMES ─── */
+// 10. INFORMES
 void menu_informes(int id_admin, const char *email) {
     int op;
     do {
@@ -1107,7 +1146,7 @@ void menu_informes(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 11. LOGS ─── */
+//LOGS
 void menu_logs(int id_admin, const char *email) {
     int op;
     do {
@@ -1143,7 +1182,7 @@ void menu_logs(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 12. CONFIGURACIÓN ─── */
+// CONFIGURACIÓN
 void menu_configuracion(int id_admin, const char *email) {
     int op;
     do {
@@ -1277,69 +1316,107 @@ void menu_principal_pasajero(int id_u, const char *email) {
     } while (op != 0);
 }
 
-/* ─── BUSCAR TRAYECTO Y RESERVAR ─── */
 void menu_buscar_trayecto(int id_u) {
     titulo("BUSCAR TRAYECTO");
-    listar_estaciones_db();
 
-    int id_orig = leer_entero("\n  ID estacion origen : ");
-    int id_dest = leer_entero("  ID estacion destino: ");
+    // Origen: buscar por ciudad
+
+    char ciudad_orig[64];
+    leer_cadena("\n  Ciudad de origen: ", ciudad_orig, sizeof(ciudad_orig));
+    int id_unico_orig = -1;
+    int n_orig = listar_estaciones_ciudad_db(ciudad_orig, &id_unico_orig);
+    if (n_orig == 0) {
+        printf("  No se encontraron estaciones para esa ciudad.\n");
+        pausar_s(); return;
+    }
+    int id_orig;
+    if (n_orig == 1) {
+        id_orig = id_unico_orig;
+        printf("  Estacion seleccionada automaticamente (ID %d).\n", id_orig);
+    } else {
+        id_orig = leer_entero("  Selecciona ID estacion origen: ");
+    }
+
+    // Destino: buscar por ciudad
+
+    char ciudad_dest[64];
+    leer_cadena("\n  Ciudad de destino: ", ciudad_dest, sizeof(ciudad_dest));
+    int id_unico_dest = -1;
+    int n_dest = listar_estaciones_ciudad_db(ciudad_dest, &id_unico_dest);
+    if (n_dest == 0) {
+        printf("  No se encontraron estaciones para esa ciudad.\n");
+        pausar_s(); return;
+    }
+    int id_dest;
+    if (n_dest == 1) {
+        id_dest = id_unico_dest;
+        printf("  Estacion seleccionada automaticamente (ID %d).\n", id_dest);
+    } else {
+        id_dest = leer_entero("  Selecciona ID estacion destino: ");
+    }
+
     char fecha[11];
     leer_cadena("  Fecha viaje (AAAA-MM-DD): ", fecha, sizeof(fecha));
     char clase[4];
     leer_cadena("  Clase (T=Turista B=Business): ", clase, sizeof(clase));
-    if (clase[0] == 'b' || clase[0] == 'B') strcpy(clase, "B");
+    if (clase[0] == 'b' || clase[0] == 'B'){
+    	strcpy(clase, "B");
+    }
     else strcpy(clase, "T");
 
     int n = buscar_trayectos_db(id_orig, id_dest, fecha, clase);
     if (n == 0) {
-    	pausar_s(); return;
+    	pausar_s();
+    	return;
     }
 
     int id_tr = leer_entero("\n  Selecciona ID trayecto (0=cancelar): ");
-    if (id_tr == 0) {
+    if (id_tr == 0){
     	return;
     }
 
     Trayecto tr = obtener_trayecto_por_id(id_tr);
     if (tr.id_tr < 0) {
-    	printf("  Trayecto no valido.\n");
-    	pausar_s();
+    	printf("  Trayecto no valido.\n"); pausar_s();
     	return;
     }
 
-    /* Paradas intermedias */
+    //Paradas intermedias
     printf("\n  Paradas intermedias del trayecto:\n");
     listar_paradas_trayecto(id_tr);
 
-    /* Selección de vagón y asiento */
+    //Seleccion de vagon y asiento con reintento si ocupado
     printf("\n  VAGONES DISPONIBLES DEL TREN:\n");
     listar_vagones_tren(tr.id_t);
     int num_vagon = leer_entero("\n  Numero de vagon (segun lista): ");
-    mostrar_mapa_asientos(id_tr, fecha, num_vagon);
-    printf("  Introduce el NUMERO que aparece en la celda libre del mapa.\n");
-    printf("  (Columna A=1a col, B=2a col, C=3a col, D=4a col; fila F01=primera fila, etc.)\n");
-    int num_asiento = leer_entero("  Numero de asiento: ");
 
-    if (!asiento_libre(id_tr, fecha, num_vagon, num_asiento)) {
-        printf("\n  *** Ese asiento esta OCUPADO. Elige otro. ***\n");
-        pausar_s();
-        return;
-    }
+    int num_asiento;
+    do {
+        mostrar_mapa_asientos(id_tr, fecha, num_vagon);
+        printf("  Introduce el NUMERO que aparece en la celda libre del mapa.\n");
+        printf("  (Columna A=1a col, B=2a col, C=3a col, D=4a col; fila F01=primera fila, etc.)\n");
+        num_asiento = leer_entero("  Numero de asiento (0=cancelar): ");
+        if (num_asiento == 0) {
+        	printf("  Reserva cancelada.\n"); pausar_s();
+        	return;
+        }
+        if (!asiento_libre(id_tr, fecha, num_vagon, num_asiento)) {
+            printf("\n  *** Ese asiento esta OCUPADO. Elige otro. ***\n\n");
+        }
+    } while (!asiento_libre(id_tr, fecha, num_vagon, num_asiento));
 
-    /* Descuento del pasajero */
+    // Descuento del pasajero
     TipoDescuento desc = obtener_descuento_usuario(id_u);
     const char *dn[] = {"Ninguno","Joven -20%","Dorada -40%","Numerosa -20%","Abono -50%"};
     printf("\n  Descuento aplicado: %s\n", dn[desc]);
 
-    /* Equipaje */
+    // Equipaje
     double supl_eq = 0.0;
     Equipaje eq; memset(&eq, 0, sizeof(eq));
     int tiene_eq = 0;
     printf("\n  EQUIPAJE EXTRA:\n");
     printf("  0. Sin equipaje extra (maleta de mano incluida)\n");
-    printf("  1. Maleta bodega (limite: %s kg, exceso: %.2f EUR/kg)\n",
-           strcmp(clase,"B")==0 ? "25" : "15", cfg.exceso_kg_precio);
+    printf("  1. Maleta bodega (limite: %s kg, exceso: %.2f EUR/kg)\n",strcmp(clase,"B")==0 ? "25" : "15", cfg.exceso_kg_precio);
     printf("  2. Bicicleta (%.2f EUR)\n", cfg.suplemento_bici);
     printf("  3. Esqui/snowboard (%.2f EUR)\n", cfg.suplemento_bici);
     int eq_op = leer_entero("  Opcion equipaje: ");
@@ -1353,10 +1430,10 @@ void menu_buscar_trayecto(int id_u) {
         eq.suplemento_pago = supl_eq;
         tiene_eq = 1;
         if (supl_eq > 0.0){
-            printf("  Suplemento maleta: +%.2f EUR (exceso %.1f kg)\n",
-                   supl_eq, eq.exceso_kg);}
+        	printf("  Suplemento maleta: +%.2f EUR (exceso %.1f kg)\n",supl_eq, eq.exceso_kg);
+        }
         else{
-            printf("  Maleta dentro del limite. Sin suplemento.\n");
+        	printf("  Maleta dentro del limite. Sin suplemento.\n");
         }
     } else if (eq_op == 2) {
         supl_eq = cfg.suplemento_bici;
@@ -1370,7 +1447,7 @@ void menu_buscar_trayecto(int id_u) {
         printf("  Suplemento esqui: +%.2f EUR\n", supl_eq);
     }
 
-    /* Servicio a bordo (solo Turista paga menú) */
+    //Servicio a bordo (solo Turista paga menú)
     double supl_menu = 0.0;
     if (strcmp(clase, "B") == 0) {
         printf("\n  [Business] Menu a bordo incluido.\n");
@@ -1385,12 +1462,12 @@ void menu_buscar_trayecto(int id_u) {
         }
     }
 
-    /* Precio sin puntos */
+    // Precio sin puntos
     double precio_final = calcular_precio_final(id_tr, clase, desc,
                                                  supl_eq + supl_menu);
     double pct_d[] = {0, 20, 40, 20, 50};
 
-    /* ── Canjear puntos de fidelizacion antes de pagar ── */
+    // Canjear puntos de fidelizacion antes de pagar
     int pts_disponibles = obtener_puntos_fidelidad(id_u);
     double descuento_puntos = 0.0;
     int puntos_canjeados = 0;
@@ -1401,11 +1478,9 @@ void menu_buscar_trayecto(int id_u) {
         printf("  Tienes %d puntos = %.2f EUR de descuento disponibles.\n",
                pts_disponibles, pts_disponibles / 10.0);
         printf("  Precio actual del billete: %.2f EUR\n", precio_final);
-        int max_canjeable = (int)(precio_final * 10.0); /* no gastar mas que el precio */
-        if (max_canjeable > pts_disponibles) {
-        	max_canjeable = pts_disponibles;
-        }
-        /* redondear a multiplo de 10 hacia abajo */
+        int max_canjeable = (int)(precio_final * 10.0); // no gastar mas que el precio
+        if (max_canjeable > pts_disponibles) max_canjeable = pts_disponibles;
+        // redondear a multiplo de 10 hacia abajo
         max_canjeable = (max_canjeable / 10) * 10;
         printf("  Maximo canjeable ahora: %d puntos (= %.2f EUR)\n",
                max_canjeable, max_canjeable / 10.0);
@@ -1415,9 +1490,7 @@ void menu_buscar_trayecto(int id_u) {
             descuento_puntos = canjear / 10.0;
             puntos_canjeados = canjear;
             precio_final -= descuento_puntos;
-            if (precio_final < 0.0) {
-            	precio_final = 0.0;
-            }
+            if (precio_final < 0.0) precio_final = 0.0;
             printf("  Descuento por puntos aplicado: -%.2f EUR\n", descuento_puntos);
         } else if (canjear != 0) {
             printf("  Cantidad no valida. No se canjearan puntos.\n");
@@ -1438,43 +1511,38 @@ void menu_buscar_trayecto(int id_u) {
     	printf("  Supl. menu : +%.2f EUR\n", supl_menu);
     }
     if (puntos_canjeados > 0){
-        printf("  Dto. puntos: -%d pts = -%.2f EUR\n", puntos_canjeados, descuento_puntos);
+    	printf("  Dto. puntos: -%d pts = -%.2f EUR\n", puntos_canjeados, descuento_puntos);
     }
     printf("  PRECIO TOTAL: %.2f EUR\n", precio_final);
     printf("  =========================================\n");
 
     int conf = leer_entero("  Confirmar reserva (1=Si 0=No): ");
     if (conf != 1) {
-    	printf("  Reserva cancelada.\n");
-    	pausar_s();
+    	printf("  Reserva cancelada.\n"); pausar_s();
     	return;
     }
 
-    /* Insertar reserva */
+    // Insertar reserva
     Reserva r; memset(&r, 0, sizeof(r));
-    r.id_u         = id_u;
-    r.id_tr        = id_tr;
+    r.id_u = id_u;
+    r.id_tr = id_tr;
     strncpy(r.fecha_viaje, fecha, 10);
-    strncpy(r.clase,       clase,  3);
-    r.num_vagon    = num_vagon;
-    r.num_asiento  = num_asiento;
-    r.precio_base  = tr.precio_base;
+    strncpy(r.clase, clase,  3);
+    r.num_vagon = num_vagon;
+    r.num_asiento = num_asiento;
+    r.precio_base = tr.precio_base;
     r.descuento_pct= pct_d[desc];
     r.precio_final = precio_final;
-    r.estado       = RESERVA_CONFIRMADA;
+    r.estado = RESERVA_CONFIRMADA;
     generar_codigo_validacion(r.codigo_validacion, 12);
 
     int id_res = insertar_reserva_db(r);
     if (id_res > 0) {
-        /* Descontar puntos canjeados */
-        if (puntos_canjeados > 0){
+        // Descontar puntos canjeados
+        if (puntos_canjeados > 0)
             actualizar_puntos_fidelidad(id_u, -puntos_canjeados);
-        }
-        /* Guardar equipaje si lo hay */
-        if (tiene_eq) {
-        	eq.id_res = id_res;
-        	insertar_equipaje_db(eq);
-        }
+        // Guardar equipaje si lo hay
+        if (tiene_eq) { eq.id_res = id_res; insertar_equipaje_db(eq); }
         log_evento(cfg.log_path, NULL, "RESERVA", r.codigo_validacion);
         printf("\n  *** RESERVA CONFIRMADA ***\n");
         printf("  Codigo de validacion: %s\n", r.codigo_validacion);
@@ -1486,7 +1554,7 @@ void menu_buscar_trayecto(int id_u) {
     pausar_s();
 }
 
-/* ─── MIS RESERVAS ─── */
+//MIS RESERVAS
 void menu_mis_reservas(int id_u) {
     int op;
     do {
@@ -1524,7 +1592,7 @@ void menu_mis_reservas(int id_u) {
     } while (op != 0);
 }
 
-/* ─── PUNTOS DE FIDELIZACIÓN ─── */
+// PUNTOS DE FIDELIZACIÓN
 void menu_puntos_fidelizacion(int id_u) {
     int op;
     do {
@@ -1548,7 +1616,7 @@ void menu_puntos_fidelizacion(int id_u) {
     } while (op != 0);
 }
 
-/* ─── MIS DATOS PASAJERO ─── */
+// MIS DATOS PASAJERO
 void menu_mis_datos_pasajero(int id_u, const char *email) {
     int op;
     do {
@@ -1644,7 +1712,7 @@ void menu_principal_maquinista(int id_u, const char *email) {
     } while (op != 0);
 }
 
-/* ─── CUADRANTE DE SERVICIOS ─── */
+//CUADRANTE DE SERVICIOS
 void menu_cuadrante_servicios(int id_u) {
     int op;
     do {
@@ -1671,7 +1739,7 @@ void menu_cuadrante_servicios(int id_u) {
                 printf("\n  — DATOS TECNICOS DEL TREN —\n");
                 printf("  Modelo     : %s\n", t.nombre_modelo);
                 printf("  Num. serie : %s\n", t.num_serie);
-                printf("  Anyo fab.  : %d\n", t.anio_fab);
+                printf("  Año fab.  : %d\n", t.anio_fab);
                 const char *es[] = {"OPERATIVO","REVISION","AVERIA","RETIRADO"};
                 printf("  Estado     : %s\n", es[t.estado_mant]);
                 printf("\n  — VAGONES —\n");
@@ -1687,7 +1755,7 @@ void menu_cuadrante_servicios(int id_u) {
                 printf("  2. Marcar FIN   de trayecto\n");
                 printf("  3. Reportar RETRASO\n");
                 printf("  4. Reportar AVERIA\n");
-                printf("  5. Anyadir observacion\n");
+                printf("  5. Añadir observacion\n");
                 printf("  0. Volver\n");
                 sep();
                 sub = leer_entero("  Opcion: ");
@@ -1768,7 +1836,7 @@ void menu_cuadrante_servicios(int id_u) {
     } while (op != 0);
 }
 
-/* ─── MIS DATOS MAQUINISTA ─── */
+//MIS DATOS MAQUINISTA
 void menu_mis_datos_maquinista(int id_u, const char *email) {
     int op;
     do {

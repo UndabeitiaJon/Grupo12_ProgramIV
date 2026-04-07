@@ -30,35 +30,33 @@
 #include "logs.h"
 #include "menus.h"
 
-/* ─────────────────────────────────────────────── */
+
 int main(void) {
-    /* Sin buffering en stdout → salida inmediata en Eclipse/Windows */
+
     setvbuf(stdout, NULL, _IONBF, 0);
 
-    /* 1. Crear directorios necesarios */
     MKDIR("./data");
     MKDIR("./logs");
 
-    /* 2. Cargar configuración */
+
     cargar_config("./data/config.cfg", &cfg);
 
-    /* 3. Inicializar base de datos (crea tablas si no existen) */
+
     if (init_database() != 0) {
         fprintf(stderr, "ERROR CRITICO: no se pudo inicializar la BD.\n");
         return EXIT_FAILURE;
     }
 
-    /* 4. Insertar datos de prueba (seguro: INSERT OR IGNORE) */
     seed_database();
 
-    /* 5. Log de arranque */
+
     log_evento(cfg.log_path, "SISTEMA", "ARRANQUE",
                "Administrador local TRENFE iniciado");
 
-    /* 6. Menú principal */
+
     menu_inicial();
 
-    /* 7. Log de cierre */
+
     log_evento(cfg.log_path, "SISTEMA", "CIERRE",
                "Administrador local TRENFE detenido");
 

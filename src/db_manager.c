@@ -233,13 +233,13 @@ void seed_database(void) {
         "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
         " VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
 
-        // Trenes
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
+//        // Trenes
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
 
         // Vagones tren 1
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,1,'T',50,0);"
@@ -249,27 +249,27 @@ void seed_database(void) {
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,1,'T',60,0);"
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,2,'B',24,0);"
 
-        //Estaciones
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
+//        //Estaciones
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
 
-        // Trayectos
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
+//        // Trayectos
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
 
         // Tarifas
         "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
@@ -576,22 +576,29 @@ int modificar_usuario_db(int id_u, const char *campo, const char *valor){
 }
 
 int deshabilitar_usuario_db(int id_u){
-	int rc = modificar_usuario_db(id_u, "activo", "0");
-	    if (rc == 0) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return 1;
+    }
+    sqlite3_stmt *stmt;
+    int rc1 = SQLITE_DONE, rc2 = SQLITE_DONE;
 
-	        sqlite3 *db = abrir_bd();
-	        if (db) {
-	            sqlite3_stmt *stmt;
-	            const char *sql = "UPDATE DATOS_EMPLEADO SET estado='INACTIVO' WHERE id_u=?;";
-	            if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-	                sqlite3_bind_int(stmt, 1, id_u);
-	                sqlite3_step(stmt);
-	                sqlite3_finalize(stmt);
-	            }
-	            sqlite3_close(db);
-	        }
-	    }
-	    return rc;
+    sqlite3_prepare_v2(db,
+        "UPDATE USUARIOS SET activo=0 WHERE id_u=?;",
+        -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, id_u);
+    rc1 = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    sqlite3_prepare_v2(db,
+        "UPDATE DATOS_EMPLEADO SET estado='INACTIVO' WHERE id_u=?;",
+        -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, id_u);
+    rc2 = sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    sqlite3_close(db);
+    return (rc1 == SQLITE_DONE && rc2 == SQLITE_DONE) ? 0 : 1;
 }
 
 void buscar_usuario_db(const char *dni_o_nombre){
@@ -766,7 +773,29 @@ int  actualizar_puntos_fidelidad(int id_u, int puntos){
 	 return 0;
 }
 void listar_historial_puntos(int id_u){
-
+	 sqlite3 *db = abrir_bd();
+	 if (!db){
+		 return;
+	 }
+	    sqlite3_stmt *stmt;
+	    sqlite3_prepare_v2(db,
+	        "SELECT fecha,delta,concepto FROM PUNTOS_HISTORIAL WHERE id_u=? ORDER BY id DESC LIMIT 20;",
+	        -1,&stmt,NULL);
+	    sqlite3_bind_int(stmt,1,id_u);
+	    printf("\n%-12s | %+6s | %s\n","FECHA","PUNTOS","CONCEPTO");
+	    printf("-------------+--------+------------------\n");
+	    int n=0;
+	    while (sqlite3_step(stmt)==SQLITE_ROW) {
+	        printf("%-12s | %+6d | %s\n",
+	               (const char*)sqlite3_column_text(stmt,0),
+	               sqlite3_column_int(stmt,1),
+	               (const char*)sqlite3_column_text(stmt,2));
+	        n++;
+	    }
+	    if (!n){
+	    	printf("  [Sin historial de puntos]\n");
+	    }
+	    sqlite3_finalize(stmt); sqlite3_close(db);
 }
 
 TipoDescuento obtener_descuento_usuario(int id_u) {
@@ -1045,30 +1074,20 @@ int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
  *  VAGONES
  * ============================================================ */
 
-int  insertar_vagon_db(Vagon v){
-	sqlite3 *db = abrir_bd();
-	    if (!db) return 1;
-
-	    sqlite3_stmt *stmt;
-	    const char *sql =
-	        "INSERT INTO VAGONES (id_vagon,id_tren,numero_vagon,clase,capacidad_total,vagon_PMR)"
-	        " VALUES (?,?,?,?,?);";
-
-	    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-	        sqlite3_close(db); return 1;
-	    }
-
-	    sqlite3_bind_int(stmt, 1, v.id_vagon);
-	    sqlite3_bind_int(stmt, 2, v.id_tren);
-	    sqlite3_bind_int (stmt, 3, v.numero_vagon);
-	    sqlite3_bind_text(stmt, 4, v.clase,   -1, SQLITE_TRANSIENT);
-	    sqlite3_bind_int(stmt, 5,v.capacidad_total);
-	    sqlite3_bind_int(stmt, 6,v.vagon_PMR);
-
-	    int rc = sqlite3_step(stmt);
-	    sqlite3_finalize(stmt);
-	    sqlite3_close(db);
-	    return (rc == SQLITE_DONE) ? 0 : 1;
+int insertar_vagon_db(Vagon v) {
+    sqlite3 *db = abrir_bd(); if (!db) return 1;
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "INSERT INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR)"
+        " VALUES (?,?,?,?,?);", -1,&stmt,NULL);
+    sqlite3_bind_int (stmt,1,v.id_tren);
+    sqlite3_bind_int (stmt,2,v.numero_vagon);
+    sqlite3_bind_text(stmt,3,v.clase,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int (stmt,4,v.capacidad_total);
+    sqlite3_bind_int (stmt,5,v.vagon_PMR);
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt); sqlite3_close(db);
+    return (rc==SQLITE_DONE)?0:1;
 }
 
 void listar_vagones_tren(int id_tren) {
@@ -1217,9 +1236,9 @@ bool asiento_libre(int id_tr, const char *fecha, int vagon, int asiento) {
 }
 
 
-/* ============================================================
- *  ESTACIONES
- * ============================================================ */
+
+ //ESTACIONES
+
 int insertar_estacion_db(Estacion e) {
     sqlite3 *db = abrir_bd();
     if (!db) return 1;
@@ -1273,6 +1292,62 @@ void listar_estaciones_db() {
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+
+void listar_ciudades_db(void) {
+    sqlite3 *db = abrir_bd();
+    if (!db){
+    	return;
+    }
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "SELECT DISTINCT ciudad FROM ESTACIONES WHERE ciudad IS NOT NULL AND ciudad != '' "
+        "ORDER BY ciudad;",
+        -1, &stmt, NULL);
+    printf("\n  Ciudades disponibles:\n");
+    printf("  ─────────────────────────────────────\n");
+    int n = 0;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        printf("  · %s\n", (const char*)sqlite3_column_text(stmt, 0));
+        n++;
+    }
+    if (n == 0) printf("  (No hay estaciones registradas)\n");
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
+
+int listar_estaciones_ciudad_db(const char *ciudad, int *id_unico) {
+    sqlite3 *db = abrir_bd();
+    if (!db) {
+    	*id_unico = -1;
+    	return 0;
+    }
+    sqlite3_stmt *stmt;
+    char patron[128];
+    snprintf(patron, sizeof(patron), "%%%s%%", ciudad); //Coge los patrones que contengan x palabras los % se ponen dobles
+    sqlite3_prepare_v2(db,
+        "SELECT id_est, nombre, ciudad, tiene_sala_club "
+        "FROM ESTACIONES WHERE ciudad LIKE ? ORDER BY nombre;",
+        -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, 1, patron, -1, SQLITE_TRANSIENT);
+    printf("\n  %-4s | %-35s | %-15s | %s\n",
+           "ID", "NOMBRE", "CIUDAD", "SALA CLUB");
+    printf("  -----+-------------------------------------+-----------------+----------\n");
+    int n = 0, ultimo_id = -1;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        ultimo_id = sqlite3_column_int(stmt, 0);
+        printf("  %-4d | %-35s | %-15s | %s\n",
+               ultimo_id,
+               (const char*)sqlite3_column_text(stmt, 1),
+               (const char*)sqlite3_column_text(stmt, 2),
+               sqlite3_column_int(stmt, 3) ? "Si" : "No");
+        n++;
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    *id_unico = (n == 1) ? ultimo_id : -1;
+    return n;
+}
+
 int  modificar_estacion_db(int id_est, const char *nombre, const char *ciudad, const char *provincia, int num_andenes){
 	 sqlite3 *db = abrir_bd(); if (!db) return 1;
 	    sqlite3_stmt *stmt;
@@ -1338,9 +1413,9 @@ Estacion obtener_estacion_por_id(int id_est) {
 
 
 
-/* ============================================================
- *  TRAYECTOS
- * ============================================================ */
+
+ //  TRAYECTOS
+
 int insertar_trayecto_db(Trayecto tr) {
     sqlite3 *db = abrir_bd();
     if (!db) return 1;
@@ -2828,7 +2903,7 @@ int importar_gtfs(const char *ruta_directorio) {
         sqlite3_close(db); return 1;
     }
     if (!fgets(raw, sizeof(raw), f)) {
-        printf("[GTFS] ERROR: stops.txt vacio.\n");
+        printf("[GTFS] ERROR: estaciones.txt vacio.\n");
         fclose(f); sqlite3_close(db); return 1;
     }
     raw[strcspn(raw, "\r\n")] = '\0';
