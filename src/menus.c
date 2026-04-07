@@ -32,8 +32,12 @@ void limpiar_pantalla(void) {
 
 void pausar(void) {
     printf("\n  [Pulse ENTER para continuar...]");
-    int c; while ((c = getchar()) != '\n' && c != EOF);
-    getchar();
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF){
+        getchar();
+    }
+
+
 }
 
 /* Pausa sin vaciar búfer (ya fue vaciado por leer_entero / leer_cadena) */
@@ -46,8 +50,23 @@ int leer_entero(const char *prompt) {
     int v = 0;
     printf("%s", prompt);
     fflush(stdout);
-    if (scanf("%d", &v) != 1) v = 0;
-    int c; while ((c = getchar()) != '\n' && c != EOF);
+    if (scanf("%d", &v) != 1){
+    	v = 0;
+    }
+    int c;
+
+    while (1) {
+        c = getchar();
+
+        if (c == '\n') {
+            break;
+        }
+
+        if (c == EOF) {
+            break;
+        }
+
+    }
     return v;
 }
 
@@ -55,16 +74,33 @@ double leer_double(const char *prompt) {
     double v = 0.0;
     printf("%s", prompt);
     fflush(stdout);
-    if (scanf("%lf", &v) != 1) v = 0.0;
-    int c; while ((c = getchar()) != '\n' && c != EOF);
+    if (scanf("%lf", &v) != 1){
+    	v = 0.0;
+    }
+    int c;
+
+        while (1) {
+            c = getchar();
+
+            if (c == '\n') {
+                break;
+            }
+
+            if (c == EOF) {
+                break;
+            }
+
+        }
     return v;
 }
 
 void leer_cadena(const char *prompt, char *buf, int max) {
     printf("%s", prompt);
     fflush(stdout);
-    if (fgets(buf, max, stdin))
-        buf[strcspn(buf, "\r\n")] = 0;
+    if (fgets(buf, max, stdin)){
+    	buf[strcspn(buf, "\r\n")] = 0;
+    }
+
 }
 
 static void sep(void) {
@@ -123,8 +159,9 @@ void menu_login(void) {
             return;
         }
         log_evento(cfg.log_path, email, "LOGIN_FAIL", "Credenciales incorrectas");
-        if (intentos > 0)
-            printf("  Credenciales incorrectas. Intentos restantes: %d\n", intentos);
+        if (intentos > 0){
+        	printf("  Credenciales incorrectas. Intentos restantes: %d\n", intentos);
+        }
     }
     printf("  Demasiados intentos fallidos.\n");
     log_evento(cfg.log_path, email, "BLOQUEO", "Demasiados intentos de login");
@@ -259,13 +296,15 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             printf("  Estado (0=Operativo 1=Revision 2=Averia 3=Retirado): ");
             int e = leer_entero("");
             t.estado_mant = (EstadoMantenimiento)(e >= 0 && e <= 3 ? e : 0);
-            leer_cadena("  Fecha ultima rev. (AAAA-MM-DD, ENTER=ninguna): ",
-                        t.fecha_ultima_revision, sizeof(t.fecha_ultima_revision));
+            leer_cadena("  Fecha ultima rev. (AAAA-MM-DD, ENTER=ninguna): ", t.fecha_ultima_revision, sizeof(t.fecha_ultima_revision));
+            // Asegurarnos que tiene_revision existe
             t.tiene_revision = (strlen(t.fecha_ultima_revision) > 0);
             if (insertar_tren_db(t) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_TREN", t.nombre_modelo);
                 printf("  Tren anyadido correctamente.\n");
-            } else printf("  Error al insertar tren (num_serie duplicado?).\n");
+            } else{
+            	printf("  Error al insertar tren (num_serie duplicado?).\n");
+            }
             pausar_s();
             break;
         }
@@ -278,19 +317,29 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             titulo("MODIFICAR TREN  (ENTER = mantener valor actual)");
             char buf[64];
             leer_cadena("  Nuevo modelo     : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(t.nombre_modelo, buf, 63);
+            if (strlen(buf) > 0) {
+            	strncpy(t.nombre_modelo, buf, 63);
+            }
             leer_cadena("  Nuevo num. serie : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(t.num_serie, buf, 31);
+            if (strlen(buf) > 0) {
+            	strncpy(t.num_serie, buf, 31);
+            }
             int anio = leer_entero("  Nuevo anyo (0=mantener): ");
-            if (anio > 0) t.anio_fab = anio;
+            if (anio > 0){
+            	t.anio_fab = anio;
+            }
             leer_cadena("  Nueva fecha rev. (ENTER=mantener): ", buf, sizeof(buf));
-            if (strlen(buf) > 0) { strncpy(t.fecha_ultima_revision, buf, 10); t.tiene_revision = 1; }
+            if (strlen(buf) > 0) {
+            	strncpy(t.fecha_ultima_revision, buf, 10); t.tiene_revision = 1;
+            }
             if (modificar_tren_db(id_t, t.nombre_modelo, t.num_serie, t.anio_fab,
                                    t.estado_mant,
                                    t.tiene_revision ? t.fecha_ultima_revision : "") == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_TREN", "Tren modificado");
                 printf("  Tren actualizado.\n");
-            } else printf("  Error al modificar.\n");
+            } else {
+            	printf("  Error al modificar.\n");
+            }
             pausar_s();
             break;
         }
@@ -303,7 +352,9 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             if (cambiar_estado_tren_db(id_t, (EstadoMantenimiento)(e >= 0 && e <= 3 ? e : 0)) == 0) {
                 log_evento(cfg.log_path, email, "ESTADO_TREN", "Estado tren cambiado");
                 printf("  Estado actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -328,7 +379,9 @@ void menu_gestion_trenes(int id_admin, const char *email) {
             if (insertar_vagon_db(v) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
                 printf("  Vagon anyadido.\n");
-            } else printf("  Error al insertar vagon.\n");
+            } else {
+            	printf("  Error al insertar vagon.\n");
+            }
             pausar_s();
             break;
         }
@@ -377,7 +430,9 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             if (insertar_trayecto_db(tr) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_TRAYECTO", "Trayecto creado");
                 printf("  Trayecto creado (+ tarifa base generada automaticamente).\n");
-            } else printf("  Error al crear trayecto.\n");
+            } else {
+            	printf("  Error al crear trayecto.\n");
+            }
             pausar_s();
             break;
         }
@@ -390,18 +445,26 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             titulo("MODIFICAR TRAYECTO  (ENTER = mantener)");
             char buf[16];
             leer_cadena("  Nueva hora salida  : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(tr.hora_salida, buf, 5);
+            if (strlen(buf) > 0){
+            	strncpy(tr.hora_salida, buf, 5);
+            }
             leer_cadena("  Nueva hora llegada : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(tr.hora_llegada, buf, 5);
+            if (strlen(buf) > 0) {
+            	strncpy(tr.hora_llegada, buf, 5);
+            }
             double p = leer_double("  Nuevo precio base (0=mantener): ");
             if (p > 0.0) tr.precio_base = p;
             leer_cadena("  Nuevos dias (ENTER=mantener): ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(tr.dias_operacion, buf, 7);
+            if (strlen(buf) > 0) {
+            	strncpy(tr.dias_operacion, buf, 7);
+            }
             if (modificar_trayecto_db(id_tr, tr.hora_salida, tr.hora_llegada,
                                        tr.precio_base, tr.dias_operacion) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_TRAYECTO", "Trayecto modificado");
                 printf("  Trayecto actualizado.\n");
-            } else printf("  Error al modificar.\n");
+            } else {
+            	printf("  Error al modificar.\n");
+            }
             pausar_s();
             break;
         }
@@ -428,13 +491,17 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     if (insertar_parada_db(p) == 0) {
                         log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia anyadida");
                         printf("  Parada anyadida.\n");
-                    } else printf("  Error.\n");
+                    } else {
+                    	printf("  Error.\n");
+                    }
                 } else if (sub == 2) {
                     int id_p = leer_entero("  ID parada a eliminar: ");
                     if (eliminar_parada_db(id_p) == 0) {
                         log_evento(cfg.log_path, email, "DEL_PARADA", "Parada eliminada");
                         printf("  Parada eliminada.\n");
-                    } else printf("  Error.\n");
+                    } else {
+                    	printf("  Error.\n");
+                    }
                 }
                 if (sub != 0) pausar_s();
             } while (sub != 0);
@@ -449,7 +516,9 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             if (cambiar_estado_trayecto_db(id_tr, (EstadoTrayecto)est) == 0) {
                 log_evento(cfg.log_path, email, "ESTADO_TRAYECTO", "Estado cambiado");
                 printf("  Estado actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -493,7 +562,9 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
             if (insertar_estacion_db(e) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_ESTACION", e.nombre);
                 printf("  Estacion creada.\n");
-            } else printf("  Error (nombre duplicado?).\n");
+            } else {
+            	printf("  Error (nombre duplicado?).\n");
+            }
             pausar_s();
             break;
         }
@@ -502,21 +573,35 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
             listar_estaciones_db();
             int id_e = leer_entero("\n  ID estacion a modificar: ");
             Estacion e = obtener_estacion_por_id(id_e);
-            if (e.id_est < 0) { printf("  No encontrada.\n"); pausar_s(); break; }
+            if (e.id_est < 0) {
+            	printf("  No encontrada.\n");
+            	pausar_s();
+            	break;
+            }
             titulo("MODIFICAR ESTACION  (ENTER = mantener)");
             char buf[128];
             leer_cadena("  Nuevo nombre    : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(e.nombre, buf, 127);
+            if (strlen(buf) > 0) {
+            	strncpy(e.nombre, buf, 127);
+            }
             leer_cadena("  Nueva ciudad    : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(e.ciudad, buf, 63);
+            if (strlen(buf) > 0) {
+            	strncpy(e.ciudad, buf, 63);
+            }
             leer_cadena("  Nueva provincia : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(e.provincia, buf, 63);
+            if (strlen(buf) > 0) {
+            	strncpy(e.provincia, buf, 63);
+            }
             int na = leer_entero("  Nuevos andenes (0=mantener): ");
-            if (na > 0) e.num_andenes = na;
+            if (na > 0){
+            	e.num_andenes = na;
+            }
             if (modificar_estacion_db(id_e, e.nombre, e.ciudad, e.provincia, e.num_andenes) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_ESTACION", e.nombre);
                 printf("  Estacion actualizada.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -527,7 +612,9 @@ void menu_gestion_estaciones(int id_admin, const char *email) {
             if (toggle_sala_club_db(id_e) == 0) {
                 log_evento(cfg.log_path, email, "SALA_CLUB", "Estado sala club toggled");
                 printf("  Estado Sala Club cambiado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -574,7 +661,9 @@ void menu_gestion_personal(int id_admin, const char *email) {
             if (insertar_usuario_db(u) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_EMPLEADO", em);
                 printf("  Empleado creado correctamente.\n");
-            } else printf("  Error (DNI/email duplicado?).\n");
+            } else {
+            	printf("  Error (DNI/email duplicado?).\n");
+            }
             pausar_s();
             break;
         }
@@ -589,7 +678,9 @@ void menu_gestion_personal(int id_admin, const char *email) {
             if (modificar_usuario_db(id_u, campo, valor) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_EMPLEADO", "Datos empleado modificados");
                 printf("  Actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -601,7 +692,9 @@ void menu_gestion_personal(int id_admin, const char *email) {
             if (leer_entero("") == 1 && deshabilitar_usuario_db(id_u) == 0) {
                 log_evento(cfg.log_path, email, "BAJA_EMPLEADO", "Baja registrada");
                 printf("  Baja registrada.\n");
-            } else printf("  Operacion cancelada.\n");
+            } else {
+            	printf("  Operacion cancelada.\n");
+            }
             pausar_s();
             break;
         }
@@ -624,7 +717,9 @@ void menu_gestion_personal(int id_admin, const char *email) {
             if (insertar_asignacion_db(a) == 0) {
                 log_evento(cfg.log_path, email, "ASIGNACION", "Personal asignado a servicio");
                 printf("  Personal asignado correctamente.\n");
-            } else printf("  Error en la asignacion.\n");
+            } else {
+            	printf("  Error en la asignacion.\n");
+            }
             pausar_s();
             break;
         }
@@ -672,7 +767,9 @@ void menu_gestion_pasajeros(int id_admin, const char *email) {
             if (modificar_usuario_db(id_u, campo, valor) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_PASAJERO", "Datos pasajero modificados");
                 printf("  Actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -682,7 +779,9 @@ void menu_gestion_pasajeros(int id_admin, const char *email) {
             if (leer_entero("") == 1 && deshabilitar_usuario_db(id_u) == 0) {
                 log_evento(cfg.log_path, email, "DESHABILITAR", "Cuenta pasajero deshabilitada");
                 printf("  Cuenta deshabilitada.\n");
-            } else printf("  Cancelado.\n");
+            } else {
+            	printf("  Cancelado.\n");
+            }
             pausar_s();
             break;
         }
@@ -696,7 +795,9 @@ void menu_gestion_pasajeros(int id_admin, const char *email) {
             if (nd >= 0 && nd <= 4 && actualizar_descuento_usuario(id_u, (TipoDescuento)nd) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_DESCUENTO", dn[nd]);
                 printf("  Descuento actualizado a: %s\n", dn[nd]);
-            } else printf("  Error o valor no valido.\n");
+            } else {
+            	printf("  Error o valor no valido.\n");
+            }
             pausar_s();
             break;
         }
@@ -737,7 +838,9 @@ void menu_gestion_servicios(int id_admin, const char *email) {
             if (insertar_servicio_db(s) == 0) {
                 log_evento(cfg.log_path, email, "INSERT_SERVICIO", s.fecha);
                 printf("  Servicio operativo creado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -751,12 +854,16 @@ void menu_gestion_servicios(int id_admin, const char *email) {
             printf("  Fecha      : %s\n", s.fecha);
             const char *ests[] = {"PROGRAMADO","EN_CURSO","FINALIZADO","CANCELADO"};
             printf("  Estado     : %s\n", ests[s.estado_serv]);
-            if (s.tiene_hora_inicio) printf("  Inicio real: %s\n", s.hora_inicio_real);
-            if (s.tiene_hora_fin)    printf("  Fin real   : %s\n", s.hora_fin_real);
-            if (s.minutos_retraso > 0)
+            if (s.tiene_hora_inicio) {
+            	printf("  Inicio real: %s\n", s.hora_inicio_real);
+            }
+            if (s.tiene_hora_fin){
+            	printf("  Fin real   : %s\n", s.hora_fin_real);
+            }
+            if (s.minutos_retraso > 0){
                 printf("  Retraso    : %d min — %s\n",
                        s.minutos_retraso,
-                       s.tiene_causa ? s.causa_retraso : "sin causa registrada");
+                       s.tiene_causa ? s.causa_retraso : "sin causa registrada");}
             printf("\n  — Personal asignado —\n");
             listar_asignaciones_servicio(id_s);
             pausar_s();
@@ -769,7 +876,9 @@ void menu_gestion_servicios(int id_admin, const char *email) {
             if (leer_entero("") == 1 && cancelar_servicio_db(id_s) == 0) {
                 log_evento(cfg.log_path, email, "CANCELAR_SERV", "Servicio cancelado");
                 printf("  Servicio cancelado.\n");
-            } else printf("  Cancelado.\n");
+            } else {
+            	printf("  Cancelado.\n");
+            }
             pausar_s();
             break;
         }
@@ -806,7 +915,9 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
             if (modificar_precio_base_trayecto(id_tr, p) == 0) {
                 log_evento(cfg.log_path, email, "UPD_TARIFA_PRECIO", "Precio base modificado");
                 printf("  Precio actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -817,7 +928,9 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
             if (modificar_coef_business_db(id_tr, c) == 0) {
                 log_evento(cfg.log_path, email, "UPD_TARIFA_BUS", "Coef Business modificado");
                 printf("  Coeficiente Business actualizado.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -828,7 +941,9 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
                 guardar_config("./data/config.cfg", &cfg);
                 log_evento(cfg.log_path, email, "UPD_SUPL_BICI", "Suplemento bici modificado");
                 printf("  Suplemento actualizado y guardado en config.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -839,7 +954,9 @@ void menu_gestion_tarifas(int id_admin, const char *email) {
                 guardar_config("./data/config.cfg", &cfg);
                 log_evento(cfg.log_path, email, "UPD_EXCESO_KG", "Precio exceso kg modificado");
                 printf("  Precio exceso actualizado y guardado en config.\n");
-            } else printf("  Error.\n");
+            } else {
+            	printf("  Error.\n");
+            }
             pausar_s();
             break;
         }
@@ -933,7 +1050,9 @@ void menu_incidencias(int id_admin, const char *email) {
             if (resolver_incidencia_db(id_i, id_admin) == 0) {
                 log_evento(cfg.log_path, email, "RESOLVER_INC", "Incidencia resuelta");
                 printf("  Incidencia marcada como RESUELTA.\n");
-            } else printf("  Error o incidencia no encontrada.\n");
+            } else {
+            	printf("  Error o incidencia no encontrada.\n");
+            }
             pausar_s();
             break;
         }
@@ -1045,13 +1164,21 @@ void menu_configuracion(int id_admin, const char *email) {
             titulo("MODIFICAR PARAMETROS  (ENTER = mantener)");
             char buf[256];
             leer_cadena("  Nueva ruta BD   : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(cfg.db_path, buf, 255);
+            if (strlen(buf) > 0) {
+            	strncpy(cfg.db_path, buf, 255);
+            }
             leer_cadena("  Nueva ruta log  : ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(cfg.log_path, buf, 255);
+            if (strlen(buf) > 0) {
+            	strncpy(cfg.log_path, buf, 255);
+            }
             int p = leer_entero("  Nuevo puerto servidor (0=mantener): ");
-            if (p > 0) cfg.puerto_servidor = p;
+            if (p > 0) {
+            	cfg.puerto_servidor = p;
+            }
             leer_cadena("  Nuevo host servidor (ENTER=mantener): ", buf, sizeof(buf));
-            if (strlen(buf) > 0) strncpy(cfg.host_servidor, buf, 63);
+            if (strlen(buf) > 0) {
+            	strncpy(cfg.host_servidor, buf, 63);
+            }
             guardar_config("./data/config.cfg", &cfg);
             log_evento(cfg.log_path, email, "CONFIG", "Parametros sistema modificados");
             printf("  Configuracion guardada.\n");
@@ -1068,13 +1195,21 @@ void menu_configuracion(int id_admin, const char *email) {
             printf("\n  Nuevos valores (0 = mantener):\n");
             double v;
             v = leer_double("  Coef. Business  : ");
-            if (v > 0.0) cfg.coef_business = v;
+            if (v > 0.0){
+            	cfg.coef_business = v;
+            }
             v = leer_double("  Exceso kg       : ");
-            if (v > 0.0) cfg.exceso_kg_precio = v;
+            if (v > 0.0) {
+            	cfg.exceso_kg_precio = v;
+            }
             v = leer_double("  Supl. bici/esqui: ");
-            if (v > 0.0) cfg.suplemento_bici = v;
+            if (v > 0.0){
+            	cfg.suplemento_bici = v;
+            }
             v = leer_double("  Menu turista     : ");
-            if (v > 0.0) cfg.menu_turista = v;
+            if (v > 0.0) {
+            	cfg.menu_turista = v;
+            }
             guardar_config("./data/config.cfg", &cfg);
             log_evento(cfg.log_path, email, "CONFIG_TARIFAS", "Tarifas globales modificadas");
             printf("  Tarifas globales actualizadas y guardadas.\n");
@@ -1094,7 +1229,9 @@ void menu_configuracion(int id_admin, const char *email) {
                 } else if (cambiar_contrasenia_db(email, nueva) == 0) {
                     log_evento(cfg.log_path, email, "CAMBIO_PASS", "Contrasena admin cambiada");
                     printf("  Contrasena cambiada correctamente.\n");
-                } else printf("  Error al cambiar contrasena.\n");
+                } else {
+                	printf("  Error al cambiar contrasena.\n");
+                }
             }
             pausar_s();
             break;
@@ -1155,13 +1292,21 @@ void menu_buscar_trayecto(int id_u) {
     else strcpy(clase, "T");
 
     int n = buscar_trayectos_db(id_orig, id_dest, fecha, clase);
-    if (n == 0) { pausar_s(); return; }
+    if (n == 0) {
+    	pausar_s(); return;
+    }
 
     int id_tr = leer_entero("\n  Selecciona ID trayecto (0=cancelar): ");
-    if (id_tr == 0) return;
+    if (id_tr == 0) {
+    	return;
+    }
 
     Trayecto tr = obtener_trayecto_por_id(id_tr);
-    if (tr.id_tr < 0) { printf("  Trayecto no valido.\n"); pausar_s(); return; }
+    if (tr.id_tr < 0) {
+    	printf("  Trayecto no valido.\n");
+    	pausar_s();
+    	return;
+    }
 
     /* Paradas intermedias */
     printf("\n  Paradas intermedias del trayecto:\n");
@@ -1178,7 +1323,8 @@ void menu_buscar_trayecto(int id_u) {
 
     if (!asiento_libre(id_tr, fecha, num_vagon, num_asiento)) {
         printf("\n  *** Ese asiento esta OCUPADO. Elige otro. ***\n");
-        pausar_s(); return;
+        pausar_s();
+        return;
     }
 
     /* Descuento del pasajero */
@@ -1206,11 +1352,12 @@ void menu_buscar_trayecto(int id_u) {
         eq.exceso_kg = (supl_eq > 0.0) ? (peso - limite) : 0.0;
         eq.suplemento_pago = supl_eq;
         tiene_eq = 1;
-        if (supl_eq > 0.0)
+        if (supl_eq > 0.0){
             printf("  Suplemento maleta: +%.2f EUR (exceso %.1f kg)\n",
-                   supl_eq, eq.exceso_kg);
-        else
+                   supl_eq, eq.exceso_kg);}
+        else{
             printf("  Maleta dentro del limite. Sin suplemento.\n");
+        }
     } else if (eq_op == 2) {
         supl_eq = cfg.suplemento_bici;
         eq.tipo = EQUIPAJE_BICI; eq.suplemento_pago = supl_eq;
@@ -1255,7 +1402,9 @@ void menu_buscar_trayecto(int id_u) {
                pts_disponibles, pts_disponibles / 10.0);
         printf("  Precio actual del billete: %.2f EUR\n", precio_final);
         int max_canjeable = (int)(precio_final * 10.0); /* no gastar mas que el precio */
-        if (max_canjeable > pts_disponibles) max_canjeable = pts_disponibles;
+        if (max_canjeable > pts_disponibles) {
+        	max_canjeable = pts_disponibles;
+        }
         /* redondear a multiplo de 10 hacia abajo */
         max_canjeable = (max_canjeable / 10) * 10;
         printf("  Maximo canjeable ahora: %d puntos (= %.2f EUR)\n",
@@ -1266,7 +1415,9 @@ void menu_buscar_trayecto(int id_u) {
             descuento_puntos = canjear / 10.0;
             puntos_canjeados = canjear;
             precio_final -= descuento_puntos;
-            if (precio_final < 0.0) precio_final = 0.0;
+            if (precio_final < 0.0) {
+            	precio_final = 0.0;
+            }
             printf("  Descuento por puntos aplicado: -%.2f EUR\n", descuento_puntos);
         } else if (canjear != 0) {
             printf("  Cantidad no valida. No se canjearan puntos.\n");
@@ -1280,15 +1431,24 @@ void menu_buscar_trayecto(int id_u) {
     printf("  Clase      : %s\n", strcmp(clase,"B")==0?"Business":"Turista");
     printf("  Vagon %d  |  Asiento %d\n", num_vagon, num_asiento);
     printf("  Descuento  : %s (%.0f%%)\n", dn[desc], pct_d[desc]);
-    if (supl_eq > 0.0)   printf("  Supl. equip: +%.2f EUR\n", supl_eq);
-    if (supl_menu > 0.0) printf("  Supl. menu : +%.2f EUR\n", supl_menu);
-    if (puntos_canjeados > 0)
+    if (supl_eq > 0.0) {
+    	printf("  Supl. equip: +%.2f EUR\n", supl_eq);
+    }
+    if (supl_menu > 0.0) {
+    	printf("  Supl. menu : +%.2f EUR\n", supl_menu);
+    }
+    if (puntos_canjeados > 0){
         printf("  Dto. puntos: -%d pts = -%.2f EUR\n", puntos_canjeados, descuento_puntos);
+    }
     printf("  PRECIO TOTAL: %.2f EUR\n", precio_final);
     printf("  =========================================\n");
 
     int conf = leer_entero("  Confirmar reserva (1=Si 0=No): ");
-    if (conf != 1) { printf("  Reserva cancelada.\n"); pausar_s(); return; }
+    if (conf != 1) {
+    	printf("  Reserva cancelada.\n");
+    	pausar_s();
+    	return;
+    }
 
     /* Insertar reserva */
     Reserva r; memset(&r, 0, sizeof(r));
@@ -1307,10 +1467,14 @@ void menu_buscar_trayecto(int id_u) {
     int id_res = insertar_reserva_db(r);
     if (id_res > 0) {
         /* Descontar puntos canjeados */
-        if (puntos_canjeados > 0)
+        if (puntos_canjeados > 0){
             actualizar_puntos_fidelidad(id_u, -puntos_canjeados);
+        }
         /* Guardar equipaje si lo hay */
-        if (tiene_eq) { eq.id_res = id_res; insertar_equipaje_db(eq); }
+        if (tiene_eq) {
+        	eq.id_res = id_res;
+        	insertar_equipaje_db(eq);
+        }
         log_evento(cfg.log_path, NULL, "RESERVA", r.codigo_validacion);
         printf("\n  *** RESERVA CONFIRMADA ***\n");
         printf("  Codigo de validacion: %s\n", r.codigo_validacion);
@@ -1421,7 +1585,9 @@ void menu_mis_datos_pasajero(int id_u, const char *email) {
             if (modificar_usuario_db(id_u, campo, valor) == 0) {
                 log_evento(cfg.log_path, email, "UPDATE_PERFIL", "Perfil pasajero actualizado");
                 printf("  Datos actualizados.\n");
-            } else printf("  Error al actualizar.\n");
+            } else {
+            	printf("  Error al actualizar.\n");
+            }
             pausar_s();
             break;
         }
@@ -1438,7 +1604,9 @@ void menu_mis_datos_pasajero(int id_u, const char *email) {
                 } else if (cambiar_contrasenia_db(email, nueva) == 0) {
                     log_evento(cfg.log_path, email, "CAMBIO_PASS", "Contrasena pasajero cambiada");
                     printf("  Contrasena cambiada correctamente.\n");
-                } else printf("  Error al cambiar contrasena.\n");
+                } else {
+                	printf("  Error al cambiar contrasena.\n");
+                }
             }
             pausar_s();
             break;
@@ -1490,7 +1658,11 @@ void menu_cuadrante_servicios(int id_u) {
         if (op == 1) {
             int id_serv = leer_entero("  ID servicio: ");
             ServicioOperativo s = obtener_servicio_por_id(id_serv);
-            if (s.id_serv < 0) { printf("  Servicio no encontrado.\n"); pausar_s(); continue; }
+            if (s.id_serv < 0) {
+            	printf("  Servicio no encontrado.\n");
+            	pausar_s();
+            	continue;
+            }
 
             /* Datos técnicos del tren */
             Trayecto tr = obtener_trayecto_por_id(s.id_tr);
@@ -1525,14 +1697,18 @@ void menu_cuadrante_servicios(int id_u) {
                     if (marcar_inicio_servicio(id_serv) == 0) {
                         log_evento(cfg.log_path, NULL, "INICIO_SERV", "Trayecto iniciado");
                         printf("  Inicio de trayecto registrado.\n");
-                    } else printf("  Error.\n");
+                    } else {
+                    	printf("  Error.\n");
+                    }
                     pausar_s();
                     break;
                 case 2:
                     if (marcar_fin_servicio(id_serv) == 0) {
                         log_evento(cfg.log_path, NULL, "FIN_SERV", "Trayecto finalizado");
                         printf("  Fin de trayecto registrado.\n");
-                    } else printf("  Error.\n");
+                    } else {
+                    	printf("  Error.\n");
+                    }
                     pausar_s();
                     break;
                 case 3: {
@@ -1542,7 +1718,9 @@ void menu_cuadrante_servicios(int id_u) {
                     if (actualizar_retraso_servicio(id_serv, minutos, causa) == 0) {
                         log_evento(cfg.log_path, NULL, "RETRASO", causa);
                         printf("  Retraso registrado: %d min — %s\n", minutos, causa);
-                    } else printf("  Error.\n");
+                    } else {
+                    	printf("  Error.\n");
+                    }
                     pausar_s();
                     break;
                 }
@@ -1559,14 +1737,17 @@ void menu_cuadrante_servicios(int id_u) {
                     strncpy(inc.descripcion, desc_av, 511);
                     if (insertar_incidencia_db(inc) == 0) {
                         /* Cambiar estado tren a AVERÍA */
-                        if (tr2.id_tr >= 0)
+                        if (tr2.id_tr >= 0){
                             cambiar_estado_tren_db(tr2.id_t, TREN_AVERIA);
+                        }
                         /* Registrar retraso */
                         int ret = leer_entero("  Minutos de retraso estimado: ");
                         actualizar_retraso_servicio(id_serv, ret, desc_av);
                         log_evento(cfg.log_path, NULL, "AVERIA", desc_av);
                         printf("  Averia reportada. Administrador notificado.\n");
-                    } else printf("  Error al reportar.\n");
+                    } else {
+                    	printf("  Error al reportar.\n");
+                    }
                     pausar_s();
                     break;
                 }
@@ -1626,7 +1807,9 @@ void menu_mis_datos_maquinista(int id_u, const char *email) {
                 } else if (cambiar_contrasenia_db(email, nueva) == 0) {
                     log_evento(cfg.log_path, email, "CAMBIO_PASS", "Contrasena maquinista cambiada");
                     printf("  Contrasena cambiada correctamente.\n");
-                } else printf("  Error al cambiar contrasena.\n");
+                } else {
+                	printf("  Error al cambiar contrasena.\n");
+                }
             }
             pausar_s();
             break;
