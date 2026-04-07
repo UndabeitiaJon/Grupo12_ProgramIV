@@ -192,6 +192,25 @@
 [2026-04-07 01:33:56] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\eclipse-workspace-C\proyecto_trenfe_local\data\gtfs
 [2026-04-07 01:34:59] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 01:35:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+[2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:15:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:18:14] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:18:16] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:20:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:20:20] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:21:37] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:21:39] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:15:41] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:17:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:17:50] [juan@trenfe] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:20:38] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:21:48] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:21:48] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\e.aranoa\git\Grupo12_ProgramIV\data
+[2026-04-07 12:22:05] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:22:08] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
 [2026-04-07 11:18:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 11:19:05] [markel.trigo2006@gmail.com] [LOGIN] Sesion iniciada correctamente
 [2026-04-07 11:25:23] [markel.trigo2006@gmail.com] [UPDATE_PERFIL] Perfil pasajero actualizado
@@ -235,6 +254,7 @@
 [2026-04-07 12:30:16] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
 [2026-04-07 12:30:27] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 12:30:30] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
 [2026-04-07 12:34:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 12:34:39] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
 [2026-04-07 12:34:54] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
@@ -270,3 +290,6 @@
 [2026-04-07 12:54:48] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 12:55:46] [ander@trenfe.com] [REGISTRO] Nuevo pasajero registrado
 [2026-04-07 12:55:52] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git

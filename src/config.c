@@ -22,12 +22,13 @@ int cargar_config(const char *ruta, ConfigApp *c) {
     // valores por defecto por si falla el fichero
 	set_defaults(c);
 
-    FILE *f = fopen(ruta, "r");
-    if (!f) {
-        printf("Config no encontrada, usando valores por defecto.\n");
-        return 1;
-    }
 
+	FILE *f = fopen(ruta, "r");
+	if (!f) {
+	    printf("[CONFIG] No encontrado. Creando fichero con valores por defecto...\n");
+	    guardar_config(ruta, c);
+	    return 1;
+	}
     char linea[512];
     char seccion[64] = "";
     while (fgets(linea, sizeof(linea), f)) {
