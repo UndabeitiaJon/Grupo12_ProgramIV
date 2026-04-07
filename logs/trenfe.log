@@ -370,3 +370,11 @@
 =======
 >>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 19:34:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:02:17] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:05:07] [SISTEMA] [INICIO_SERV] Trayecto iniciado
+[2026-04-07 20:05:52] [SISTEMA] [FIN_SERV] Trayecto finalizado
+[2026-04-07 20:06:59] [SISTEMA] [RETRASO] Averia en el motor
+[2026-04-07 20:07:50] [SISTEMA] [AVERIA] Fallo en los frenos
+[2026-04-07 20:09:06] [SISTEMA] [OBSERVACION] Vomito en el primer vagon
+[2026-04-07 20:11:29] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
