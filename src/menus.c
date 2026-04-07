@@ -242,7 +242,7 @@ void menu_principal_admin(int id_admin, const char *email) {
         printf("   4. Gestion de Personal\n");
         printf("   5. Gestion de Pasajeros\n");
         printf("   6. Gestion de Servicios Operativos\n");
-        //printf("   7. Gestion de Tarifas\n");
+        printf("   7. Gestion de Tarifas\n");
         printf("   8. Importar Datos GTFS\n");
         printf("   9. Incidencias\n");
         printf("  10. Informes\n");
@@ -374,24 +374,23 @@ void menu_gestion_trenes(int id_admin, const char *email) {
         }
 
         case 6: {
-            Vagon v; memset(&v, 0, sizeof(v));
-            listar_trenes_db();
-            v.id_tren      = leer_entero("\n  ID tren    : ");
-            v.numero_vagon = leer_entero("  Num. vagon  : ");
-            char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
-            cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
-            strncpy(v.clase, cl, 3);
-            v.capacidad_total = leer_entero("  Capacidad   : ");
-            v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
-            if (insertar_vagon_db(v) == 0) {
-                log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon añadido");
-                printf("  Vagon añadido.\n");
-            } else {
-            	printf("  Error al insertar vagon.\n");
-            }
-            pausar_s();
-            break;
-        }
+                Vagon v; memset(&v, 0, sizeof(v));
+                listar_trenes_db();
+                v.id_tren  = leer_entero("\n  ID tren    : ");
+                v.numero_vagon = leer_entero("  Num. vagon  : ");
+                char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
+                cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
+                strncpy(v.clase, cl, 3);
+                v.capacidad_total = leer_entero("  Capacidad   : ");
+                v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
+                if (insertar_vagon_db(v) == 0) {
+                    log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
+                    printf("  Vagon anyadido.\n");
+               } else printf("  Error al insertar vagon.\n");
+                     pausar_s();
+                 break;
+               }
+
 
         case 0: break;
         default: printf("  Opcion no valida.\n");

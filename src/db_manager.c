@@ -773,7 +773,29 @@ int  actualizar_puntos_fidelidad(int id_u, int puntos){
 	 return 0;
 }
 void listar_historial_puntos(int id_u){
-
+	 sqlite3 *db = abrir_bd();
+	 if (!db){
+		 return;
+	 }
+	    sqlite3_stmt *stmt;
+	    sqlite3_prepare_v2(db,
+	        "SELECT fecha,delta,concepto FROM PUNTOS_HISTORIAL WHERE id_u=? ORDER BY id DESC LIMIT 20;",
+	        -1,&stmt,NULL);
+	    sqlite3_bind_int(stmt,1,id_u);
+	    printf("\n%-12s | %+6s | %s\n","FECHA","PUNTOS","CONCEPTO");
+	    printf("-------------+--------+------------------\n");
+	    int n=0;
+	    while (sqlite3_step(stmt)==SQLITE_ROW) {
+	        printf("%-12s | %+6d | %s\n",
+	               (const char*)sqlite3_column_text(stmt,0),
+	               sqlite3_column_int(stmt,1),
+	               (const char*)sqlite3_column_text(stmt,2));
+	        n++;
+	    }
+	    if (!n){
+	    	printf("  [Sin historial de puntos]\n");
+	    }
+	    sqlite3_finalize(stmt); sqlite3_close(db);
 }
 
 TipoDescuento obtener_descuento_usuario(int id_u) {
@@ -1052,30 +1074,20 @@ int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
  *  VAGONES
  * ============================================================ */
 
-int  insertar_vagon_db(Vagon v){
-	sqlite3 *db = abrir_bd();
-	    if (!db) return 1;
-
-	    sqlite3_stmt *stmt;
-	    const char *sql =
-	        "INSERT INTO VAGONES (id_vagon,id_tren,numero_vagon,clase,capacidad_total,vagon_PMR)"
-	        " VALUES (?,?,?,?,?);";
-
-	    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-	        sqlite3_close(db); return 1;
-	    }
-
-	    sqlite3_bind_int(stmt, 1, v.id_vagon);
-	    sqlite3_bind_int(stmt, 2, v.id_tren);
-	    sqlite3_bind_int (stmt, 3, v.numero_vagon);
-	    sqlite3_bind_text(stmt, 4, v.clase,   -1, SQLITE_TRANSIENT);
-	    sqlite3_bind_int(stmt, 5,v.capacidad_total);
-	    sqlite3_bind_int(stmt, 6,v.vagon_PMR);
-
-	    int rc = sqlite3_step(stmt);
-	    sqlite3_finalize(stmt);
-	    sqlite3_close(db);
-	    return (rc == SQLITE_DONE) ? 0 : 1;
+int insertar_vagon_db(Vagon v) {
+    sqlite3 *db = abrir_bd(); if (!db) return 1;
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db,
+        "INSERT INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR)"
+        " VALUES (?,?,?,?,?);", -1,&stmt,NULL);
+    sqlite3_bind_int (stmt,1,v.id_tren);
+    sqlite3_bind_int (stmt,2,v.numero_vagon);
+    sqlite3_bind_text(stmt,3,v.clase,-1,SQLITE_TRANSIENT);
+    sqlite3_bind_int (stmt,4,v.capacidad_total);
+    sqlite3_bind_int (stmt,5,v.vagon_PMR);
+    int rc = sqlite3_step(stmt);
+    sqlite3_finalize(stmt); sqlite3_close(db);
+    return (rc==SQLITE_DONE)?0:1;
 }
 
 void listar_vagones_tren(int id_tren) {

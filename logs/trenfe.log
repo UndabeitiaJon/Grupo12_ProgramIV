@@ -400,3 +400,35 @@
 [2026-04-07 20:16:44] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
 [2026-04-07 20:22:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 20:22:24] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:24:44] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:25:40] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:36] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:52] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:52] [] [BLOQUEO] Demasiados intentos de login
+[2026-04-07 20:26:55] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:26:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:27:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:27:19] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:27:19] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-04-07 20:27:28] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:27:32] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:27:52] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:28:25] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:34:20] [SISTEMA] [RESERVA] 7SFY3TOTLBM
+[2026-04-07 20:40:42] [SISTEMA] [RESERVA] UBX7IK9Q19E
+[2026-04-07 20:41:13] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 20:41:15] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:41:18] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:41:30] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:56:01] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:56:15] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:58:19] [juan@trenfe.com] [UPDATE_PERFIL] Perfil pasajero actualizado
+[2026-04-07 20:59:08] [juan@trenfe.com] [CAMBIO_PASS] Contrasena pasajero cambiada
+[2026-04-07 20:59:50] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 21:00:45] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 21:02:05] [admin@trenfe.com] [INSERT_VAGON] Vagon anyadido
+[2026-04-07 21:04:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:04:07] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 21:04:10] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:04:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 21:05:19] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
