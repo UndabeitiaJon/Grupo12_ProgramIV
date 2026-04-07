@@ -1277,69 +1277,107 @@ void menu_principal_pasajero(int id_u, const char *email) {
     } while (op != 0);
 }
 
-/* ─── BUSCAR TRAYECTO Y RESERVAR ─── */
 void menu_buscar_trayecto(int id_u) {
     titulo("BUSCAR TRAYECTO");
-    listar_estaciones_db();
 
-    int id_orig = leer_entero("\n  ID estacion origen : ");
-    int id_dest = leer_entero("  ID estacion destino: ");
+    // Origen: buscar por ciudad
+
+    char ciudad_orig[64];
+    leer_cadena("\n  Ciudad de origen: ", ciudad_orig, sizeof(ciudad_orig));
+    int id_unico_orig = -1;
+    int n_orig = listar_estaciones_ciudad_db(ciudad_orig, &id_unico_orig);
+    if (n_orig == 0) {
+        printf("  No se encontraron estaciones para esa ciudad.\n");
+        pausar_s(); return;
+    }
+    int id_orig;
+    if (n_orig == 1) {
+        id_orig = id_unico_orig;
+        printf("  Estacion seleccionada automaticamente (ID %d).\n", id_orig);
+    } else {
+        id_orig = leer_entero("  Selecciona ID estacion origen: ");
+    }
+
+    // Destino: buscar por ciudad
+
+    char ciudad_dest[64];
+    leer_cadena("\n  Ciudad de destino: ", ciudad_dest, sizeof(ciudad_dest));
+    int id_unico_dest = -1;
+    int n_dest = listar_estaciones_ciudad_db(ciudad_dest, &id_unico_dest);
+    if (n_dest == 0) {
+        printf("  No se encontraron estaciones para esa ciudad.\n");
+        pausar_s(); return;
+    }
+    int id_dest;
+    if (n_dest == 1) {
+        id_dest = id_unico_dest;
+        printf("  Estacion seleccionada automaticamente (ID %d).\n", id_dest);
+    } else {
+        id_dest = leer_entero("  Selecciona ID estacion destino: ");
+    }
+
     char fecha[11];
     leer_cadena("  Fecha viaje (AAAA-MM-DD): ", fecha, sizeof(fecha));
     char clase[4];
     leer_cadena("  Clase (T=Turista B=Business): ", clase, sizeof(clase));
-    if (clase[0] == 'b' || clase[0] == 'B') strcpy(clase, "B");
+    if (clase[0] == 'b' || clase[0] == 'B'){
+    	strcpy(clase, "B");
+    }
     else strcpy(clase, "T");
 
     int n = buscar_trayectos_db(id_orig, id_dest, fecha, clase);
     if (n == 0) {
-    	pausar_s(); return;
+    	pausar_s();
+    	return;
     }
 
     int id_tr = leer_entero("\n  Selecciona ID trayecto (0=cancelar): ");
-    if (id_tr == 0) {
+    if (id_tr == 0){
     	return;
     }
 
     Trayecto tr = obtener_trayecto_por_id(id_tr);
     if (tr.id_tr < 0) {
-    	printf("  Trayecto no valido.\n");
-    	pausar_s();
+    	printf("  Trayecto no valido.\n"); pausar_s();
     	return;
     }
 
-    /* Paradas intermedias */
+    //Paradas intermedias
     printf("\n  Paradas intermedias del trayecto:\n");
     listar_paradas_trayecto(id_tr);
 
-    /* Selección de vagón y asiento */
+    //Seleccion de vagon y asiento con reintento si ocupado
     printf("\n  VAGONES DISPONIBLES DEL TREN:\n");
     listar_vagones_tren(tr.id_t);
     int num_vagon = leer_entero("\n  Numero de vagon (segun lista): ");
-    mostrar_mapa_asientos(id_tr, fecha, num_vagon);
-    printf("  Introduce el NUMERO que aparece en la celda libre del mapa.\n");
-    printf("  (Columna A=1a col, B=2a col, C=3a col, D=4a col; fila F01=primera fila, etc.)\n");
-    int num_asiento = leer_entero("  Numero de asiento: ");
 
-    if (!asiento_libre(id_tr, fecha, num_vagon, num_asiento)) {
-        printf("\n  *** Ese asiento esta OCUPADO. Elige otro. ***\n");
-        pausar_s();
-        return;
-    }
+    int num_asiento;
+    do {
+        mostrar_mapa_asientos(id_tr, fecha, num_vagon);
+        printf("  Introduce el NUMERO que aparece en la celda libre del mapa.\n");
+        printf("  (Columna A=1a col, B=2a col, C=3a col, D=4a col; fila F01=primera fila, etc.)\n");
+        num_asiento = leer_entero("  Numero de asiento (0=cancelar): ");
+        if (num_asiento == 0) {
+        	printf("  Reserva cancelada.\n"); pausar_s();
+        	return;
+        }
+        if (!asiento_libre(id_tr, fecha, num_vagon, num_asiento)) {
+            printf("\n  *** Ese asiento esta OCUPADO. Elige otro. ***\n\n");
+        }
+    } while (!asiento_libre(id_tr, fecha, num_vagon, num_asiento));
 
-    /* Descuento del pasajero */
+    // Descuento del pasajero
     TipoDescuento desc = obtener_descuento_usuario(id_u);
     const char *dn[] = {"Ninguno","Joven -20%","Dorada -40%","Numerosa -20%","Abono -50%"};
     printf("\n  Descuento aplicado: %s\n", dn[desc]);
 
-    /* Equipaje */
+    // Equipaje
     double supl_eq = 0.0;
     Equipaje eq; memset(&eq, 0, sizeof(eq));
     int tiene_eq = 0;
     printf("\n  EQUIPAJE EXTRA:\n");
     printf("  0. Sin equipaje extra (maleta de mano incluida)\n");
-    printf("  1. Maleta bodega (limite: %s kg, exceso: %.2f EUR/kg)\n",
-           strcmp(clase,"B")==0 ? "25" : "15", cfg.exceso_kg_precio);
+    printf("  1. Maleta bodega (limite: %s kg, exceso: %.2f EUR/kg)\n",strcmp(clase,"B")==0 ? "25" : "15", cfg.exceso_kg_precio);
     printf("  2. Bicicleta (%.2f EUR)\n", cfg.suplemento_bici);
     printf("  3. Esqui/snowboard (%.2f EUR)\n", cfg.suplemento_bici);
     int eq_op = leer_entero("  Opcion equipaje: ");
@@ -1353,10 +1391,10 @@ void menu_buscar_trayecto(int id_u) {
         eq.suplemento_pago = supl_eq;
         tiene_eq = 1;
         if (supl_eq > 0.0){
-            printf("  Suplemento maleta: +%.2f EUR (exceso %.1f kg)\n",
-                   supl_eq, eq.exceso_kg);}
+        	printf("  Suplemento maleta: +%.2f EUR (exceso %.1f kg)\n",supl_eq, eq.exceso_kg);
+        }
         else{
-            printf("  Maleta dentro del limite. Sin suplemento.\n");
+        	printf("  Maleta dentro del limite. Sin suplemento.\n");
         }
     } else if (eq_op == 2) {
         supl_eq = cfg.suplemento_bici;
@@ -1370,7 +1408,7 @@ void menu_buscar_trayecto(int id_u) {
         printf("  Suplemento esqui: +%.2f EUR\n", supl_eq);
     }
 
-    /* Servicio a bordo (solo Turista paga menú) */
+    //Servicio a bordo (solo Turista paga menú)
     double supl_menu = 0.0;
     if (strcmp(clase, "B") == 0) {
         printf("\n  [Business] Menu a bordo incluido.\n");
@@ -1385,12 +1423,12 @@ void menu_buscar_trayecto(int id_u) {
         }
     }
 
-    /* Precio sin puntos */
+    // Precio sin puntos
     double precio_final = calcular_precio_final(id_tr, clase, desc,
                                                  supl_eq + supl_menu);
     double pct_d[] = {0, 20, 40, 20, 50};
 
-    /* ── Canjear puntos de fidelizacion antes de pagar ── */
+    // Canjear puntos de fidelizacion antes de pagar
     int pts_disponibles = obtener_puntos_fidelidad(id_u);
     double descuento_puntos = 0.0;
     int puntos_canjeados = 0;
@@ -1401,11 +1439,9 @@ void menu_buscar_trayecto(int id_u) {
         printf("  Tienes %d puntos = %.2f EUR de descuento disponibles.\n",
                pts_disponibles, pts_disponibles / 10.0);
         printf("  Precio actual del billete: %.2f EUR\n", precio_final);
-        int max_canjeable = (int)(precio_final * 10.0); /* no gastar mas que el precio */
-        if (max_canjeable > pts_disponibles) {
-        	max_canjeable = pts_disponibles;
-        }
-        /* redondear a multiplo de 10 hacia abajo */
+        int max_canjeable = (int)(precio_final * 10.0); // no gastar mas que el precio
+        if (max_canjeable > pts_disponibles) max_canjeable = pts_disponibles;
+        // redondear a multiplo de 10 hacia abajo
         max_canjeable = (max_canjeable / 10) * 10;
         printf("  Maximo canjeable ahora: %d puntos (= %.2f EUR)\n",
                max_canjeable, max_canjeable / 10.0);
@@ -1415,9 +1451,7 @@ void menu_buscar_trayecto(int id_u) {
             descuento_puntos = canjear / 10.0;
             puntos_canjeados = canjear;
             precio_final -= descuento_puntos;
-            if (precio_final < 0.0) {
-            	precio_final = 0.0;
-            }
+            if (precio_final < 0.0) precio_final = 0.0;
             printf("  Descuento por puntos aplicado: -%.2f EUR\n", descuento_puntos);
         } else if (canjear != 0) {
             printf("  Cantidad no valida. No se canjearan puntos.\n");
@@ -1438,43 +1472,38 @@ void menu_buscar_trayecto(int id_u) {
     	printf("  Supl. menu : +%.2f EUR\n", supl_menu);
     }
     if (puntos_canjeados > 0){
-        printf("  Dto. puntos: -%d pts = -%.2f EUR\n", puntos_canjeados, descuento_puntos);
+    	printf("  Dto. puntos: -%d pts = -%.2f EUR\n", puntos_canjeados, descuento_puntos);
     }
     printf("  PRECIO TOTAL: %.2f EUR\n", precio_final);
     printf("  =========================================\n");
 
     int conf = leer_entero("  Confirmar reserva (1=Si 0=No): ");
     if (conf != 1) {
-    	printf("  Reserva cancelada.\n");
-    	pausar_s();
+    	printf("  Reserva cancelada.\n"); pausar_s();
     	return;
     }
 
-    /* Insertar reserva */
+    // Insertar reserva
     Reserva r; memset(&r, 0, sizeof(r));
-    r.id_u         = id_u;
-    r.id_tr        = id_tr;
+    r.id_u = id_u;
+    r.id_tr = id_tr;
     strncpy(r.fecha_viaje, fecha, 10);
-    strncpy(r.clase,       clase,  3);
-    r.num_vagon    = num_vagon;
-    r.num_asiento  = num_asiento;
-    r.precio_base  = tr.precio_base;
+    strncpy(r.clase, clase,  3);
+    r.num_vagon = num_vagon;
+    r.num_asiento = num_asiento;
+    r.precio_base = tr.precio_base;
     r.descuento_pct= pct_d[desc];
     r.precio_final = precio_final;
-    r.estado       = RESERVA_CONFIRMADA;
+    r.estado = RESERVA_CONFIRMADA;
     generar_codigo_validacion(r.codigo_validacion, 12);
 
     int id_res = insertar_reserva_db(r);
     if (id_res > 0) {
-        /* Descontar puntos canjeados */
-        if (puntos_canjeados > 0){
+        // Descontar puntos canjeados
+        if (puntos_canjeados > 0)
             actualizar_puntos_fidelidad(id_u, -puntos_canjeados);
-        }
-        /* Guardar equipaje si lo hay */
-        if (tiene_eq) {
-        	eq.id_res = id_res;
-        	insertar_equipaje_db(eq);
-        }
+        // Guardar equipaje si lo hay
+        if (tiene_eq) { eq.id_res = id_res; insertar_equipaje_db(eq); }
         log_evento(cfg.log_path, NULL, "RESERVA", r.codigo_validacion);
         printf("\n  *** RESERVA CONFIRMADA ***\n");
         printf("  Codigo de validacion: %s\n", r.codigo_validacion);
