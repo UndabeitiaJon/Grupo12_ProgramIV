@@ -192,6 +192,7 @@
 [2026-04-07 01:33:56] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\eclipse-workspace-C\proyecto_trenfe_local\data\gtfs
 [2026-04-07 01:34:59] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 01:35:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
 [2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 04:15:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
@@ -209,3 +210,48 @@
 [2026-04-07 12:21:48] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\e.aranoa\git\Grupo12_ProgramIV\data
 [2026-04-07 12:22:05] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
 [2026-04-07 12:22:08] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+[2026-04-07 11:18:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:19:05] [markel.trigo2006@gmail.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:25:23] [markel.trigo2006@gmail.com] [UPDATE_PERFIL] Perfil pasajero actualizado
+[2026-04-07 11:25:40] [markel.trigo2006@gmail.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 11:25:57] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:31:07] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:31:24] [admin@trenfe.com] [UPDATE_DESCUENTO] ABONO -50%
+[2026-04-07 11:31:38] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 11:31:51] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:33:56] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:34:06] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 11:34:18] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:34:29] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:38:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:38:33] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:38:35] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 11:38:56] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:41:38] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 11:42:18] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 11:45:44] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:45:55] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:47:29] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:47:46] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:49:54] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:50:13] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:25:58] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:26:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:27:13] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:13] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data
+[2026-04-07 12:27:52] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:52] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:28:52] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:29:05] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:10] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [BLOQUEO] Demasiados intentos de login
+[2026-04-07 12:29:13] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:29:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:30:02] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:30:16] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:30:16] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:30:27] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:30:30] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
