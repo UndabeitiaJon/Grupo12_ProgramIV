@@ -12,9 +12,9 @@ typedef struct {
     int  id_vagon;
     int  id_tren;
     int  numero_vagon;
-    char clase[4];       /* "T"=Turista, "B"=Business, "P"=PMR */
+    char clase[4];        /* "B", "T" */
     int  capacidad_total;
-    int  vagon_PMR;      /* 0=no, 1=si */
+    int  vagon_PMR;
 } Vagon;
 
 

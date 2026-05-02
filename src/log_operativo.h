@@ -12,16 +12,16 @@
 
 typedef struct {
     int      id_log;
-    char     timestamp[20];      /* "AAAA-MM-DD HH:MM:SS\0" */
+    char     timestamp[20];
     int      id_u;
-    int      tiene_usuario;      /* 0 si accion del sistema (NULL en BD) */
+    int      tiene_usuario;
     char     accion[128];
     char     entidad_afectada[64];
     int      id_entidad;
-    char     ip_origen[46];      /* IPv4 o IPv6 */
+    char     ip_origen[46];
     NivelLog nivel;
     char     detalle_json[1024];
-    int      tiene_detalle;      /* 0 si NULL en BD */
+    int      tiene_detalle;
 } LogOperativo;
 
 #endif /* SRC_LOG_OPERATIVO_H_ */

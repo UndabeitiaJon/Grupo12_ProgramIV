@@ -11,6 +11,7 @@
 #include "db_manager.h"
 #include "estructuras.h"
 #include "config.h"
+#include "hash.h"
 
 /* ============================================================
  *  UTILIDAD INTERNA: abrir BD
@@ -209,93 +210,35 @@ int init_database(void) {
  * ============================================================ */
 void seed_database(void) {
     sqlite3 *db = abrir_bd();
-    if (!db){
-    	return;
-    }
+    if (!db) return;
 
     char *err = NULL;
     const char *sql =
         // Usuarios
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Admin','Trenfe','00000000A','admin@trenfe.com','600000000','1980-01-01','admin123','ADMIN',1,date('now'));"
+        " VALUES ('Admin','Trenfe','00000000A','admin@trenfe.com','600000000','1980-01-01','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','ADMIN',1,date('now'));"
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Juan','Garcia','12345678B','juan@trenfe.com','611222333','1995-06-15','pass123','PASAJERO',1,date('now'));"
+        " VALUES ('Juan','Garcia','12345678B','juan@trenfe.com','611222333','1995-06-15','9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c','PASAJERO',1,date('now'));"
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com','622333444','1985-03-20','maq123','MAQUINISTA',1,date('now'));"
+        " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com','622333444','1985-03-20','7aed9c3a0259a8e61958737eb798265cd50d3c711be0e15dd794c4f688e29c13','MAQUINISTA',1,date('now'));"
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
-        " VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com','633444555','2000-09-10','pass456','PASAJERO',1,date('now'));"
+        " VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com','633444555','2000-09-10','1d4598d1949b47f7f211134b639ec32238ce73086a83c2f745713b3f12f817e5','PASAJERO',1,date('now'));"
 
-        // Datos pasajeros
-        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) VALUES (2,150,'JOVEN');"
-        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) VALUES (4,0,'NINGUNO');"
+        // Datos pasajeros — usan SELECT para no depender de id_u fijo
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u, puntos_fidelidad, tipo_descuento) "
+        "SELECT id_u, 150, 'NINGUNO' FROM USUARIOS WHERE email='juan@trenfe.com';"
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u, puntos_fidelidad, tipo_descuento) "
+        "SELECT id_u, 0, 'JOVEN' FROM USUARIOS WHERE email='maria@trenfe.com';"
 
-        //Datos empleados
-        "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
-        " VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
+        // Datos empleados
+        "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u, num_empleado, fecha_ingreso, rol_empleado, estado) "
+        "SELECT id_u, 'EMP-0001', date('now'), 'MAQUINISTA', 'ACTIVO' FROM USUARIOS WHERE email='pedro@trenfe.com';"
 
-//        // Trenes
-//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-//        " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
-//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-//        " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
-//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-//        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
-
-        // Vagones tren 1
-        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,1,'T',50,0);"
-        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,2,'T',50,1);"
-        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,3,'B',30,0);"
-        // Vagones tren 2
-        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,1,'T',60,0);"
-        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,2,'B',24,0);"
-
-//        //Estaciones
-//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-//        " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
-//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-//        " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
-//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-//        " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
-//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-//        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
-//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-//        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
-
-//        // Trayectos
-//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-//        " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
-//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-//        " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
-//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-//        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
-//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-//        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
-
-        // Tarifas
-        "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
-        " VALUES (1,45.50,1.0,1.8,30.0,12.0);"
-        "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
-        " VALUES (2,32.00,1.0,1.8,30.0,12.0);"
-
-        // Descuentos
+        // Descuentos — no tienen FK, siempre seguros
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('JOVEN',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('DORADA',40.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('NUMEROSA',20.0);"
-        "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);"
-
-        // Servicio operativo de ejemplo
-        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
-        " VALUES (1,date('now'),'PROGRAMADO');"
-
-        // Asignación maquinista al servicio
-        "INSERT OR IGNORE INTO ASIGNACION_PERSONAL (id_serv,id_u,id_t,rol_servicio)"
-        " VALUES (1,3,1,'CONDUCTOR');";
-
-    	"INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv)"
-    	" VALUES (1,date('now'),'PROGRAMADO');";
-
-
-
+        "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);";
 
     if (sqlite3_exec(db, sql, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error: %s\n", err);
@@ -305,6 +248,7 @@ void seed_database(void) {
         printf("       admin@trenfe.com / admin123\n");
         printf("       juan@trenfe.com  / pass123\n");
         printf("       pedro@trenfe.com / maq123\n");
+        printf("       maria@trenfe.com / pass456\n");
     }
     sqlite3_close(db);
 }
@@ -710,8 +654,10 @@ bool comprobar_contrasenia(const char *email, const char *contrasenia) {
     if (sqlite3_prepare_v2(db, "SELECT pass_hash FROM USUARIOS WHERE email=?;", -1, &stmt, NULL) == SQLITE_OK) {
         sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
         if (sqlite3_step(stmt) == SQLITE_ROW) {
-            const char *hash = (const char*)sqlite3_column_text(stmt, 0);
-            ok = (strcmp(hash, contrasenia) == 0);
+            const char *hash_bd = (const char*)sqlite3_column_text(stmt, 0);
+            char hash_input[65];
+            sha256_hex(contrasenia, hash_input);
+            ok = (strcmp(hash_bd, hash_input) == 0);
         }
         sqlite3_finalize(stmt);
     }
@@ -726,7 +672,9 @@ int cambiar_contrasenia_db(const char *email, const char *nueva_pass){
 	 sqlite3_stmt *stmt;
 	 const char *sql = "UPDATE USUARIOS SET pass_hash=? WHERE email=?;";
 	 sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-	 sqlite3_bind_text(stmt,1,nueva_pass,-1,SQLITE_TRANSIENT);
+	 char hash_hex[65];
+	 sha256_hex(nueva_pass, hash_hex);
+	 sqlite3_bind_text(stmt, 1, hash_hex, -1, SQLITE_TRANSIENT);
 	 sqlite3_bind_text(stmt,2,email,-1,SQLITE_TRANSIENT);
 	 int rc = sqlite3_step(stmt); //ejecuta el stmt
 	 sqlite3_finalize(stmt);

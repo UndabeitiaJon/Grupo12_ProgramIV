@@ -17,7 +17,7 @@ typedef struct {
     double latitud;
     double longitud;
     int    num_andenes;
-    int    tiene_sala_club; /* 0=no, 1=si */
+    int    tiene_sala_club;
 } Estacion;
 
 #endif /* SRC_ESTACION_H_ */

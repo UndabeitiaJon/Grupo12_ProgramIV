@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "estructuras.h"
+#include "hash.h"
 
 
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,
@@ -23,7 +24,9 @@ Usuario crearUsuario(char *nombre, char *apellido, char *dni,
     strncpy(u.dni, dni, sizeof(u.dni) - 1);
     strncpy(u.email, email, sizeof(u.email)- 1);
     strncpy(u.telf, telefono, sizeof(u.telf)- 1);
-    strncpy(u.pass_hash, contrasenia, sizeof(u.pass_hash) - 1);
+    char hash_hex[65];
+    sha256_hex(contrasenia, hash_hex);
+    strncpy(u.pass_hash, hash_hex, sizeof(u.pass_hash) - 1);
     strncpy(u.fecha_nac, fechaNacimiento, sizeof(u.fecha_nac) - 1);
     u.rol    = rol;
     u.activo = 1;  // activo por defecto al crearse

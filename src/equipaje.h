@@ -18,7 +18,7 @@ typedef struct {
     char         dimensiones[64];
     double       exceso_kg;
     double       suplemento_pago;
-    int          facturado; /* 0=no, 1=si */
+    int          facturado;
 } Equipaje;
 
 #endif /* SRC_EQUIPAJE_H_ */

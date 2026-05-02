@@ -15,11 +15,11 @@ typedef struct {
     int            id_t;
     int            id_est_origen;
     int            id_est_destino;
-    char           hora_salida[9];     /* "HH:MM:SS\0" */
-    char           hora_llegada[9];    /* "HH:MM:SS\0" */
+    char           hora_salida[6];
+    char           hora_llegada[6];
     int            duracion_min;
     double         precio_base;
-    char           dias_operacion[8];  /* "LMXJVSD\0" */
+    char           dias_operacion[8];
     EstadoTrayecto estado;
 } Trayecto;
 

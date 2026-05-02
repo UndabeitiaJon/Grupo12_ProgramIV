@@ -14,24 +14,17 @@
 #define MAX_VAGONES  20
 #define MAX_ASIENTOS 100
 
-typedef enum {
-    ROL_PASAJERO = 0,
-    ROL_EMPLEADO = 1,
-    ROL_ADMIN    = 2
-} RolUsuario;
+typedef enum { ROL_PASAJERO = 0, ROL_EMPLEADO = 1, ROL_ADMIN = 2 } RolUsuario;
 
 typedef enum {
     DESCUENTO_NINGUNO  = 0,
-    DESCUENTO_JOVEN    = 1,
-    DESCUENTO_DORADA   = 2,
-    DESCUENTO_NUMEROSA = 3,
-    DESCUENTO_ABONO    = 4
+    DESCUENTO_JOVEN    = 1,   /* <26 años: -20% */
+    DESCUENTO_DORADA   = 2,   /* >60 años: -40% */
+    DESCUENTO_NUMEROSA = 3,   /* familia numerosa: -20% */
+    DESCUENTO_ABONO    = 4    /* abono cercanías: -50% */
 } TipoDescuento;
 
-typedef enum {
-    EMPLEADO_ACTIVO = 1,
-    EMPLEADO_BAJA   = 0
-} EstadoEmpleado;
+typedef enum { EMPLEADO_ACTIVO = 1, EMPLEADO_BAJA = 0 } EstadoEmpleado;
 
 typedef enum {
     TREN_OPERATIVO = 0,
@@ -41,10 +34,10 @@ typedef enum {
 } EstadoMantenimiento;
 
 typedef enum {
-    RESERVA_PENDIENTE   = 0,
-    RESERVA_CONFIRMADA  = 1,
-    RESERVA_CANCELADA   = 2,
-    RESERVA_COMPLETADA  = 3
+    RESERVA_PENDIENTE  = 0,
+    RESERVA_CONFIRMADA = 1,
+    RESERVA_CANCELADA  = 2,
+    RESERVA_COMPLETADA = 3
 } EstadoReserva;
 
 typedef enum {
@@ -101,7 +94,6 @@ typedef enum {
     TRAYECTO_INACTIVO = 0,
     TRAYECTO_ACTIVO   = 1
 } EstadoTrayecto;
-
 
 
 #endif /* SRC_TIPOS_COMUNES_H_ */

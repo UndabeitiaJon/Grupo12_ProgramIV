@@ -17,7 +17,7 @@ typedef struct {
     int         id_t;
     RolServicio rol_servicio;
     char        observaciones[256];
-    int         tiene_observaciones; /* 0 si NULL en BD */
+    int         tiene_observaciones;
 } AsignacionPersonal;
 
 #endif /* SRC_ASIGNACION_H_ */

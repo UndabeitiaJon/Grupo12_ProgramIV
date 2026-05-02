@@ -17,11 +17,11 @@ typedef struct {
     char       dni[16];
     char       email[128];
     char       telf[20];
-    char       fecha_nac[11];       /* "AAAA-MM-DD\0" */
-    char       pass_hash[256];      /* SHA-256 en hexadecimal (64 chars) */
+    char       fecha_nac[11];        /* "AAAA-MM-DD\0" */
+    char       pass_hash[256];
     RolUsuario rol;
-    int        activo;              /* 0=inactivo, 1=activo */
-    char       fecha_registro[20];  /* "AAAA-MM-DD HH:MM:SS\0" */
+    int        activo;
+    char       fecha_registro[20];
 } Usuario;
 
 Usuario crearUsuario(char *nombre, char *apellido, char *dni,

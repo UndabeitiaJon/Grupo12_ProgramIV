@@ -18,11 +18,11 @@ typedef struct {
     char                descripcion[512];
     PrioridadIncidencia prioridad;
     EstadoIncidencia    estado;
-    char                fecha_reporte[11];     /* "AAAA-MM-DD\0" */
-    char                fecha_resolucion[11];  /* "AAAA-MM-DD\0" */
-    int                 tiene_fecha_resolucion;/* 0 si no resuelta */
+    char                fecha_reporte[11];
+    char                fecha_resolucion[11];
+    int                 tiene_fecha_resolucion;
     int                 id_u_resuelve;
-    int                 tiene_resolutor;       /* 0 si no asignado */
+    int                 tiene_resolutor;
 } Incidencia;
 
 #endif /* SRC_INCIDENCIA_H_ */

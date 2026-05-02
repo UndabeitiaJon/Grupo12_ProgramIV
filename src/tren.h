@@ -16,9 +16,8 @@ typedef struct {
     char                num_serie[32];
     int                 anio_fab;
     EstadoMantenimiento estado_mant;
-    char                fecha_ultima_revision[11]; /* "AAAA-MM-DD\0" */
-    int                 tiene_revision;            /* 0 si NULL en BD */
+    char                fecha_ultima_revision[11];
+    int                 tiene_revision;
 } Tren;
-
 
 #endif /* SRC_TREN_H_ */

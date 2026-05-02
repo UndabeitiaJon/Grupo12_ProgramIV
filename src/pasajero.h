@@ -15,8 +15,8 @@ typedef struct {
     int           puntos_fidelidad;
     TipoDescuento tipo_descuento;
     char          num_tarjeta_fidelizacion[32];
-    int           tiene_tarjeta;            /* 0 si NULL en BD */
-    int           necesidad_asistencia_pmr; /* 0=no, 1=si */
+    int           tiene_tarjeta;
+    int           necesidad_asistencia_pmr;
 } DatosPasajero;
 
 #endif /* PASAJERO_H_ */

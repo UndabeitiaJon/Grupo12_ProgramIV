@@ -14,8 +14,8 @@ typedef struct {
     int           id_res;
     int           id_u;
     int           id_tr;
-    char          fecha_viaje[11];       /* "AAAA-MM-DD\0" */
-    char          clase[4];              /* "B" o "T" */
+    char          fecha_viaje[11];
+    char          clase[4];       /* "B" o "T" */
     int           num_vagon;
     int           num_asiento;
     double        precio_base;
@@ -23,7 +23,7 @@ typedef struct {
     double        precio_final;
     EstadoReserva estado;
     char          codigo_validacion[64];
-    char          fecha_reserva[11];     /* "AAAA-MM-DD\0" */
+    char          fecha_reserva[11];
 } Reserva;
 
 #endif /* SRC_RESERVA_H_ */

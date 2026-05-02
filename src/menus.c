@@ -18,6 +18,7 @@
 #include "config.h"
 #include "logs.h"
 #include "estructuras.h"
+#include "validacion.h"
 
 /* ============================================================
  *  UTILIDADES DE ENTRADA / PANTALLA
@@ -182,13 +183,41 @@ void menu_registro_pasajero(void) {
     char nombre[64], apellido[64], dni[16], email[128];
     char telf[20], fecha_nac[11], pass[256], pass2[256];
 
-    leer_cadena("  Nombre            : ", nombre,   sizeof(nombre));
-    leer_cadena("  Apellido          : ", apellido, sizeof(apellido));
-    leer_cadena("  DNI               : ", dni,      sizeof(dni));
-    leer_cadena("  Email             : ", email,    sizeof(email));
-    leer_cadena("  Telefono          : ", telf,     sizeof(telf));
-    leer_cadena("  F. Nac(AAAA-MM-DD): ", fecha_nac,sizeof(fecha_nac));
-    printf("Contrasena: ");
+    leer_cadena("  Nombre            : ", nombre,    sizeof(nombre));
+    if (!validar_nombre(nombre)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Apellido          : ", apellido,  sizeof(apellido));
+    if (!validar_nombre(apellido)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  DNI               : ", dni,       sizeof(dni));
+    if (!validar_dni(dni)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Email             : ", email,     sizeof(email));
+    if (!validar_email(email)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Telefono          : ", telf,      sizeof(telf));
+    if (!validar_telefono(telf)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  F. Nac(AAAA-MM-DD): ", fecha_nac, sizeof(fecha_nac));
+    if (!validar_fecha(fecha_nac)) {
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Contrasena        : ", pass,      sizeof(pass));
+    if (!validar_contrasenia(pass)){
+    	pausar_s();
+    	return;
+    }
     scanf("%s", pass);
     printf("Repita la contrasena: ");
     scanf("%s", pass2);
@@ -273,7 +302,7 @@ void menu_principal_admin(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 1. GESTIÓN DE TRENES ─── */
+//1. GESTIÓN DE TRENES
 void menu_gestion_trenes(int id_admin, const char *email) {
     int op;
     do {
@@ -692,13 +721,40 @@ void menu_gestion_personal(int id_admin, const char *email) {
             titulo("AÑADIR EMPLEADO");
             char nombre[64], apellido[64], dni[16], em[128];
             char telf[20], fn[11], pass[256];
-            leer_cadena("  Nombre         : ", nombre,   sizeof(nombre));
-            leer_cadena("  Apellido       : ", apellido, sizeof(apellido));
-            leer_cadena("  DNI            : ", dni,      sizeof(dni));
-            leer_cadena("  Email          : ", em,       sizeof(em));
-            leer_cadena("  Telefono       : ", telf,     sizeof(telf));
-            leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,    sizeof(fn));
+            if (!validar_nombre(nombre)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Apellido          : ", apellido, sizeof(apellido));
+            if (!validar_nombre(apellido)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  DNI               : ", dni,      sizeof(dni));
+            if (!validar_dni(dni)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Email             : ", em,       sizeof(em));
+            if (!validar_email(em)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Telefono          : ", telf,     sizeof(telf));
+            if (!validar_telefono(telf)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,       sizeof(fn));
+            if (!validar_fecha(fn)){
+            	pausar_s();
+            	break;
+            }
             printf("  Contraseña: ");
+            if (!validar_contrasenia(pass)){
+            	pausar_s();
+            	break;
+            }
             scanf("%s", pass);
             Usuario u = crearUsuario(nombre, apellido, dni, em,
                                       telf, pass, fn, ROL_EMPLEADO);
