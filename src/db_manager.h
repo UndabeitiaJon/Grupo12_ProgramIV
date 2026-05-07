@@ -38,9 +38,8 @@ Usuario obtener_usuario_por_id(int id_u);
 Usuario obtener_usuario_por_email(const char *email);
 
 
-/* ============================================================
- *  DATOS PASAJERO (puntos fidelidad, descuento)
- * ============================================================ */
+// DATOS PASAJERO (puntos fidelidad, descuento)
+
 int  obtener_puntos_fidelidad(int id_u);
 int  actualizar_puntos_fidelidad(int id_u, int puntos);
 void listar_historial_puntos(int id_u);
@@ -56,6 +55,7 @@ Tren obtener_tren_por_id(int id_t);
 void buscar_tren_por_modelo(const char *modelo);
 int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int anio, EstadoMantenimiento estado, const char *fecha_rev);
 //void listar_trenes_con_vagones(void);
+
 
 //VAGONES
 int  insertar_vagon_db(Vagon v);

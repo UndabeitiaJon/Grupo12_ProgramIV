@@ -45,5 +45,6 @@ void pausar(void);
 int  leer_entero(const char *prompt);
 double leer_double(const char *prompt);
 void leer_cadena(const char *prompt, char *buf, int max);
+static void limpiar_buffer_entrada(void);
 
 #endif /* SRC_MENUS_H_ */

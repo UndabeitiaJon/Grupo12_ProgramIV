@@ -370,6 +370,7 @@
 =======
 >>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+<<<<<<< HEAD
 [2026-04-07 19:34:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-04-07 20:02:17] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
 [2026-04-07 20:05:07] [SISTEMA] [INICIO_SERV] Trayecto iniciado
@@ -378,3 +379,59 @@
 [2026-04-07 20:07:50] [SISTEMA] [AVERIA] Fallo en los frenos
 [2026-04-07 20:09:06] [SISTEMA] [OBSERVACION] Vomito en el primer vagon
 [2026-04-07 20:11:29] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
+=======
+[2026-04-07 19:52:46] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:53:08] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:54:06] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:57:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:57:20] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:58:35] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:57] [admin@trenfe.com] [UPDATE_TRAYECTO] Trayecto modificado
+[2026-04-07 19:59:41] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia anyadida
+[2026-04-07 20:01:30] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:01:55] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:02:37] [admin@trenfe.com] [INSERT_EMPLEADO] kross8@gmail.com
+[2026-04-07 20:04:34] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:04:43] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:05:26] [admin@trenfe.com] [INSERT_EMPLEADO] markeltrigo@gmail.com
+[2026-04-07 20:07:33] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:40] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:50] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:08:31] [admin@trenfe.com] [INSERT_EMPLEADO] markel@gmail.com
+[2026-04-07 20:08:37] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:08:47] [markel@gmail.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:09:02] [markel@gmail.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:16:08] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:16:20] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:16:30] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:16:30] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-04-07 20:16:41] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:16:44] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 20:20:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:21:18] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:26:06] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:26:06] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\e.aranoa\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 20:27:49] [admin@trenfe.com] [INSERT_TREN] Euskotren
+[2026-04-07 20:29:20] [admin@trenfe.com] [UPDATE_TREN] Tren modificado
+[2026-04-07 20:29:46] [admin@trenfe.com] [ESTADO_TREN] Estado tren cambiado
+[2026-04-07 20:38:46] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 20:39:32] [admin@trenfe.com] [UPDATE_TRAYECTO] Trayecto modificado
+[2026-04-07 20:41:22] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 20:41:35] [admin@trenfe.com] [DEL_PARADA] Parada eliminada
+[2026-04-07 20:43:27] [admin@trenfe.com] [ESTADO_TRAYECTO] Estado cambiado
+[2026-04-07 20:47:10] [admin@trenfe.com] [INSERT_ESTACION] Estacion
+[2026-04-07 20:48:05] [admin@trenfe.com] [UPDATE_ESTACION] Berriz Berriz
+[2026-04-07 20:48:35] [admin@trenfe.com] [SALA_CLUB] Estado sala club toggled
+[2026-04-07 20:51:42] [admin@trenfe.com] [INSERT_EMPLEADO] hola@gmail.com
+[2026-04-07 20:52:45] [admin@trenfe.com] [UPDATE_EMPLEADO] Datos empleado modificados
+[2026-04-07 20:53:38] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 20:54:41] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 20:59:37] [admin@trenfe.com] [UPDATE_PASAJERO] Datos pasajero modificados
+[2026-04-07 21:00:07] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 21:01:02] [admin@trenfe.com] [UPDATE_DESCUENTO] JOVEN -20%
+[2026-04-07 21:05:23] [admin@trenfe.com] [INSERT_SERVICIO] 2025-11-12
+[2026-04-07 21:06:52] [admin@trenfe.com] [CANCELAR_SERV] Servicio cancelado
+[2026-04-07 21:17:50] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 21:18:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado

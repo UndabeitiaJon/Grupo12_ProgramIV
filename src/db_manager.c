@@ -233,13 +233,13 @@ void seed_database(void) {
         "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u,num_empleado,fecha_ingreso,rol_empleado,anios_exp,estado)"
         " VALUES (3,'EMP-001','2015-01-01','MAQUINISTA',10,'ACTIVO');"
 
-        // Trenes
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
-        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
-        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
+//        // Trenes
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('AVE Serie 103','AVE-103-001',2006,'OPERATIVO','2025-01-15');"
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('Alvia Serie 130','ALV-130-005',2010,'OPERATIVO','2025-03-10');"
+//        "INSERT OR IGNORE INTO TRENES (nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+//        " VALUES ('Cercanias C1','CER-C1-012',2018,'OPERATIVO','2025-02-20');"
 
         // Vagones tren 1
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (1,1,'T',50,0);"
@@ -249,27 +249,27 @@ void seed_database(void) {
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,1,'T',60,0);"
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total,vagon_PMR) VALUES (2,2,'B',24,0);"
 
-        //Estaciones
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
-        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
-        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
+//        //Estaciones
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Bilbao Abando','BILBAO','Bilbao','Vizcaya',43.2630,-2.9350,8,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Madrid Atocha','MADRID','Madrid','Madrid',40.4063,-3.6899,20,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Barcelona Sants','BARCA','Barcelona','Barcelona',41.3794,2.1403,16,1);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('Vitoria-Gasteiz','VITORIA','Vitoria','Alava',42.8467,-2.6725,4,0);"
+//        "INSERT OR IGNORE INTO ESTACIONES (nombre,codigo_gtfs,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club)"
+//        " VALUES ('San Sebastian Donostia','DONOSTI','San Sebastian','Guipuzcoa',43.3189,-1.9812,6,0);"
 
-        // Trayectos
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
-        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
-        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
+//        // Trayectos
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (1,1,2,'08:00','12:30',270,45.50,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (2,2,3,'14:00','16:30',150,32.00,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (1,2,1,'17:00','21:30',270,45.50,'LMXJVSD','ACTIVO');"
+//        "INSERT OR IGNORE INTO TRAYECTOS (id_t,id_est_origen,id_est_destino,hora_salida,hora_llegada,duracion_min,precio_base,dias_operacion,estado)"
+//        " VALUES (3,4,5,'09:15','10:00',45,8.50,'LMXJVSD','ACTIVO');"
 
         // Tarifas
         "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio)"
@@ -2891,7 +2891,7 @@ int importar_gtfs(const char *ruta_directorio) {
         sqlite3_close(db); return 1;
     }
     if (!fgets(raw, sizeof(raw), f)) {
-        printf("[GTFS] ERROR: stops.txt vacio.\n");
+        printf("[GTFS] ERROR: estaciones.txt vacio.\n");
         fclose(f); sqlite3_close(db); return 1;
     }
     raw[strcspn(raw, "\r\n")] = '\0';
