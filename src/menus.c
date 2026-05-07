@@ -18,6 +18,7 @@
 #include "config.h"
 #include "logs.h"
 #include "estructuras.h"
+#include "validacion.h"
 
 /* ============================================================
  *  UTILIDADES DE ENTRADA / PANTALLA
@@ -182,13 +183,41 @@ void menu_registro_pasajero(void) {
     char nombre[64], apellido[64], dni[16], email[128];
     char telf[20], fecha_nac[11], pass[256], pass2[256];
 
-    leer_cadena("  Nombre            : ", nombre,   sizeof(nombre));
-    leer_cadena("  Apellido          : ", apellido, sizeof(apellido));
-    leer_cadena("  DNI               : ", dni,      sizeof(dni));
-    leer_cadena("  Email             : ", email,    sizeof(email));
-    leer_cadena("  Telefono          : ", telf,     sizeof(telf));
-    leer_cadena("  F. Nac(AAAA-MM-DD): ", fecha_nac,sizeof(fecha_nac));
-    printf("Contrasena: ");
+    leer_cadena("  Nombre            : ", nombre,    sizeof(nombre));
+    if (!validar_nombre(nombre)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Apellido          : ", apellido,  sizeof(apellido));
+    if (!validar_nombre(apellido)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  DNI               : ", dni,       sizeof(dni));
+    if (!validar_dni(dni)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Email             : ", email,     sizeof(email));
+    if (!validar_email(email)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Telefono          : ", telf,      sizeof(telf));
+    if (!validar_telefono(telf)){
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  F. Nac(AAAA-MM-DD): ", fecha_nac, sizeof(fecha_nac));
+    if (!validar_fecha(fecha_nac)) {
+    	pausar_s();
+    	return;
+    }
+    leer_cadena("  Contrasena        : ", pass,      sizeof(pass));
+    if (!validar_contrasenia(pass)){
+    	pausar_s();
+    	return;
+    }
     scanf("%s", pass);
     printf("Repita la contrasena: ");
     scanf("%s", pass2);
@@ -242,7 +271,7 @@ void menu_principal_admin(int id_admin, const char *email) {
         printf("   4. Gestion de Personal\n");
         printf("   5. Gestion de Pasajeros\n");
         printf("   6. Gestion de Servicios Operativos\n");
-        //printf("   7. Gestion de Tarifas\n");
+        printf("   7. Gestion de Tarifas\n");
         printf("   8. Importar Datos GTFS\n");
         printf("   9. Incidencias\n");
         printf("  10. Informes\n");
@@ -273,7 +302,7 @@ void menu_principal_admin(int id_admin, const char *email) {
     } while (op != 0);
 }
 
-/* ─── 1. GESTIÓN DE TRENES ─── */
+//1. GESTIÓN DE TRENES
 void menu_gestion_trenes(int id_admin, const char *email) {
     int op;
     do {
@@ -374,24 +403,23 @@ void menu_gestion_trenes(int id_admin, const char *email) {
         }
 
         case 6: {
-            Vagon v; memset(&v, 0, sizeof(v));
-            listar_trenes_db();
-            v.id_tren      = leer_entero("\n  ID tren    : ");
-            v.numero_vagon = leer_entero("  Num. vagon  : ");
-            char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
-            cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
-            strncpy(v.clase, cl, 3);
-            v.capacidad_total = leer_entero("  Capacidad   : ");
-            v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
-            if (insertar_vagon_db(v) == 0) {
-                log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon añadido");
-                printf("  Vagon añadido.\n");
-            } else {
-            	printf("  Error al insertar vagon.\n");
-            }
-            pausar_s();
-            break;
-        }
+                Vagon v; memset(&v, 0, sizeof(v));
+                listar_trenes_db();
+                v.id_tren  = leer_entero("\n  ID tren    : ");
+                v.numero_vagon = leer_entero("  Num. vagon  : ");
+                char cl[4]; leer_cadena("  Clase (T/B) : ", cl, sizeof(cl));
+                cl[0] = (cl[0] == 'b' ? 'B' : (cl[0] == 't' ? 'T' : cl[0]));
+                strncpy(v.clase, cl, 3);
+                v.capacidad_total = leer_entero("  Capacidad   : ");
+                v.vagon_PMR       = leer_entero("  PMR (0/1)   : ");
+                if (insertar_vagon_db(v) == 0) {
+                    log_evento(cfg.log_path, email, "INSERT_VAGON", "Vagon anyadido");
+                    printf("  Vagon anyadido.\n");
+               } else printf("  Error al insertar vagon.\n");
+                     pausar_s();
+                 break;
+               }
+
 
         case 0: break;
         default: printf("  Opcion no valida.\n");
@@ -459,8 +487,10 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
             }
             limpiar_buffer_entrada();
             leer_cadena("  Hora salida (HH:MM)  : ", tr.hora_salida,  sizeof(tr.hora_salida));
-            leer_cadena("  Hora llegada (HH:MM) : ", tr.hora_llegada, sizeof(tr.hora_llegada));
-            tr.duracion_min = leer_entero("  Duracion (minutos)   : ");
+            printf("  Hora llegada (HH:MM)  : ");
+            scanf("%s", tr.hora_llegada);
+            printf("  Duracion(minutos)  : ");
+            scanf("%d", &tr.duracion_min);
             tr.precio_base  = leer_double("  Precio base Turista  : ");
             leer_cadena("  Dias operacion (ej LMXJVSD): ", tr.dias_operacion, sizeof(tr.dias_operacion));
             if (strlen(tr.dias_operacion) == 0) strcpy(tr.dias_operacion, "LMXJVSD");
@@ -524,8 +554,11 @@ void menu_gestion_trayectos(int id_admin, const char *email) {
                     p.orden  = leer_entero("  Orden (1,2..): ");
                     limpiar_buffer_entrada();
                     leer_cadena("  Hora llegada : ", p.hora_llegada, sizeof(p.hora_llegada));
-                    leer_cadena("  Hora salida  : ", p.hora_salida,  sizeof(p.hora_salida));
-                    p.anden = leer_entero("  Anden (0=N/D): ");
+
+                    printf("  Hora salida  : ");
+                    scanf("%s", p.hora_salida );
+                    printf("  Anden (0=N/D)  : ");
+                    scanf("%d", &p.anden);
                     p.tiene_anden = (p.anden > 0);
                     if (insertar_parada_db(p) == 0) {
                         log_evento(cfg.log_path, email, "INSERT_PARADA", "Parada intermedia añadida");
@@ -688,13 +721,40 @@ void menu_gestion_personal(int id_admin, const char *email) {
             titulo("AÑADIR EMPLEADO");
             char nombre[64], apellido[64], dni[16], em[128];
             char telf[20], fn[11], pass[256];
-            leer_cadena("  Nombre         : ", nombre,   sizeof(nombre));
-            leer_cadena("  Apellido       : ", apellido, sizeof(apellido));
-            leer_cadena("  DNI            : ", dni,      sizeof(dni));
-            leer_cadena("  Email          : ", em,       sizeof(em));
-            leer_cadena("  Telefono       : ", telf,     sizeof(telf));
-            leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,    sizeof(fn));
+            if (!validar_nombre(nombre)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Apellido          : ", apellido, sizeof(apellido));
+            if (!validar_nombre(apellido)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  DNI               : ", dni,      sizeof(dni));
+            if (!validar_dni(dni)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Email             : ", em,       sizeof(em));
+            if (!validar_email(em)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  Telefono          : ", telf,     sizeof(telf));
+            if (!validar_telefono(telf)){
+            	pausar_s();
+            	break;
+            }
+            leer_cadena("  F.Nac(AAAA-MM-DD): ", fn,       sizeof(fn));
+            if (!validar_fecha(fn)){
+            	pausar_s();
+            	break;
+            }
             printf("  Contraseña: ");
+            if (!validar_contrasenia(pass)){
+            	pausar_s();
+            	break;
+            }
             scanf("%s", pass);
             Usuario u = crearUsuario(nombre, apellido, dni, em,
                                       telf, pass, fn, ROL_EMPLEADO);
