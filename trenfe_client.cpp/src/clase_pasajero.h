@@ -1,0 +1,47 @@
+/*
+ * clase_pasajero.h
+ *
+ *  Created on: 8 may 2026
+ *      Author: e.aranoa
+ */
+
+/*
+ * clase_pasajero.h  -  Sistema TRENFE  -  Fase 2
+ */
+
+#ifndef CLASE_PASAJERO_H_
+#define CLASE_PASAJERO_H_
+
+#include <vector>
+#include <string>
+#include "usuario_base.h"
+
+class Pasajero : public UsuarioBase {
+private:
+    /* Caché local — evita peticiones repetidas al servidor */
+    std::vector<std::string> cacheEstaciones;
+    std::vector<std::string> cacheTrayectos;
+    bool estacionesCargadas = false;
+    bool trayectosCargados  = false;
+
+    /* Sub-menús */
+    void menuBuscarTrayecto();
+    void menuHacerReserva(const std::string& id_tr,
+                          const std::string& id_origen,
+                          const std::string& id_destino);
+    void menuMisReservas();
+    void menuPuntos();
+
+    /* Helpers de presentación */
+    void mostrarTrayectos(const std::vector<std::string>& lista);
+    void mostrarReservas (const std::vector<std::string>& lista);
+    void cargarEstaciones();
+
+public:
+    Pasajero(int id, const std::string& nombre, const std::string& apellido,
+             const std::string& email, Conexion& conn);
+
+    void mostrarMenuPrincipal() override;
+};
+
+#endif /* CLASE_PASAJERO_H_ */
