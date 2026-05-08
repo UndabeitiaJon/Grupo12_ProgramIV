@@ -1,9 +1,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#ifndef CONFIG_H
-#define CONFIG_H
+//
+//#ifndef CONFIG_H
+//#define CONFIG_H
 
 typedef struct {
     char db_path[256];
@@ -25,7 +25,6 @@ void guardar_config(const char *ruta, ConfigApp *cfg); // viene bien tener guard
 //que el adminitrador tenga que hacer.
 void mostrar_config(const ConfigApp *cfg); // viene bien mostrar para enseñarle al adminitrador lo que ya hay
 //para asi si tiene que cambiar algo pues saber que si y que no cambiar. Tambien viene bien para debugear
-#endif
 
 #ifdef __cplusplus
 }

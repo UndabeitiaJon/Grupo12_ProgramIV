@@ -8,8 +8,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifndef SRC_VALIDACION_H_
-#define SRC_VALIDACION_H_
+//#ifndef SRC_VALIDACION_H_
+//#define SRC_VALIDACION_H_
 
 // DNI: 8 digitos seguidos de 1 letra mayuscula (ej: 12345678A)
 int validar_dni(const char *dni);
@@ -39,7 +39,6 @@ int validar_precio(double precio);
 int validar_duracion(int minutos);
 
 
-#endif /* SRC_VALIDACION_H_ */
 
 #ifdef __cplusplus
 }

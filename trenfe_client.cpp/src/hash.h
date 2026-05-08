@@ -11,12 +11,12 @@
 extern "C" {
 #endif
 
-
-#ifndef HASH_H_
-#define HASH_H_
-
-#include <stdint.h>
-#include <stddef.h>
+//
+//#ifndef HASH_H_
+//#define HASH_H_
+//
+//#include <stdint.h>
+//#include <stddef.h>
 
 /*
  * Calcula el SHA-256 de 'input' y escribe el resultado
@@ -25,7 +25,7 @@ extern "C" {
  */
 void sha256_hex(const char *input, char output[65]);
 
-#endif /* HASH_H_ */
+
 
 #ifdef __cplusplus
 }
