@@ -1,0 +1,571 @@
+[2026-04-01 21:08:02] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:08:26] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:08:34] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:12:32] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:13:46] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:13:55] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:24:12] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:27:31] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-01 21:28:31] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 12:11:33] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 12:35:41] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 12:41:26] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 12:42:06] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:15:29] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:29:56] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:41:11] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:42:36] [pedro@trenfe.com] [LOGIN_FAIL] Demasiados intentos fallidos
+[2026-04-02 13:45:36] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:52:49] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 13:53:10] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 14:34:41] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 14:35:32] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 14:37:56] [pedrosanchez@trenfe.com] [INSERT] Usuario creado correctamente
+[2026-04-02 14:38:26] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 14:38:32] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 15:11:51] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 15:11:56] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 15:15:43] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 15:16:13] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 15:16:17] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 15:16:20] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 15:16:47] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 15:16:55] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 17:09:56] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:11:53] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:14:58] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:15:11] [5] [LOGIN_FAIL] Demasiados intentos fallidos
+[2026-04-02 17:02:33] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:03:12] [maria@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:04:11] [maria@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:19] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:05:23] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-02 17:05:49] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:42:50] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:44:21] [markel.trigo2006@gmail.com] [INSERT] Usuario creado correctamente
+[2026-04-02 17:44:46] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:45:25] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:45:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 17:48:57] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 17:49:22] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:13:11] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:13:29] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:14:29] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:14:44] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:16:24] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:16:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:20:29] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:20:41] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 18:25:05] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:43:20] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:44:24] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 18:44:42] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 19:20:46] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 19:20:51] [SISTEMA] [FIN] Sistema detenido
+[2026-04-02 20:27:16] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 20:27:40] [pedrosanchez@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-02 23:43:06] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 23:46:46] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 23:52:20] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-02 23:53:33] [e.aranoa@opendeusto.es] [INSERT] Usuario creado correctamente
+[2026-04-02 23:53:59] [e.aranoa@opendeusto.es] [LOGIN] Inicio de sesion correcto
+[2026-04-03 11:02:07] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:02:32] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 11:12:17] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:15:11] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:15:28] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 11:16:37] [aaa@gmail.com] [INSERT] Usuario creado correctamente
+[2026-04-03 11:16:44] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-03 11:16:48] [SISTEMA] [FIN] Sistema detenido
+[2026-04-03 11:25:08] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:26:04] [markel.trigo2006@gmail.com] [INSERT] Usuario creado correctamente
+[2026-04-03 11:27:39] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:27:48] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:30:05] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:31:28] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:36:15] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 11:36:30] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 11:36:34] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-03 12:19:24] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 12:19:37] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 13:56:36] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 13:57:33] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-03 13:57:45] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-03 13:57:48] [SISTEMA] [FIN] Sistema detenido
+<<<<<<< HEAD
+[2026-04-03 14:40:32] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-03 14:40:44] [SISTEMA] [FIN] Sistema detenido
+=======
+[2026-04-04 14:55:27] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-04 14:55:30] [SISTEMA] [FIN] Sistema detenido
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-04 19:11:44] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-04 19:12:18] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-04 19:12:40] [juan@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-04 19:13:08] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-04 19:14:10] [pablo@trenfe.com] [INSERT] Usuario creado correctamente
+[2026-04-04 19:14:19] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-04 19:14:22] [SISTEMA] [FIN] Sistema detenido
+[2026-04-05 20:04:22] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-05 20:04:26] [SISTEMA] [FIN] Sistema detenido
+[2026-04-06 16:25:54] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:26:37] [admin@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:28:21] [pacoporras@gmail.com] [INSERT] Usuario creado correctamente
+[2026-04-06 16:28:37] [admin@trenfe.com] [LOGOUT] Sesion cerrada
+[2026-04-06 16:29:59] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:30:12] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:39:41] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:39:58] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:43:28] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:43:43] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:44:44] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:44:59] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:45:22] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:45:38] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:50:01] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:50:15] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:53:39] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:54:04] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:57:25] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:58:11] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 16:58:46] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 16:59:12] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:00:10] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:00:23] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:08:09] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:08:20] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:09:32] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:09:44] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:09:56] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:10:07] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:18:33] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:19:30] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:28:23] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:28:49] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:31:43] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:31:56] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:33:10] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:33:19] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:33:36] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:35:03] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:35:17] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:35:39] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:35:54] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:44:12] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:44:25] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:44:53] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:45:09] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:45:20] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:45:31] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:48:40] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:48:57] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:50:49] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:51:02] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:56:51] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:57:04] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:58:30] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 17:58:42] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 17:59:46] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 18:00:00] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 18:00:50] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 18:01:02] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 18:05:24] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 18:05:37] [markel.trigo2006@gmail.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 19:04:08] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 19:06:43] [juan@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 19:38:18] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 19:38:37] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 19:59:51] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 20:00:21] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 20:17:21] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 20:17:50] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 20:18:54] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
+[2026-04-06 20:23:54] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 20:24:14] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-06 20:24:55] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
+[2026-04-06 20:25:22] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
+[2026-04-06 20:35:16] [SISTEMA] [INICIO] Sistema arrancado
+[2026-04-06 20:35:43] [pedro@trenfe.com] [LOGIN] Inicio de sesion correcto
+[2026-04-07 01:33:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 01:33:39] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 01:33:56] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 01:33:56] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\eclipse-workspace-C\proyecto_trenfe_local\data\gtfs
+[2026-04-07 01:34:59] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 01:35:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+[2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:15:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:15:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:18:14] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:18:16] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:20:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:20:20] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 04:21:37] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 04:21:39] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:15:41] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:17:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:17:50] [juan@trenfe] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:20:38] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:21:48] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:21:48] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\e.aranoa\git\Grupo12_ProgramIV\data
+[2026-04-07 12:22:05] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:22:08] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+[2026-04-07 11:18:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:19:05] [markel.trigo2006@gmail.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:25:23] [markel.trigo2006@gmail.com] [UPDATE_PERFIL] Perfil pasajero actualizado
+[2026-04-07 11:25:40] [markel.trigo2006@gmail.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 11:25:57] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:31:07] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:31:24] [admin@trenfe.com] [UPDATE_DESCUENTO] ABONO -50%
+[2026-04-07 11:31:38] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 11:31:51] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:33:56] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:34:06] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 11:34:18] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:34:29] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:38:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:38:33] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:38:35] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 11:38:56] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:41:38] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 11:42:18] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 11:45:44] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:45:55] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 11:47:29] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:47:46] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 11:49:54] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 11:50:13] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:25:58] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:26:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:27:13] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:13] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data
+[2026-04-07 12:27:52] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:27:52] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:28:52] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:29:05] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:10] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:29:11] [] [BLOQUEO] Demasiados intentos de login
+[2026-04-07 12:29:13] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:29:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:30:02] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:30:16] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:30:16] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:30:27] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:30:30] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+[2026-04-07 12:34:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:34:39] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:34:54] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:34:54] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:35:02] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:35:04] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:39:00] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:39:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:39:38] [SISTEMA] [GTFS] Importacion completa: trenes, estaciones, trayectos, paradas
+[2026-04-07 12:39:38] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\ander.lecue\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 12:39:56] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:40:00] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:41:21] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:41:40] [ADMIN@TRENFE.COM] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:41:51] [ADMIN@TRENFE.COM] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 12:42:04] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:42:07] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:42:12] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:42:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:43:01] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:43:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:43:47] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 12:43:50] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 12:43:53] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:46:49] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:46:51] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:47:06] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:47:08] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:48:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:48:23] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:48:31] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:48:34] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 12:54:48] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 12:55:46] [ander@trenfe.com] [REGISTRO] Nuevo pasajero registrado
+[2026-04-07 12:55:52] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 13:05:24] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:05:46] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:07:58] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:08:17] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:08:30] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 13:08:30] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\unai.erdoiza\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 13:09:44] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 13:10:10] [markel.trigo2006@gmail.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 13:10:22] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:16:28] [SISTEMA] [RESERVA] KQ3CYBH72OF
+[2026-04-07 13:17:01] [SISTEMA] [CANCELAR_RES] Reserva cancelada por pasajero
+[2026-04-07 13:17:28] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 13:19:36] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:22:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:22:42] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:24:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:24:53] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:28:16] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:28:28] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:30:02] [pedro@trenfe.com] [LOGOUT] Sesion maquinista cerrada
+[2026-04-07 13:30:13] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:31:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 13:32:13] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:32:39] [admin@trenfe.com] [INSERT_EMPLEADO] adfa
+[2026-04-07 13:33:52] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 13:34:28] [admin@trenfe.com] [INSERT_SERVICIO] 2026-04-08
+[2026-04-07 13:35:12] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 13:35:17] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 13:35:30] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 13:35:55] [SISTEMA] [RETRASO] accidente
+[2026-04-07 13:36:13] [pedro@trenfe.com] [LOGOUT] Sesion maquinista cerrada
+[2026-04-07 13:36:31] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+<<<<<<< HEAD
+[2026-04-07 18:31:26] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+=======
+[2026-04-07 18:36:51] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:05:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:05:57] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:07:12] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 19:07:15] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:09:33] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:10:28] [jon@trenfe.com] [REGISTRO] Nuevo pasajero registrado
+[2026-04-07 19:10:40] [jon@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:10:49] [jon@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 19:11:15] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:13:08] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:13:46] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia anyadida
+[2026-04-07 19:13:58] [admin@trenfe.com] [DEL_PARADA] Parada eliminada
+[2026-04-07 19:14:57] [admin@trenfe.com] [INSERT_EMPLEADO] gatitas@trenfe.com
+[2026-04-07 19:16:13] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:16:45] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:16:54] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:16:56] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+[2026-04-07 19:21:53] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:22:25] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:24:07] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:24:09] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:24:22] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:24:33] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:26:01] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:26:05] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:28:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:28:16] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:31:35] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:31:47] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:32:21] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:32:47] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:32:50] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 19:33:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:33:17] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:33:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:33:56] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 19:33:58] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+<<<<<<< HEAD
+[2026-04-07 19:34:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:02:17] [pedro@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:05:07] [SISTEMA] [INICIO_SERV] Trayecto iniciado
+[2026-04-07 20:05:52] [SISTEMA] [FIN_SERV] Trayecto finalizado
+[2026-04-07 20:06:59] [SISTEMA] [RETRASO] Averia en el motor
+[2026-04-07 20:07:50] [SISTEMA] [AVERIA] Fallo en los frenos
+[2026-04-07 20:09:06] [SISTEMA] [OBSERVACION] Vomito en el primer vagon
+[2026-04-07 20:11:29] [pedro@trenfe.com] [CAMBIO_PASS] Contrasena maquinista cambiada
+=======
+[2026-04-07 19:52:46] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:53:08] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:54:06] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 19:57:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:57:20] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:25] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 19:58:35] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 19:58:57] [admin@trenfe.com] [UPDATE_TRAYECTO] Trayecto modificado
+[2026-04-07 19:59:41] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia anyadida
+[2026-04-07 20:01:30] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:01:55] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:02:37] [admin@trenfe.com] [INSERT_EMPLEADO] kross8@gmail.com
+[2026-04-07 20:04:34] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:04:43] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:05:26] [admin@trenfe.com] [INSERT_EMPLEADO] markeltrigo@gmail.com
+[2026-04-07 20:07:33] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:40] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:07:50] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:08:31] [admin@trenfe.com] [INSERT_EMPLEADO] markel@gmail.com
+[2026-04-07 20:08:37] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:08:47] [markel@gmail.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:09:02] [markel@gmail.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:16:08] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:16:20] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:16:30] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:16:30] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-04-07 20:16:41] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:16:44] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-07 20:20:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:21:18] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:26:06] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:26:06] [admin@trenfe.com] [IMPORT_GTFS] C:\Users\e.aranoa\git\Grupo12_ProgramIV\data\importar
+[2026-04-07 20:27:49] [admin@trenfe.com] [INSERT_TREN] Euskotren
+[2026-04-07 20:29:20] [admin@trenfe.com] [UPDATE_TREN] Tren modificado
+[2026-04-07 20:29:46] [admin@trenfe.com] [ESTADO_TREN] Estado tren cambiado
+[2026-04-07 20:38:46] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 20:39:32] [admin@trenfe.com] [UPDATE_TRAYECTO] Trayecto modificado
+[2026-04-07 20:41:22] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 20:41:35] [admin@trenfe.com] [DEL_PARADA] Parada eliminada
+[2026-04-07 20:43:27] [admin@trenfe.com] [ESTADO_TRAYECTO] Estado cambiado
+[2026-04-07 20:47:10] [admin@trenfe.com] [INSERT_ESTACION] Estacion
+[2026-04-07 20:48:05] [admin@trenfe.com] [UPDATE_ESTACION] Berriz Berriz
+[2026-04-07 20:48:35] [admin@trenfe.com] [SALA_CLUB] Estado sala club toggled
+[2026-04-07 20:51:42] [admin@trenfe.com] [INSERT_EMPLEADO] hola@gmail.com
+[2026-04-07 20:52:45] [admin@trenfe.com] [UPDATE_EMPLEADO] Datos empleado modificados
+[2026-04-07 20:53:38] [admin@trenfe.com] [BAJA_EMPLEADO] Baja registrada
+[2026-04-07 20:54:41] [admin@trenfe.com] [ASIGNACION] Personal asignado a servicio
+[2026-04-07 20:59:37] [admin@trenfe.com] [UPDATE_PASAJERO] Datos pasajero modificados
+[2026-04-07 21:00:07] [admin@trenfe.com] [DESHABILITAR] Cuenta pasajero deshabilitada
+[2026-04-07 21:01:02] [admin@trenfe.com] [UPDATE_DESCUENTO] JOVEN -20%
+[2026-04-07 21:05:23] [admin@trenfe.com] [INSERT_SERVICIO] 2025-11-12
+[2026-04-07 21:06:52] [admin@trenfe.com] [CANCELAR_SERV] Servicio cancelado
+[2026-04-07 21:17:50] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 21:18:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+=======
+[2026-04-07 20:22:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:22:24] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:24:44] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:25:40] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:36] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:52] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 20:26:52] [] [BLOQUEO] Demasiados intentos de login
+[2026-04-07 20:26:55] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:26:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:27:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:27:19] [SISTEMA] [GTFS] Importacion completada
+[2026-04-07 20:27:19] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-04-07 20:27:28] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-07 20:27:32] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:27:52] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:28:25] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:34:20] [SISTEMA] [RESERVA] 7SFY3TOTLBM
+[2026-04-07 20:40:42] [SISTEMA] [RESERVA] UBX7IK9Q19E
+[2026-04-07 20:41:13] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 20:41:15] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 20:41:18] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:41:30] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:56:01] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 20:56:15] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 20:58:19] [juan@trenfe.com] [UPDATE_PERFIL] Perfil pasajero actualizado
+[2026-04-07 20:59:08] [juan@trenfe.com] [CAMBIO_PASS] Contrasena pasajero cambiada
+[2026-04-07 20:59:50] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-04-07 21:00:45] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 21:02:05] [admin@trenfe.com] [INSERT_VAGON] Vagon anyadido
+[2026-04-07 21:04:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:04:07] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-04-07 21:04:10] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:04:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 21:05:19] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+<<<<<<< HEAD
+[2026-04-07 21:07:41] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:07:54] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-13 10:45:56] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-13 10:46:52] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-13 10:48:02] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+=======
+[2026-04-07 21:57:02] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:57:25] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 21:58:29] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 21:58:38] [admin@trenfe] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 21:58:48] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:00:26] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:00:40] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:01:06] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 22:02:28] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 22:07:45] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:07:58] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:09:44] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+[2026-04-07 22:14:57] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:15:12] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:15:50] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:16:02] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:17:03] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:17:16] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:18:08] [admin@trenfe.com] [INSERT_PARADA] Parada intermedia añadida
+[2026-04-07 22:18:43] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:18:56] [admin.trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-04-07 22:19:06] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-07 22:19:43] [admin@trenfe.com] [INSERT_TRAYECTO] Trayecto creado
+<<<<<<< HEAD
+[2026-04-07 22:22:40] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-07 22:22:45] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-13 12:16:19] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-13 12:19:22] [mtrigo8@trigo.es] [REGISTRO] Nuevo pasajero registrado
+[2026-04-13 12:20:05] [mtrigo8@trigo.es] [LOGIN] Sesion iniciada correctamente
+[2026-04-13 12:22:48] [mtrigo8@trigo.es] [LOGOUT] Sesion pasajero cerrada
+[2026-04-13 12:27:24] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-04-13 12:27:57] [admin@trenfe.com] [CONFIG] Parametros sistema modificados
+[2026-04-13 13:16:08] [SISTEMA] [GTFS] Importacion completada
+[2026-04-13 13:16:08] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-04-13 13:16:23] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-04-13 13:16:25] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+>>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-04-21 10:36:59] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-04-21 10:37:02] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-01 21:45:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-01 21:45:31] [juan@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-01 21:46:04] [juan@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-01 21:46:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-01 21:46:24] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-01 21:46:27] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 20:56:42] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 20:56:58] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-02 20:59:15] [juan@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-02 20:59:38] [pedro@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-02 20:59:38] [pedro@trenfe.com] [BLOQUEO] Demasiados intentos de login
+[2026-05-02 21:00:45] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:00:50] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:01:04] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:01:14] [SISTEMA] [GTFS] Importacion completada
+[2026-05-02 21:01:14] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-05-02 21:01:23] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-02 21:01:34] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:01:39] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-02 21:01:43] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:03:06] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:03:17] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:03:19] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-02 21:03:20] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:09:36] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:09:46] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:09:48] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-02 21:09:51] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:11:57] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:12:07] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:12:09] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-02 21:12:10] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:15:16] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:16:48] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:17:01] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:17:02] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-02 21:17:03] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:17:30] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:17:34] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:19:15] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:19:17] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:24:57] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:25:00] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:32:49] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:32:51] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-02 21:33:41] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-02 21:33:51] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-02 21:33:53] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-02 21:33:54] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
