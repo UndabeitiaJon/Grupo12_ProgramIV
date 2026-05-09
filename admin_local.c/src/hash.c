@@ -1,13 +1,14 @@
 /*
  * hash.c
  *
- * Implementacion SHA-256 de dominio publico para CityHub.
+ * Implementacion SHA-256 de dominio publico para TRENFE.
  * Basada en el estandar FIPS 180-4.
  * No requiere librerias externas.
  */
 
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>   /* uint8_t, uint32_t, uint64_t — necesario en MinGW */
 #include "hash.h"
 
 /* ── Constantes SHA-256 ── */
