@@ -28,6 +28,7 @@
 #include "logs.h"
 #include "db_manager.h"
 #include "sqlite3.h"
+#include "server_handler_admin.h"
 #include "tipos_comunes.h"
 #include "usuario.h"
 #include "trayecto.h"
@@ -863,22 +864,36 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
         else if (strcmp(cmd, CMD_MARCAR_FIN)       == 0) handle_marcar_fin(fd, param, &ses);
         else if (strcmp(cmd, CMD_REPORTAR_RETRASO) == 0) handle_reportar_retraso(fd, param, &ses);
 
-        /* ════ ADMIN ════ */
 
-        else if (strcmp(cmd, CMD_LISTAR_TRENES) == 0) {
-            if (strcmp(ses.rol, "ADMIN") != 0) {
-                enviar_mensaje(fd, "ERROR|403|Acceso denegado");
-            } else {
-                handle_listar_trenes(fd);
-            }
-        }
-        else if (strcmp(cmd, "LISTAR_USUARIOS") == 0) {
-            if (strcmp(ses.rol, "ADMIN") != 0) {
-                enviar_mensaje(fd, "ERROR|403|Acceso denegado");
-            } else {
-                handle_listar_usuarios(fd);
-            }
-        }
+        /* ════ ADMIN — acceso restringido ════ */
+
+                else if (strcmp(ses.rol, "ADMIN") == 0) {
+                    if      (strcmp(cmd, CMD_LISTAR_TRENES)       == 0) hadmin_listar_trenes(fd);
+                    else if (strcmp(cmd, CMD_INSERTAR_TREN)       == 0) hadmin_insertar_tren(fd, param);
+                    else if (strcmp(cmd, CMD_MODIFICAR_TREN)      == 0) hadmin_modificar_tren(fd, param);
+                    else if (strcmp(cmd, CMD_ELIMINAR_TREN)       == 0) hadmin_eliminar_tren(fd, param);
+                    else if (strcmp(cmd, CMD_INSERTAR_ESTACION)   == 0) hadmin_insertar_estacion(fd, param);
+                    else if (strcmp(cmd, CMD_MODIFICAR_ESTACION)  == 0) hadmin_modificar_estacion(fd, param);
+                    else if (strcmp(cmd, CMD_INSERTAR_TRAYECTO)   == 0) hadmin_insertar_trayecto(fd, param);
+                    else if (strcmp(cmd, CMD_MODIFICAR_TRAYECTO)  == 0) hadmin_modificar_trayecto(fd, param);
+                    else if (strcmp(cmd, CMD_ESTADO_TRAYECTO)     == 0) hadmin_estado_trayecto(fd, param);
+                    else if (strcmp(cmd, CMD_LISTAR_USUARIOS)     == 0) hadmin_listar_usuarios(fd);
+                    else if (strcmp(cmd, CMD_LISTAR_EMPLEADOS)    == 0) hadmin_listar_empleados(fd);
+                    else if (strcmp(cmd, CMD_DESHABILITAR_USER)   == 0) hadmin_deshabilitar_user(fd, param);
+                    else if (strcmp(cmd, CMD_LISTAR_SERVICIOS)    == 0) hadmin_listar_servicios(fd, param);
+                    else if (strcmp(cmd, CMD_INSERTAR_SERVICIO)   == 0) hadmin_insertar_servicio(fd, param);
+                    else if (strcmp(cmd, CMD_CANCELAR_SERVICIO)   == 0) hadmin_cancelar_servicio(fd, param);
+                    else if (strcmp(cmd, CMD_LISTAR_INCIDENCIAS)  == 0) hadmin_listar_incidencias(fd, param);
+                    else if (strcmp(cmd, CMD_INSERTAR_INCIDENCIA) == 0) hadmin_insertar_incidencia(fd, param);
+                    else if (strcmp(cmd, CMD_RESOLVER_INCIDENCIA) == 0) hadmin_resolver_incidencia(fd, param, ses.email);
+                    else if (strcmp(cmd, CMD_INFORME_OCUPACION)   == 0) hadmin_informe_ocupacion(fd, param);
+                    else if (strcmp(cmd, CMD_INFORME_INGRESOS)    == 0) hadmin_informe_ingresos(fd, param);
+                    else if (strcmp(cmd, CMD_INFORME_INCIDENCIAS) == 0) hadmin_informe_incidencias(fd, param);
+                    else if (strcmp(cmd, CMD_MOD_PRECIO_BASE)     == 0) hadmin_mod_precio_base(fd, param);
+                    else if (strcmp(cmd, CMD_LISTAR_TARIFAS)      == 0) hadmin_listar_tarifas(fd);
+                    else if (strcmp(cmd, CMD_VER_LOGS)            == 0) hadmin_ver_logs(fd, param);
+                    else { enviar_fmt(fd, "ERROR|400|Comando admin desconocido: %s", cmd); }
+                }
 
         /* ════ Comando desconocido ════ */
 
