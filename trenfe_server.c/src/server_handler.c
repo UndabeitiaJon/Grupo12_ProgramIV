@@ -85,42 +85,66 @@ static void handle_login(sock_t fd, char *param, Sesion *ses) {
         return;
     }
 
-    /* Separar email y pass_hash */
     char *email     = strtok(param, SEP);
     char *pass_hash = strtok(NULL,  SEP);
 
     if (!email || !pass_hash) {
-        enviar_mensaje(fd, "AUTH_FAIL|Formato incorrecto (LOGIN|email|pass_hash)");
+        enviar_mensaje(fd, "AUTH_FAIL|Formato incorrecto");
         return;
     }
 
-    /* verificar_usuario compara el hash directamente */
-    if (!verificar_usuario(email, pass_hash)) {
+    sqlite3 *db;
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) {
+        enviar_mensaje(fd, "AUTH_FAIL|Error interno de BD");
+        return;
+    }
+
+    sqlite3_stmt *stmt;
+    bool autenticado = false;
+
+    const char *sql =
+        "SELECT id_u, nombre, rol "
+        "FROM USUARIOS "
+        "WHERE email = ? AND pass_hash = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
+        sqlite3_bind_text(stmt, 1, email,     -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 2, pass_hash, -1, SQLITE_TRANSIENT);
+
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            int         id_u    = sqlite3_column_int (stmt, 0);
+            const char *nombre  = (const char*)sqlite3_column_text(stmt, 1);
+            const char *rol_txt = (const char*)sqlite3_column_text(stmt, 2);
+
+            const char *rol_str;
+            if      (rol_txt && strcmp(rol_txt, "ADMIN")      == 0) rol_str = "ADMIN";
+            else if (rol_txt && strcmp(rol_txt, "MAQUINISTA")  == 0) rol_str = "MAQUINISTA";
+            else if (rol_txt && strcmp(rol_txt, "EMPLEADO")    == 0) rol_str = "MAQUINISTA";
+            else                                                       rol_str = "PASAJERO";
+
+            ses->id_u = id_u;
+            strncpy(ses->email, email,   sizeof(ses->email)   - 1);
+            strncpy(ses->rol,   rol_str, sizeof(ses->rol)     - 1);
+
+            enviar_fmt(fd, "AUTH_OK|%d|%s|%s",
+                       id_u, rol_str, nombre ? nombre : "");
+
+            char msg[128];
+            snprintf(msg, sizeof(msg),
+                     "Login correcto – rol=%s ip=%s", rol_str, ses->ip);
+            log_evento(cfg.log_path, email, "AUTH_OK", msg);
+
+            autenticado = true;
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    sqlite3_close(db);
+
+    if (!autenticado)
         enviar_fmt(fd, "AUTH_FAIL|Credenciales incorrectas para %s", email);
-        return;
-    }
-
-    /* Obtener datos del usuario */
-    Usuario u = obtener_usuario_por_email(email);
-    if (u.id_u <= 0) {
-        enviar_mensaje(fd, "AUTH_FAIL|Usuario no encontrado");
-        return;
-    }
-
-    /* Guardar estado de sesión */
-    ses->id_u = u.id_u;
-    strncpy(ses->email, u.email, sizeof(ses->email) - 1);
-    strncpy(ses->rol,   u.rol == ROL_ADMIN     ? "ADMIN"     :
-                        u.rol == ROL_EMPLEADO  ? "MAQUINISTA": "PASAJERO",
-            sizeof(ses->rol) - 1);
-
-    enviar_fmt(fd, "AUTH_OK|%d|%s|%s", u.id_u, ses->rol, u.nombre);
-
-    /* Log */
-    char msg[256];
-    snprintf(msg, sizeof(msg), "Login correcto – rol=%s ip=%s", ses->rol, ses->ip);
-    log_evento(cfg.log_path, email, "AUTH_OK", msg);
 }
+
 
 /* ══════════════════════════════════════════════════════════════
    PRIORIDAD 3 — TRAYECTOS

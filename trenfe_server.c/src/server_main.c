@@ -92,6 +92,8 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
+    migrar_passwords_a_hash();
+
     /* 5. Log de arranque */
     log_evento(cfg.log_path, "SISTEMA", "ARRANQUE",
                "Servidor remoto TRENFE iniciado");

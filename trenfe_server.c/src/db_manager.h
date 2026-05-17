@@ -155,4 +155,7 @@ void consultar_logs_db(const char *filtro_fecha, const char *filtro_usuario,cons
 int importar_gtfs(const char *ruta_directorio);
 void resumen_ultima_importacion(void);
 
+bool verificar_hash_directo(const char *email, const char *pass_hash);
+void migrar_passwords_a_hash(void);
+
 #endif /* SRC_DB_MANAGER_H_ */
