@@ -81,9 +81,9 @@ void UsuarioBase::cambiarContrasenia() {
     std::string pass1, pass2;
 
     std::cout << "\n  Nueva contraseña     : ";
-    std::cin  >> pass1;
+    std::getline(std::cin, pass1);
     std::cout << "  Confirmar contraseña : ";
-    std::cin  >> pass2;
+    std::getline(std::cin, pass2);
 
     if (pass1 != pass2) {
         std::cout << "  Las contraseñas no coinciden.\n";

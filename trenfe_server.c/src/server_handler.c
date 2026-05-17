@@ -830,7 +830,11 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
         if (strcmp(cmd, CMD_LOGOUT) == 0) {
             enviar_mensaje(fd, "OK|Sesion cerrada");
             log_evento(cfg.log_path, ses.email, "LOGOUT", "Cierre de sesion");
-            break;
+            printf("[HANDLER] %s cerro sesion. Esperando nuevo LOGIN...\n", ses.email);
+            ses.id_u = -1;
+            memset(ses.email, 0, sizeof(ses.email));
+            memset(ses.rol,   0, sizeof(ses.rol));
+            continue;
         }
 
         /* ════ COMANDOS COMUNES (todos los roles) ════ */
