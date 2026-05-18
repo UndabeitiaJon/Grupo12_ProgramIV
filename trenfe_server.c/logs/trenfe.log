@@ -157,3 +157,33 @@
 [2026-05-18 20:06:50] [pedro@trenfe.com] [AUTH_OK] Login correcto – rol=MAQUINISTA ip=127.0.0.1
 [2026-05-18 20:06:53] [pedro@trenfe.com] [LOGOUT] Cierre de sesion
 [2026-05-18 20:06:53] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-18 20:07:45] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-18 21:51:38] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-18 21:51:42] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-18 21:52:00] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
+[2026-05-18 21:55:00] [admin@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-18 21:55:00] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-18 21:55:19] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-18 21:57:07] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-18 21:57:15] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-18 21:57:29] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
+[2026-05-18 22:09:43] [admin@trenfe.com] [RESOLUCION_INC] Incidencia resuelta id=1
+[2026-05-18 22:13:08] [admin@trenfe.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-18 22:13:12] [admin@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-18 22:13:12] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-18 22:15:00] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-18 22:15:11] [juan@trenfe.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-18 22:16:18] [juan@trenfe.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-18 22:16:21] [juan@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-18 22:16:21] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-18 22:16:32] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-18 22:17:00] [pedro@trenfe.com] [AUTH_OK] Login correcto – rol=MAQUINISTA ip=127.0.0.1
+[2026-05-18 22:17:15] [pedro@trenfe.com] [INICIO_SERVICIO] Inicio de servicio id_serv=1
+[2026-05-18 22:17:26] [pedro@trenfe.com] [FIN_SERVICIO] Fin de servicio id_serv=1
+[2026-05-18 22:17:39] [pedro@trenfe.com] [RETRASO] Retraso id_serv=1 min=12 causa=Apreton
+[2026-05-18 22:17:51] [pedro@trenfe.com] [INICIO_SERVICIO] Inicio de servicio id_serv=1
+[2026-05-18 22:17:59] [pedro@trenfe.com] [RETRASO] Retraso id_serv=1 min=12 causa=Apreton
+[2026-05-18 22:18:20] [pedro@trenfe.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-18 22:18:22] [pedro@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-18 22:18:22] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-18 22:18:22] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1

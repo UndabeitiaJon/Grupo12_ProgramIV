@@ -184,6 +184,48 @@ void Administrador::menuGestionTrayectos() {
             conn.enviar("LISTAR_TRAYECTOS");
             mostrarLista(conn.recibirLista());
         } else if (op == 2) {
+            /* Mostrar trenes disponibles */
+            std::cout << "\n  -- Trenes disponibles --\n";
+            conn.enviar("LISTAR_TRENES");
+            auto trenes = conn.recibirLista();
+            if (trenes.empty()) {
+                std::cout << "  (sin trenes)\n";
+            } else {
+                std::cout << "  " << std::left
+                          << std::setw(6) << "ID"
+                          << std::setw(20) << "Modelo"
+                          << std::setw(16) << "N.Serie"
+                          << std::setw(6)  << "Anio"
+                          << "Estado\n";
+                std::cout << "  " << std::string(60, '-') << "\n";
+                for (const auto& t : trenes) {
+                    std::cout << "  " << std::setw(6)  << campo(t, 1)
+                              << std::setw(20) << campo(t, 2)
+                              << std::setw(16) << campo(t, 3)
+                              << std::setw(6)  << campo(t, 4)
+                              << campo(t, 5) << "\n";
+                }
+            }
+
+            /* Mostrar estaciones disponibles */
+            std::cout << "\n  -- Estaciones disponibles --\n";
+            conn.enviar("LISTAR_ESTACIONES");
+            auto estaciones = conn.recibirLista();
+            if (estaciones.empty()) {
+                std::cout << "  (sin estaciones)\n";
+            } else {
+                std::cout << "  " << std::left
+                          << std::setw(6)  << "ID"
+                          << std::setw(30) << "Nombre"
+                          << "Ciudad\n";
+                std::cout << "  " << std::string(55, '-') << "\n";
+                for (const auto& e : estaciones) {
+                    std::cout << "  " << std::setw(6)  << campo(e, 1)
+                              << std::setw(30) << campo(e, 2)
+                              << campo(e, 3) << "\n";
+                }
+            }
+            std::cout << "\n";
             std::string id_t   = pedirLinea("  ID tren       : ");
             std::string orig   = pedirLinea("  ID est. origen : ");
             std::string dest   = pedirLinea("  ID est. destino: ");
