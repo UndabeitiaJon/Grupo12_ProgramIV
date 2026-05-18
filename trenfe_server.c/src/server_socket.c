@@ -67,14 +67,14 @@ sock_t crear_socket_servidor(int puerto) {
     struct sockaddr_in addr;
     int opt = 1;
 
-    /* 1. Crear socket TCP */
+    // Crear socket TCP
     fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd == SOCK_INVALIDO) {
         sock_perror("socket()");
         return SOCK_INVALIDO;
     }
 
-    /* 2. SO_REUSEADDR → permite relanzar el servidor sin esperar TIME_WAIT */
+    //SO_REUSEADDR → permite relanzar el servidor sin esperar TIME_WAIT
 #ifdef _WIN32
     if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR,
                    (const char *)&opt, sizeof(opt)) == SOCK_ERROR) {
@@ -87,11 +87,11 @@ sock_t crear_socket_servidor(int puerto) {
         return SOCK_INVALIDO;
     }
 
-    /* 3. Bind al puerto en todas las interfaces */
+    //Bind al puerto en todas las interfaces
     memset(&addr, 0, sizeof(addr));
-    addr.sin_family      = AF_INET;
+    addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
-    addr.sin_port        = htons((unsigned short)puerto);
+    addr.sin_port = htons((unsigned short)puerto);
 
     if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) == SOCK_ERROR) {
         fprintf(stderr, "[SOCKET] bind() fallo en puerto %d\n", puerto);
@@ -100,7 +100,7 @@ sock_t crear_socket_servidor(int puerto) {
         return SOCK_INVALIDO;
     }
 
-    /* 4. Listen – cola de hasta 10 conexiones pendientes */
+    //Listen – cola de hasta 10 conexiones pendientes
     if (listen(fd, 10) == SOCK_ERROR) {
         sock_perror("listen()");
         cerrar_socket(fd);
@@ -132,7 +132,7 @@ sock_t aceptar_cliente(sock_t servidor, char *ip_cliente, int ip_buf_len) {
         return SOCK_INVALIDO;
     }
 
-    /* Extraer IP del cliente en formato legible */
+    //Extraer IP del cliente en formato legible
     if (ip_cliente && ip_buf_len > 0) {
         const char *ip = inet_ntoa(addr_cliente.sin_addr);
         strncpy(ip_cliente, ip ? ip : "desconocida", ip_buf_len - 1);
@@ -160,19 +160,21 @@ void cerrar_socket(sock_t fd) {
    ───────────────────────────────────────────── */
 
 int enviar_mensaje(sock_t fd, const char *msg) {
-    if (!msg) return -1;
+    if (!msg){
+    	return -1;
+    }
 
     char buf[SOCK_BUF_MAX];
     int  len = (int)strlen(msg);
 
-    /* Copiar mensaje al buffer */
+    //Copiar mensaje al buffer
     if (len >= SOCK_BUF_MAX - 1) {
         fprintf(stderr, "[SOCKET] Mensaje demasiado largo (%d bytes), truncado.\n", len);
         len = SOCK_BUF_MAX - 2;
     }
     memcpy(buf, msg, len);
 
-    /* Garantizar que termina en '\n' */
+    //Garantizar que termina en '\n'
     if (len == 0 || buf[len - 1] != '\n') {
         buf[len]     = '\n';
         buf[len + 1] = '\0';
@@ -181,7 +183,7 @@ int enviar_mensaje(sock_t fd, const char *msg) {
         buf[len] = '\0';
     }
 
-    /* Envío completo (loop por si send() devuelve menos bytes) */
+    //Envío completo (loop por si send() devuelve menos bytes)
     int enviado = 0;
     while (enviado < len) {
 #ifdef _WIN32
@@ -204,7 +206,9 @@ int enviar_mensaje(sock_t fd, const char *msg) {
    ───────────────────────────────────────────── */
 
 int recibir_mensaje(sock_t fd, char *buf, int max) {
-    if (!buf || max <= 0) return -1;
+    if (!buf || max <= 0){
+    	return -1;
+    }
 
     int total = 0;
     char c;
@@ -212,19 +216,25 @@ int recibir_mensaje(sock_t fd, char *buf, int max) {
     while (total < max - 1) {
 #ifdef _WIN32
         int ret = recv(fd, &c, 1, 0);
-        if (ret == 0)            return 0;   /* cliente cerró conexión */
+        if (ret == 0){
+        	return 0;   // cliente cerró conexión
+        }
         if (ret == SOCKET_ERROR) {
 #else
         int ret = (int)recv(fd, &c, 1, 0);
-        if (ret == 0)  return 0;             /* cliente cerró conexión */
+        if (ret == 0)  return 0;             //cliente cerró conexión
         if (ret < 0) {
 #endif
             sock_perror("recv()");
             return -1;
         }
 
-        if (c == '\n') break;               /* fin de mensaje */
-        if (c == '\r') continue;            /* ignorar CR en Windows */
+        if (c == '\n'){
+        	break;               //fin de mensaje
+        }
+        if (c == '\r'){
+        	continue;            // ignorar CR en Windows
+        }
 
         buf[total++] = c;
     }
