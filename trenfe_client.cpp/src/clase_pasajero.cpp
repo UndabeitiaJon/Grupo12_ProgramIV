@@ -150,7 +150,7 @@ void Pasajero::menuBuscarTrayecto() {
             break;
         }
     }
-    menuHacerReserva(s_id_tr, orig_nombre, dest_nombre);
+    menuHacerReserva(s_id_tr, orig_nombre, dest_nombre, fecha, clase);
 }
 
 /* ══════════════════════════════════════════════
@@ -158,16 +158,16 @@ void Pasajero::menuBuscarTrayecto() {
    ══════════════════════════════════════════════ */
 
 void Pasajero::menuHacerReserva(const std::string& id_tr,
-                                 const std::string& id_origen,
-                                 const std::string& id_destino) {
-    (void)id_origen; (void)id_destino;
+                                 const std::string& orig_nombre,
+                                 const std::string& dest_nombre,
+                                 const std::string& fecha,
+                                 const std::string& clase) {
+    /* B-20: fecha y clase ya fueron preguntadas en menuBuscarTrayecto, no se vuelven a pedir */
 
-    std::string fecha, clase, s_vagon, s_asiento, tipo_eq, peso_eq;
+    std::string s_vagon, s_asiento, tipo_eq, peso_eq;
 
-    std::cout << "\n  -- Nueva reserva (trayecto " << id_tr << ") --\n";
-    std::cout << "  Fecha de viaje (AAAA-MM-DD) : "; std::getline(std::cin, fecha);
-    std::cout << "  Clase (T=Turista / B=Business): "; std::getline(std::cin, clase);
-    if (clase != "B" && clase != "b") clase = "T"; else clase = "B";
+    std::cout << "\n  -- Nueva reserva: " << orig_nombre << " → " << dest_nombre
+              << " (" << fecha << ", clase " << clase << ") --\n";
     std::cout << "  Número de vagón             : "; std::getline(std::cin, s_vagon);
     std::cout << "  Número de asiento           : "; std::getline(std::cin, s_asiento);
     std::cout << "  Equipaje (MANO/BODEGA/BICI/ESQUI, Enter=ninguno): ";
@@ -176,7 +176,8 @@ void Pasajero::menuHacerReserva(const std::string& id_tr,
         std::cout << "  Peso equipaje (kg)          : "; std::getline(std::cin, peso_eq);
     }
 
-    std::string cmd = "HACER_RESERVA|" + std::to_string(id_u) + "|" + id_tr + "|" +
+    /* B-13: el servidor obtiene id_u de la sesión, no lo enviamos desde el cliente */
+    std::string cmd = "HACER_RESERVA|" + id_tr + "|" +
                       fecha + "|" + clase + "|" + s_vagon + "|" + s_asiento;
     if (!tipo_eq.empty()) cmd += "|" + tipo_eq + "|" + (peso_eq.empty() ? "0" : peso_eq);
     else                  cmd += "|MANO|0";
@@ -231,7 +232,7 @@ void Pasajero::mostrarReservas(const std::vector<std::string>& lista) {
 }
 
 void Pasajero::menuMisReservas() {
-    conn.enviar("MIS_RESERVAS|" + std::to_string(id_u));
+    conn.enviar("MIS_RESERVAS");   /* B-15: el servidor usa id_u de la sesion */
     std::vector<std::string> reservas = conn.recibirLista();
     mostrarReservas(reservas);
 
@@ -242,7 +243,7 @@ void Pasajero::menuMisReservas() {
     std::getline(std::cin, opcion);
     if (opcion == "0" || opcion.empty()) return;
 
-    conn.enviar("CANCELAR_RESERVA|" + opcion + "|" + std::to_string(id_u));
+    conn.enviar("CANCELAR_RESERVA|" + opcion);   /* B-13: sin id_u */
     std::string resp = conn.recibir();
     if (campo(resp, 0) == "OK") {
         std::cout << "  Reserva cancelada correctamente.\n";
@@ -256,7 +257,7 @@ void Pasajero::menuMisReservas() {
    ══════════════════════════════════════════════ */
 
 void Pasajero::menuPuntos() {
-    conn.enviar("MIS_PUNTOS|" + std::to_string(id_u));
+    conn.enviar("MIS_PUNTOS");   /* B-15: sin id_u */
     std::string resp = conn.recibir();
     int puntos = std::stoi(campo(resp, 1).empty() ? "0" : campo(resp, 1));
 
@@ -270,7 +271,7 @@ void Pasajero::menuPuntos() {
     std::string s_cant;
     std::getline(std::cin, s_cant);
 
-    conn.enviar("CANJEAR_PUNTOS|" + std::to_string(id_u) + "|" + s_cant);
+    conn.enviar("CANJEAR_PUNTOS|" + s_cant);   /* B-14: sin id_u */
     resp = conn.recibir();
     if (campo(resp, 0) == "OK") {
         std::cout << "  Canje realizado. Puntos restantes: " << campo(resp, 1) << "\n";
@@ -278,5 +279,3 @@ void Pasajero::menuPuntos() {
         std::cout << "  Error: " << campo(resp, 1) << "\n";
     }
 }
-
-

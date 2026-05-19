@@ -15,7 +15,7 @@
 #ifndef SERVER_SOCKET_H_
 #define SERVER_SOCKET_H_
 
-/* ── Portabilidad Windows / POSIX ── */
+//Portabilidad Windows / POSIX
 #ifdef _WIN32
     #include <winsock2.h>
     #include <ws2tcpip.h>
@@ -32,7 +32,7 @@
     #define SOCK_ERROR     (-1)
 #endif
 
-/* Tamaño máximo de un mensaje de protocolo (en bytes) */
+// Tamaño máximo de un mensaje de protocolo (en bytes)
 #define SOCK_BUF_MAX  8192
 
 /* ── Inicialización / limpieza (solo relevante en Windows) ── */

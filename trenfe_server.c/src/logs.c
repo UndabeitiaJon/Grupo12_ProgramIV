@@ -11,7 +11,9 @@
 void log_evento(const char *log_path, const char *email_usuario,
                 const char *tipo, const char *descripcion) {
     FILE *f = fopen(log_path, "a");
-    if (!f) return;
+    if (!f){
+    	return;
+    }
 
     time_t ahora = time(NULL);
     struct tm *t = localtime(&ahora);

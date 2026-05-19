@@ -56,7 +56,7 @@ void hadmin_listar_trenes(sock_t fd) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     if (sqlite3_prepare_v2(db,
-        "SELECT id_t, nombre_modelo, num_serie, anio_fab, estado_mant, fecha_ult_revision"
+        "SELECT id_t, nombre_modelo, num_serie, anio_fab, estado_mant, fecha_ultima_revision"
         " FROM TRENES ORDER BY id_t;", -1, &s, NULL) != SQLITE_OK) {
         enviar_mensaje(fd, "ERROR|500|Consulta de trenes fallida");
         sqlite3_close(db); return;
@@ -88,7 +88,7 @@ void hadmin_insertar_tren(sock_t fd, char *param) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "INSERT INTO TRENES(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ult_revision)"
+        "INSERT INTO TRENES(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
         " VALUES(?,?,?,?,?);", -1, &s, NULL);
     sqlite3_bind_text(s,1,modelo,-1,SQLITE_STATIC);
     sqlite3_bind_text(s,2,serie,-1,SQLITE_STATIC);
@@ -123,7 +123,7 @@ void hadmin_modificar_tren(sock_t fd, char *param) {
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE TRENES SET nombre_modelo=?,num_serie=?,anio_fab=?,"
-        "estado_mant=?,fecha_ult_revision=? WHERE id_t=?;", -1, &s, NULL);
+        "estado_mant=?,fecha_ultima_revision=? WHERE id_t=?;", -1, &s, NULL);
     sqlite3_bind_text(s,1,modelo,-1,SQLITE_STATIC);
     sqlite3_bind_text(s,2,serie,-1,SQLITE_STATIC);
     sqlite3_bind_int (s,3,atoi(s_anio));
@@ -331,8 +331,8 @@ void hadmin_listar_empleados(sock_t fd) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "SELECT e.id_emp, u.nombre, u.apellido, u.email, e.tipo_empleado, e.estado_laboral"
-        " FROM EMPLEADOS e JOIN USUARIOS u ON e.id_u = u.id_u ORDER BY e.id_emp;",
+        "SELECT de.id_u, u.nombre, u.apellido, u.email, de.rol_empleado, de.estado"
+        " FROM DATOS_EMPLEADO de JOIN USUARIOS u ON de.id_u = u.id_u ORDER BY de.id_u;",
         -1, &s, NULL);
     int n = 0;
     while (sqlite3_step(s) == SQLITE_ROW) {
@@ -615,16 +615,76 @@ void hadmin_informe_incidencias(sock_t fd, char *param) {
 void hadmin_listar_tarifas(sock_t fd) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
-    sqlite3_prepare_v2(db,
-        "SELECT clave, valor, descripcion FROM CONFIGURACION_TARIFAS ORDER BY clave;",
-        -1, &s, NULL);
+    /* Unimos TARIFAS con TRAYECTOS para mostrar id_tr y precio_base del trayecto */
+    if (sqlite3_prepare_v2(db,
+        "SELECT ta.id_tr, t.hora_salida, t.hora_llegada,"
+        "       ta.precio_base, ta.coef_turista, ta.coef_business,"
+        "       ta.suplemento_bici, ta.exceso_kg_precio"
+        " FROM TARIFAS ta JOIN TRAYECTOS t ON ta.id_tr = t.id_tr"
+        " ORDER BY ta.id_tr;",
+        -1, &s, NULL) != SQLITE_OK) {
+        enviar_mensaje(fd, "ERROR|500|Consulta de tarifas fallida");
+        sqlite3_close(db); return;
+    }
     int n = 0;
     while (sqlite3_step(s) == SQLITE_ROW) {
-        enviar_fmt(fd, "TARIFA|%s|%s|%s", ctxt(s,0), ctxt(s,1), ctxt(s,2));
+        enviar_fmt(fd, "TARIFA|%d|%s|%s|%.2f|%.2f|%.2f|%.2f|%.2f",
+            sqlite3_column_int(s,0),
+            ctxt(s,1), ctxt(s,2),
+            sqlite3_column_double(s,3), sqlite3_column_double(s,4),
+            sqlite3_column_double(s,5), sqlite3_column_double(s,6),
+            sqlite3_column_double(s,7));
         n++;
     }
     sqlite3_finalize(s); sqlite3_close(db);
     enviar_fmt(fd, "FIN_LISTA|%d", n);
+}
+
+/* B-08: handler para CMD_MOD_COEF_BUSINESS
+ * param: "id_tr|coef"
+ */
+void hadmin_mod_coef_business(sock_t fd, char *param) {
+    char *s_id_tr = strtok(param, "|");
+    char *s_coef  = strtok(NULL,  "|");
+    if (!s_id_tr || !s_coef) {
+        enviar_mensaje(fd, "ERROR|400|Formato: MOD_COEF_BUSINESS|id_tr|coef");
+        return;
+    }
+    int rc = modificar_coef_business_db(atoi(s_id_tr), atof(s_coef));
+    if (rc == 0)
+        enviar_fmt(fd, "OK|Coef. business del trayecto %s actualizado a %s", s_id_tr, s_coef);
+    else
+        enviar_mensaje(fd, "ERROR|404|Trayecto no encontrado en TARIFAS");
+}
+
+/* B-09: handler para CMD_MOD_EXCESO_KG
+ * param: "precio_por_kg"
+ */
+void hadmin_mod_exceso_kg(sock_t fd, char *param) {
+    if (!param || param[0] == '\0') {
+        enviar_mensaje(fd, "ERROR|400|Formato: MOD_EXCESO_KG|precio_por_kg");
+        return;
+    }
+    int rc = modificar_exceso_kg_db(atof(param));
+    if (rc == 0)
+        enviar_fmt(fd, "OK|Precio exceso kg actualizado a %s eur/kg", param);
+    else
+        enviar_mensaje(fd, "ERROR|500|No se pudo actualizar el precio de exceso de kg");
+}
+
+/* B-10: handler para CMD_MOD_SUPL_BICI
+ * param: "precio"
+ */
+void hadmin_mod_supl_bici(sock_t fd, char *param) {
+    if (!param || param[0] == '\0') {
+        enviar_mensaje(fd, "ERROR|400|Formato: MOD_SUPL_BICI|precio");
+        return;
+    }
+    int rc = modificar_suplemento_bici_db(atof(param));
+    if (rc == 0)
+        enviar_fmt(fd, "OK|Suplemento bicicleta actualizado a %s eur", param);
+    else
+        enviar_mensaje(fd, "ERROR|500|No se pudo actualizar el suplemento de bicicleta");
 }
 
 void hadmin_mod_precio_base(sock_t fd, char *param) {
@@ -690,4 +750,3 @@ void hadmin_ver_logs(sock_t fd, char *param) {
     fclose(f);
     enviar_fmt(fd, "FIN_LISTA|%d", n);
 }
-

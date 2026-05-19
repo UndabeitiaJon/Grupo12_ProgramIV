@@ -54,8 +54,11 @@ void hadmin_informe_ingresos   (sock_t fd, char *param);
 void hadmin_informe_incidencias(sock_t fd, char *param);
 
 /* ── Tarifas ── */
-void hadmin_listar_tarifas  (sock_t fd);
-void hadmin_mod_precio_base (sock_t fd, char *param);
+void hadmin_listar_tarifas    (sock_t fd);
+void hadmin_mod_precio_base   (sock_t fd, char *param);
+void hadmin_mod_coef_business (sock_t fd, char *param);   /* B-08 */
+void hadmin_mod_exceso_kg     (sock_t fd, char *param);   /* B-09 */
+void hadmin_mod_supl_bici     (sock_t fd, char *param);   /* B-10 */
 
 /* ── Logs ── */
 void hadmin_ver_logs(sock_t fd, char *param);
