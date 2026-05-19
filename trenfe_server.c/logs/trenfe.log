@@ -282,3 +282,5 @@
 [2026-05-19 18:50:16] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
 [2026-05-19 18:50:54] [admin@trenfe.com] [LOGOUT] Cierre de sesion
 [2026-05-19 18:50:54] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 18:52:26] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-19 18:52:26] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
