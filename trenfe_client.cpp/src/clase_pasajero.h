@@ -27,8 +27,10 @@ private:
     /* Sub-menús */
     void menuBuscarTrayecto();
     void menuHacerReserva(const std::string& id_tr,
-                          const std::string& id_origen,
-                          const std::string& id_destino);
+                          const std::string& orig_nombre,
+                          const std::string& dest_nombre,
+                          const std::string& fecha,
+                          const std::string& clase);
     void menuMisReservas();
     void menuPuntos();
 

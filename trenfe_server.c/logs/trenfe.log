@@ -205,3 +205,7 @@
 [2026-05-19 10:26:10] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-19 10:26:16] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-19 10:26:16] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 10:30:00] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-19 13:49:12] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 13:49:20] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 13:49:20] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1

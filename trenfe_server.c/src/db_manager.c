@@ -12,6 +12,7 @@
 #include "estructuras.h"
 #include "config.h"
 #include "hash.h"
+#include "logs.h"
 
 /* ============================================================
  *  UTILIDAD INTERNA: abrir BD
@@ -155,7 +156,7 @@ int init_database(void) {
         "CREATE TABLE IF NOT EXISTS INCIDENCIAS ("
         "id_inc INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_serv INTEGER, id_u_reporta INTEGER,"
-        "tipo TEXT, descripcion TEXT,"
+        "tipo_incidencia TEXT, descripcion TEXT,"
         "prioridad TEXT DEFAULT 'MEDIA',"
         "estado TEXT DEFAULT 'ABIERTA',"
         "fecha_reporte TEXT, fecha_resolucion TEXT,"
@@ -779,7 +780,7 @@ TipoDescuento obtener_descuento_usuario(int id_u) {
 int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo){
 	sqlite3 *db = abrir_bd();
 		if(!db) return -1;
-		char descuento = "";
+		const char *descuento = "";
 		if (tipo == DESCUENTO_JOVEN){
 			descuento = "JOVEN";
 		}else if (tipo == DESCUENTO_DORADA){
@@ -792,7 +793,7 @@ int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo){
 		sqlite3_stmt *stmt;
 		const char *sql = "UPDATE DATOS_PASAJEROS SET tipo_descuento = ? WHERE id_u = ?";
 		 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-			        sqlite3_bind_int(stmt, 1, descuento);
+			        sqlite3_bind_text(stmt, 1, descuento, -1, SQLITE_STATIC);
 			        sqlite3_bind_int(stmt, 2, id_u);
 			        sqlite3_step(stmt);
 			        sqlite3_finalize(stmt);
@@ -998,7 +999,7 @@ int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int an
 int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
 	sqlite3 *db = abrir_bd();
 			if(!db) return -1;
-			char et = "";
+			const char *et = "";
 			if (estado == TREN_AVERIA){
 				et = "AVERIA";
 			}else if (estado == TREN_OPERATIVO){
@@ -1011,7 +1012,7 @@ int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
 			sqlite3_stmt *stmt;
 			const char *sql = "UPDATE TRENES SET estado_mant = ? WHERE id_t = ?";
 			 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-				        sqlite3_bind_int(stmt, 1, et);
+				        sqlite3_bind_text(stmt, 1, et, -1, SQLITE_STATIC);
 				        sqlite3_bind_int(stmt, 2, id_t);
 				        sqlite3_step(stmt);
 				        sqlite3_finalize(stmt);
@@ -1363,13 +1364,11 @@ Estacion obtener_estacion_por_id(int id_est) {
 
 void migrar_passwords_a_hash(void) {
     sqlite3 *db;
-    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK){
-    	return;
-    }
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return;
 
     sqlite3_stmt *sel, *upd;
 
-    // Seleccionar usuarios cuya contraseña NO sea un hash SHA-256 (64 chars hex)
+    /* Seleccionar usuarios cuya contraseña NO sea un hash SHA-256 (64 chars hex) */
     sqlite3_prepare_v2(db,
         "SELECT id_u, pass_hash FROM USUARIOS WHERE LENGTH(pass_hash) != 64;",
         -1, &sel, NULL);
@@ -1380,11 +1379,9 @@ void migrar_passwords_a_hash(void) {
 
     int migrados = 0;
     while (sqlite3_step(sel) == SQLITE_ROW) {
-        int id_u= sqlite3_column_int (sel, 0);
+        int         id_u  = sqlite3_column_int (sel, 0);
         const char *plain = (const char*)sqlite3_column_text(sel, 1);
-        if (!plain){
-        	continue;
-        }
+        if (!plain) continue;
 
         char hash[65];
         sha256_hex(plain, hash);
@@ -1402,12 +1399,10 @@ void migrar_passwords_a_hash(void) {
     sqlite3_close(db);
 
 
-    if (migrados > 0){
-    	printf("[MIGRACION] %d contraseñas migradas a SHA-256\n", migrados);
-    }
-    else{
-    	printf("[MIGRACION] Todas las contraseñas ya estaban hasheadas\n");
-    }
+    if (migrados > 0)
+        printf("[MIGRACION] %d contrasenas migradas a SHA-256\n", migrados);
+    else
+        printf("[MIGRACION] Todas las contrasenas ya estaban hasheadas\n");
 }
 
 
@@ -3195,9 +3190,7 @@ void resumen_ultima_importacion(void) {
 
 bool verificar_hash_directo(const char *email, const char *pass_hash) {
     sqlite3 *db = abrir_bd();
-    if (!db){
-    	return false;
-    }
+    if (!db) return false;
 
     sqlite3_stmt *stmt;
     bool ok = false;
