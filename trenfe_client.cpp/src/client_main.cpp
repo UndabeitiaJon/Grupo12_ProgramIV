@@ -22,7 +22,7 @@
 #include "usuario_base.h"
 
 /* Cambia a 1 para ejecutar el test de conexión */
-#define MODO_TEST 0
+#define MODO_TEST 1
 
 
 /* login() está implementada en client_auth.cpp */
