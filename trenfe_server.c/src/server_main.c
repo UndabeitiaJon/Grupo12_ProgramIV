@@ -92,6 +92,8 @@ int main(void) {
         return EXIT_FAILURE;
     }
 
+    seed_database();
+
     migrar_passwords_a_hash();
 
     //Log de arranque

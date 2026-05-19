@@ -12,6 +12,13 @@
 [2026-05-10 20:39:40] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-10 20:40:57] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
 [2026-05-10 20:40:57] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+<<<<<<< HEAD
+[2026-05-12 11:21:54] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-12 11:22:14] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-12 11:22:14] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-12 11:22:36] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-12 11:37:42] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+=======
 [2026-05-17 20:31:39] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-17 20:31:47] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-17 20:31:47] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
@@ -209,4 +216,17 @@
 [2026-05-19 13:49:12] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-19 13:49:20] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-19 13:49:20] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+<<<<<<< HEAD
 [2026-05-19 13:53:28] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+=======
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+[2026-05-19 17:37:34] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 17:37:46] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 17:42:12] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 17:42:12] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 17:42:12] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 17:42:29] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 17:42:43] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 17:43:32] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-19 17:43:37] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
