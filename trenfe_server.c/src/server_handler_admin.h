@@ -4,19 +4,13 @@
  *  Created on: 9 may 2026
  *      Author: e.aranoa
  */
-/*
- * server_handler_admin.h  -  Sistema TRENFE  -  Fase 2
- *
- * Handlers exclusivos del rol ADMIN.
- * Se incluye desde server_handler.c.
- */
+
 
 #ifndef SERVER_HANDLER_ADMIN_H_
 #define SERVER_HANDLER_ADMIN_H_
 
 #include "server_socket.h"
 
-/* Cada función recibe el fd del cliente y los parámetros ya separados */
 
 /* ── Trenes ── */
 void hadmin_listar_trenes    (sock_t fd);
@@ -57,9 +51,9 @@ void hadmin_informe_incidencias(sock_t fd, char *param);
 /* ── Tarifas ── */
 void hadmin_listar_tarifas    (sock_t fd);
 void hadmin_mod_precio_base   (sock_t fd, char *param);
-void hadmin_mod_coef_business (sock_t fd, char *param);   /* B-08 */
-void hadmin_mod_exceso_kg     (sock_t fd, char *param);   /* B-09 */
-void hadmin_mod_supl_bici     (sock_t fd, char *param);   /* B-10 */
+void hadmin_mod_coef_business (sock_t fd, char *param);
+void hadmin_mod_exceso_kg     (sock_t fd, char *param);
+void hadmin_mod_supl_bici     (sock_t fd, char *param);
 
 /* ── Logs ── */
 void hadmin_ver_logs(sock_t fd, char *param);

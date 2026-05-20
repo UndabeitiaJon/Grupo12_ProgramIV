@@ -1,25 +1,3 @@
-/*
- * server_main.c
- *
- *  Created on: 7 may 2026
- *      Author: e.aranoa
- */
-
-
-/*
- * server_main.c  -  Sistema TRENFE  -  Fase 2
- *
- * Punto de entrada del servidor remoto.
- * Secuencia de arranque:
- *   1. Crea directorios data/ y logs/ si no existen
- *   2. Inicializa la capa de red (Winsock en Windows)
- *   3. Carga config.cfg (reutiliza config.c de Fase 1)
- *   4. Inicializa la BD SQLite (reutiliza db_manager.c de Fase 1)
- *   5. Registra arranque en log
- *   6. Crea socket de escucha
- *   7. Bucle principal: acepta un cliente, lo atiende, repite
- *   8. Limpieza al salir
- */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,12 +28,10 @@
 //Socket global para poder cerrarlo en la señal SIGINT
 static sock_t g_fd_servidor = SOCK_INVALIDO;
 
-/* Flag de cierre — volatile para que el bucle while(1) lo vea */
+// Flag de cierre — volatile para que el bucle while(1) lo vea
 static volatile int g_ejecutando = 1;
 
-/* ─────────────────────────────────────────────
-   Manejador de CTRL+C — cierre limpio
-   ───────────────────────────────────────────── */
+//Manejador de CTRL+C — cierre limpio
 static void manejador_sigint(int sig) {
     (void)sig;
     printf("\n[SERVIDOR] Señal de cierre recibida. Apagando...\n");
@@ -64,14 +40,9 @@ static void manejador_sigint(int sig) {
         cerrar_socket(g_fd_servidor);
         g_fd_servidor = SOCK_INVALIDO;
     }
-    /* NO llamar socket_limpiar() ni exit() aquí en Windows:
-       WSACleanup dentro de un signal handler en Windows puede colgar.
-       El bucle detecta g_ejecutando=0 y sale limpiamente. */
 }
 
-/* ─────────────────────────────────────────────
-   MAIN
-   ───────────────────────────────────────────── */
+
 int main(void) {
 
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -120,8 +91,7 @@ int main(void) {
     g_fd_servidor = crear_socket_servidor(cfg.puerto_servidor);
     if (g_fd_servidor == SOCK_INVALIDO) {
         fprintf(stderr, "[SERVIDOR] ERROR: no se pudo crear el socket.\n");
-        log_evento(cfg.log_path, "SISTEMA", "ERROR",
-                   "Fallo al crear socket de escucha");
+        log_evento(cfg.log_path, "SISTEMA", "ERROR", "Fallo al crear socket de escucha");
         socket_limpiar();
         return EXIT_FAILURE;
     }
@@ -133,10 +103,11 @@ int main(void) {
     while (g_ejecutando) {
         char ip_cliente[46] = "";
 
-        sock_t fd_cliente = aceptar_cliente(g_fd_servidor,
-                                            ip_cliente, sizeof(ip_cliente));
+        sock_t fd_cliente = aceptar_cliente(g_fd_servidor, ip_cliente, sizeof(ip_cliente));
         if (fd_cliente == SOCK_INVALIDO) {
-            if (!g_ejecutando) break;   /* cierre limpio por señal */
+            if (!g_ejecutando) {
+            	break;
+            }
             fprintf(stderr, "[SERVIDOR] accept() fallo. Reintentando...\n");
             continue;
         }

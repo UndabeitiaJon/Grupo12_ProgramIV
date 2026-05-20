@@ -4,11 +4,6 @@
  *  Created on: 8 may 2026
  *      Author: e.aranoa
  */
-/*
- * usuario_base.h  -  Sistema TRENFE  -  Fase 2
- *
- * Clase abstracta de la que heredan Pasajero, Maquinista y Administrador.
- */
 
 #ifndef USUARIO_BASE_H_
 #define USUARIO_BASE_H_
@@ -22,7 +17,7 @@ protected:
     std::string nombre;
     std::string apellido;
     std::string email;
-    std::string rol;        /* "PASAJERO", "MAQUINISTA", "ADMIN" */
+    std::string rol;        //"PASAJERO", "MAQUINISTA", "ADMIN"
     Conexion&   conn;
 
 public:
@@ -30,36 +25,24 @@ public:
                 const std::string& email, const std::string& rol, Conexion& conn);
     virtual ~UsuarioBase() = default;
 
-    /* Cada rol implementa su propio menú principal */
+    // Cada rol implementa su propio menú principal
     virtual void mostrarMenuPrincipal() = 0;
-
-    /* Métodos comunes implementados en la clase base */
     void mostrarMisDatos();
     void cambiarContrasenia();
 
-    /* Getters */
+    // Getters
     int                getId()      const { return id_u;    }
     const std::string& getEmail()   const { return email;   }
     const std::string& getRol()     const { return rol;     }
     const std::string& getNombre()  const { return nombre;  }
 };
 
-/* ── Helpers de cadena usados por todas las subclases ── */
 
-/* Divide una cadena por '|' y devuelve el campo en la posición indicada */
+// Divide una cadena por '|' y devuelve el campo en la posición indicada
 std::string campo(const std::string& linea, int pos);
 
-/* Muestra una cabecera de menú con el nombre y rol del usuario */
 void mostrarCabecera(const std::string& nombre, const std::string& rol);
 
-/*
- * seleccionarEstacion()
- *
- * Muestra un selector provincia → ciudad → estación usando la caché
- * de líneas "ESTACION|id|nombre|ciudad|provincia|..." recibidas del servidor.
- * Devuelve el id_est real (cadena) de la estación elegida, o "" si cancela.
- * Declarada aquí para que tanto Pasajero como Administrador puedan usarla.
- */
 std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
                                 const std::string& etiqueta);
 
