@@ -1164,21 +1164,25 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
 
         if (!cmd || cmd[0] == '\0') continue;
 
-        /* ── Traza en consola del servidor ── */
-        printf("[HANDLER] [%s] CMD=%s\n",
-               ses.email[0] ? ses.email : "no-auth", cmd);
-
         /* ── LOGIN ── */
         if (strcmp(cmd, CMD_LOGIN) == 0) {
             handle_login(fd, param, &ses);
+            /* Traza post-login: si tuvo exito, ses.email ya esta relleno */
+            printf("[HANDLER] [%s] CMD=%s\n",
+                   ses.email[0] ? ses.email : "no-auth", cmd);
             continue;
         }
 
         /* ── B-05/B-21: REGISTRO (accesible sin sesion activa) ── */
         if (strcmp(cmd, CMD_REGISTRO) == 0) {
             handle_registro(fd, param);
+            printf("[HANDLER] [no-auth] CMD=%s\n", cmd);
             continue;
         }
+
+        /* ── Traza en consola del servidor ── */
+        printf("[HANDLER] [%s] CMD=%s\n",
+               ses.email[0] ? ses.email : "no-auth", cmd);
 
         /* ── Guardia: el resto de comandos requieren autenticación ── */
         if (ses.id_u < 0) {

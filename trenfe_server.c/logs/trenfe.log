@@ -618,3 +618,31 @@
 [2026-05-20 19:10:56] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-20 19:20:23] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-20 19:21:40] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 19:31:58] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-20 19:32:00] [SISTEMA] [CIERRE] Servidor TRENFE detenido
+[2026-05-20 19:32:08] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-20 19:32:12] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 19:33:03] [pedrocorrupto@gmail.com] [REGISTRO] Nuevo usuario registrado
+[2026-05-20 19:34:05] [pedrocorrupto@gmail.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-20 19:35:44] [pedrocorrupto@gmail.com] [LOGOUT] Cierre de sesion
+[2026-05-20 19:35:44] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-20 19:36:02] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 19:46:04] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-20 19:46:11] [SISTEMA] [CIERRE] Servidor TRENFE detenido
+[2026-05-20 19:46:38] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-20 19:46:42] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 19:47:34] [unda@gmail.com] [REGISTRO] Nuevo usuario registrado
+[2026-05-20 19:47:51] [unda@gmail.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-20 19:51:32] [unda@gmail.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-20 19:51:42] [unda@gmail.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-20 19:52:12] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-20 19:52:16] [SISTEMA] [CIERRE] Servidor TRENFE detenido
+[2026-05-20 19:55:33] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-20 19:55:37] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 19:56:10] [unda@gmail.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-20 20:00:47] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-20 20:00:54] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 20:01:13] [unda@gmail.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-20 20:02:09] [unda@gmail.com] [LOGOUT] Cierre de sesion
+[2026-05-20 20:02:09] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-20 20:02:19] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
