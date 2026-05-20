@@ -6,7 +6,6 @@
  */
 
 /*
- * client_auth.cpp  -  Sistema TRENFE  -  Fase 2
  *
  * Implementa la función login() que:
  *   1. Pide email y contraseña al usuario

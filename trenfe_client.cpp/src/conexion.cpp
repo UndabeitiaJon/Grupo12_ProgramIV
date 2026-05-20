@@ -5,11 +5,8 @@
  *      Author: e.aranoa
  */
 /*
- * conexion.cpp  -  Sistema TRENFE  -  Fase 2
  *
- * Implementación de la clase Conexion.
- * Misma lógica de portabilidad que server_socket.c pero en C++
- * y para el lado cliente (connect en lugar de bind/listen/accept).
+ *
  */
 
 #include <cstdio>
@@ -201,10 +198,10 @@ std::vector<std::string> Conexion::recibirLista() {
         std::string linea = recibir();
         if (linea.empty() && !conectado) break;
 
-        /* FIN_LISTA|n  → fin de la lista */
+
         if (linea.rfind("FIN_LISTA", 0) == 0) break;
 
-        /* ERROR → no añadir a la lista, pero sí salir */
+
         if (linea.rfind("ERROR", 0) == 0) {
             fprintf(stderr, "[CONEXION] Error del servidor: %s\n", linea.c_str());
             break;

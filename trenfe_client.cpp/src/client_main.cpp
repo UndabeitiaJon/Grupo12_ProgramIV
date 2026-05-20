@@ -2,19 +2,11 @@
  * client_main.cpp
  *
  *  Created on: 8 may 2026
- *      Author: Grupo12
+ *      Author: e.aranoa
  */
 
 /*
 
- * client_main.cpp
- *
- *  Created on: 8 may 2026
- *      Author: Grupo12
- */
-
-/*
- * client_main.cpp  -  Sistema TRENFE  -  Fase 2
  *
  * Para activar el test del Bloque 1, cambia:
  *   #define MODO_TEST 0   →   #define MODO_TEST 1

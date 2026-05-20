@@ -6,7 +6,6 @@
  */
 
 /*
- * clase_pasajero.h  -  Sistema TRENFE  -  Fase 2
  */
 
 #ifndef CLASE_PASAJERO_H_
