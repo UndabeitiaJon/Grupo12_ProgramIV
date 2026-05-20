@@ -646,3 +646,6 @@
 [2026-05-20 20:02:09] [unda@gmail.com] [LOGOUT] Cierre de sesion
 [2026-05-20 20:02:09] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
 [2026-05-20 20:02:19] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 20:14:14] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-20 20:14:18] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-20 20:14:34] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
