@@ -650,7 +650,7 @@ void listar_empleados_db(){
 int modificar_usuario_db(int id_u, const char *campo, const char *valor){
 	sqlite3 *db = abrir_bd();
 	if (!db) return 1;
-	char sql[512];
+	char sql[1024];
 	snprintf(sql, sizeof(sql),
 		"UPDATE USUARIOS SET %s=? WHERE id_u=?;", campo);
 	sqlite3_stmt *stmt;
@@ -750,7 +750,7 @@ void importar_usuarios_csv(const char* ruta_csv) {
         char *rol      = strtok(NULL,  ";");
         if (!nombre || !apellido || !dni || !email || !rol) { err++; continue; }
 
-        char sql[512];
+        char sql[1024];
         snprintf(sql, sizeof(sql),
             "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,rol,fecha_registro)"
             " VALUES ('%s','%s','%s','%s','%s',date('now'));",
@@ -1733,7 +1733,7 @@ int cargar_trayectos_csv (const char *ruta_csv){
 	        strncpy(estado, token, MAX_CAMPO);
 
 	        /* Construir la sentencia SQL */
-	        char sql[512];
+	        char sql[1024];
 	        snprintf(sql, sizeof(sql),
 	            "INSERT INTO TRAYECTOS "
 	            "(origen_id, destino_id, hora_salida, hora_llegada, dias_operativos, estado) "
@@ -2558,7 +2558,7 @@ void listar_incidencias_db(EstadoIncidencia filtro_estado, int todas) {
     }
     sqlite3_stmt *stmt;
     const char *estados[]={"ABIERTA","EN_PROCESO","RESUELTA","CERRADA"};
-    char sql[512];
+    char sql[1024];
     strcpy(sql,
         "SELECT i.id_inc, i.fecha_reporte, i.tipo, i.prioridad, i.estado,"
         " u.nombre, i.descripcion"

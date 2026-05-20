@@ -83,6 +83,7 @@ void listar_trayectos_db(void);
 void listar_trayectos_filtro(const char *estacion_origen, const char *estacion_destino);
 int modificar_trayecto_db(int id_tr, const char *hora_sal, const char *hora_ll, double precio, const char *dias);
 int cambiar_estado_trayecto_db(int id_tr, EstadoTrayecto estado);
+int cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado);
 Trayecto obtener_trayecto_por_id(int id_tr);
 /* Busca trayectos por origen/destino/fecha/clase */
 int buscar_trayectos_db(int id_origen, int id_destino, const char *fecha, const char *clase);

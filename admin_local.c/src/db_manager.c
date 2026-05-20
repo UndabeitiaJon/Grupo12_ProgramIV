@@ -12,6 +12,7 @@
 #include "estructuras.h"
 #include "config.h"
 #include "hash.h"
+#include "logs.h"
 
 /* ============================================================
  *  UTILIDAD INTERNA: abrir BD
@@ -3142,5 +3143,3 @@ void resumen_ultima_importacion(void) {
     printf("[GTFS] ───────────────────────────────\n");
     sqlite3_close(db);
 }
-
-
