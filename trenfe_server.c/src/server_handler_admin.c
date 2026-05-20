@@ -536,25 +536,40 @@ void hadmin_resolver_incidencia(sock_t fd, char *param, const char *email_admin)
 
 void hadmin_informe_ocupacion(sock_t fd, char *param) {
     /* param: "id_t" */
-    if (!param) { enviar_mensaje(fd,"ERROR|400|Falta id_t"); return; }
+    if (!param || param[0] == '\0') {
+        enviar_mensaje(fd, "ERROR|400|Formato: INFORME_OCUPACION|id_t");
+        return;
+    }
+    int id_t = atoi(param);
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
-    /* Cuenta reservas ACTIVAS por trayecto del tren dado */
-    sqlite3_prepare_v2(db,
-        "SELECT t.id_tr, eo.nombre, ed.nombre, COUNT(r.id_res) AS reservas"
+
+    /* Misma lógica que informe_ocupacion_tren() del admin local:
+       reservas CONFIRMADAS + porcentaje respecto a la capacidad total del tren */
+    if (sqlite3_prepare_v2(db,
+        "SELECT t.id_tr, eo.nombre, ed.nombre,"
+        "       COUNT(r.id_res) AS reservas,"
+        "       ROUND(COUNT(r.id_res)*100.0 /"
+        "         COALESCE((SELECT SUM(v.capacidad_total) FROM VAGONES v WHERE v.id_tren=t.id_t),100),1) AS pct"
         " FROM TRAYECTOS t"
         " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
         " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
-        " LEFT JOIN RESERVAS r ON r.id_tr = t.id_tr AND r.estado='ACTIVA'"
+        " LEFT JOIN RESERVAS r ON r.id_tr = t.id_tr AND r.estado='CONFIRMADA'"
         " WHERE t.id_t = ?"
         " GROUP BY t.id_tr ORDER BY t.id_tr;",
-        -1, &s, NULL);
-    sqlite3_bind_int(s, 1, atoi(param));
+        -1, &s, NULL) != SQLITE_OK) {
+        enviar_mensaje(fd, "ERROR|500|Consulta de ocupacion fallida");
+        sqlite3_close(db); return;
+    }
+    sqlite3_bind_int(s, 1, id_t);
     int n = 0;
     while (sqlite3_step(s) == SQLITE_ROW) {
-        enviar_fmt(fd, "OCUPACION|%d|%s|%s|%d",
-            sqlite3_column_int(s,0), ctxt(s,1), ctxt(s,2),
-            sqlite3_column_int(s,3));
+        /* OCUPACION|id_tr|origen|destino|reservas|pct */
+        enviar_fmt(fd, "OCUPACION|%d|%s|%s|%d|%.1f",
+            sqlite3_column_int(s,0),
+            ctxt(s,1), ctxt(s,2),
+            sqlite3_column_int(s,3),
+            sqlite3_column_double(s,4));
         n++;
     }
     sqlite3_finalize(s); sqlite3_close(db);

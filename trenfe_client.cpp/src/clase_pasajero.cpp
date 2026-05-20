@@ -87,21 +87,27 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
               << std::setw(7)  << "SAL."
               << std::setw(7)  << "LLEGA"
               << std::setw(10) << "PRECIO"
+              << std::setw(8)  << "LIBRES"
               << "\n";
-    std::cout << "  " << std::string(72, '-') << "\n";
+    std::cout << "  " << std::string(80, '-') << "\n";
 
     for (const auto& linea : lista) {
-        /* TRAYECTO|id|origen|destino|hora_sal|hora_ll|precio|estado */
-        /* o con asientos libres: TRAYECTO|id|orig|dest|sal|ll|precio|libres|dias */
-        std::string tipo = campo(linea, 0);
-        if (tipo != "TRAYECTO") continue;
+        /* TRAYECTO|id|origen|destino|hora_sal|hora_ll|precio|libres|dias */
+        /*          1   2     3       4        5       6      7      8   */
+        if (campo(linea, 0) != "TRAYECTO") continue;
+
+        std::string libres = campo(linea, 7);
+        std::string libres_txt = libres.empty() ? "-" :
+                                 (libres == "0" ? "AGOTADO" : libres + " plz");
+
         std::cout << "  " << std::left
                   << std::setw(4)  << campo(linea, 1)
                   << std::setw(22) << campo(linea, 2)
                   << std::setw(22) << campo(linea, 3)
                   << std::setw(7)  << campo(linea, 4)
                   << std::setw(7)  << campo(linea, 5)
-                  << std::setw(10) << campo(linea, 6)
+                  << std::setw(10) << (campo(linea, 6) + " €")
+                  << std::setw(8)  << libres_txt
                   << "\n";
     }
 }
@@ -121,7 +127,7 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
    Formato del servidor: ESTACION|id|nombre|ciudad|provincia|andenes|sala
                          campo:    0   1      2      3         4
    ───────────────────────────────────────────────────────────────────── */
-static std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
+std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
                                        const std::string& etiqueta)
 {
     typedef std::pair<std::string, std::string>              ParEstacion;   /* {id, nombre} */
@@ -195,19 +201,22 @@ static std::string seleccionarEstacion(const std::vector<std::string>& cacheEsta
     const std::vector<ParEstacion>& estaciones = ciudades[nc - 1].second;
     const std::string& ciudadElegida           = ciudades[nc - 1].first;
 
-    /* ── 4. Mostrar estaciones de esa ciudad ───────────────────────── */
+    /* ── 4. Mostrar estaciones de esa ciudad con numeración ──────── */
     std::cout << "\n  -- Estaciones en " << ciudadElegida << " --\n";
     std::cout << "  " << std::string(36, '-') << "\n";
-    for (const auto& est : estaciones)
-        std::cout << "  [" << est.first << "] " << est.second << "\n";
+    for (size_t i = 0; i < estaciones.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << estaciones[i].second
+                  << "  (id: " << estaciones[i].first << ")\n";
     std::cout << "  " << std::string(36, '-') << "\n";
 
-    /* ── 5. Pedir ID real de la estacion ───────────────────────────── */
-    std::string s_id;
-    std::cout << "  ID estacion " << etiqueta << " (0 = cancelar): ";
-    std::getline(std::cin, s_id);
-    if (s_id == "0" || s_id.empty()) return "";
-    return s_id;
+    /* ── 5. El usuario elige por número; devolvemos el id_est real ─ */
+    std::string s_ne;
+    std::cout << "  Número " << etiqueta << " (0 = cancelar): ";
+    std::getline(std::cin, s_ne);
+    int ne = 0;
+    try { ne = std::stoi(s_ne); } catch (...) { ne = 0; }
+    if (ne <= 0 || ne > (int)estaciones.size()) return "";
+    return estaciones[ne - 1].first;   /* id_est real de la BD */
 }
 
 void Pasajero::menuBuscarTrayecto() {
