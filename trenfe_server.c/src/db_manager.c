@@ -12,6 +12,7 @@
 #include "estructuras.h"
 #include "config.h"
 #include "hash.h"
+#include "logs.h"
 
 /* ============================================================
  *  UTILIDAD INTERNA: abrir BD
@@ -155,7 +156,7 @@ int init_database(void) {
         "CREATE TABLE IF NOT EXISTS INCIDENCIAS ("
         "id_inc INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_serv INTEGER, id_u_reporta INTEGER,"
-        "tipo TEXT, descripcion TEXT,"
+        "tipo_incidencia TEXT, descripcion TEXT,"
         "prioridad TEXT DEFAULT 'MEDIA',"
         "estado TEXT DEFAULT 'ABIERTA',"
         "fecha_reporte TEXT, fecha_resolucion TEXT,"
@@ -213,8 +214,9 @@ void seed_database(void) {
     if (!db) return;
 
     char *err = NULL;
-    const char *sql =
-        // Usuarios
+
+    /* ── Bloque 1: Usuarios y datos asociados ── */
+    const char *sql_usuarios =
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
         " VALUES ('Admin','Trenfe','00000000A','admin@trenfe.com','600000000','1980-01-01','240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9','ADMIN',1,date('now'));"
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
@@ -223,33 +225,150 @@ void seed_database(void) {
         " VALUES ('Pedro','Lopez','87654321C','pedro@trenfe.com','622333444','1985-03-20','7aed9c3a0259a8e61958737eb798265cd50d3c711be0e15dd794c4f688e29c13','MAQUINISTA',1,date('now'));"
         "INSERT OR IGNORE INTO USUARIOS (nombre,apellido,dni,email,telf,fecha_nac,pass_hash,rol,activo,fecha_registro)"
         " VALUES ('Maria','Fernandez','11223344D','maria@trenfe.com','633444555','2000-09-10','1d4598d1949b47f7f211134b639ec32238ce73086a83c2f745713b3f12f817e5','PASAJERO',1,date('now'));"
-
-        // Datos pasajeros — usan SELECT para no depender de id_u fijo
-        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u, puntos_fidelidad, tipo_descuento) "
-        "SELECT id_u, 150, 'NINGUNO' FROM USUARIOS WHERE email='juan@trenfe.com';"
-        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u, puntos_fidelidad, tipo_descuento) "
-        "SELECT id_u, 0, 'JOVEN' FROM USUARIOS WHERE email='maria@trenfe.com';"
-
-        // Datos empleados
-        "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u, num_empleado, fecha_ingreso, rol_empleado, estado) "
-        "SELECT id_u, 'EMP-0001', date('now'), 'MAQUINISTA', 'ACTIVO' FROM USUARIOS WHERE email='pedro@trenfe.com';"
-
-        // Descuentos — no tienen FK, siempre seguros
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) "
+        "SELECT id_u,150,'NINGUNO' FROM USUARIOS WHERE email='juan@trenfe.com';"
+        "INSERT OR IGNORE INTO DATOS_PASAJERO (id_u,puntos_fidelidad,tipo_descuento) "
+        "SELECT id_u,0,'JOVEN' FROM USUARIOS WHERE email='maria@trenfe.com';"
+        "INSERT OR IGNORE INTO DATOS_EMPLEADO (id_u,num_empleado,fecha_ingreso,rol_empleado,estado) "
+        "SELECT id_u,'EMP-0001',date('now'),'MAQUINISTA','ACTIVO' FROM USUARIOS WHERE email='pedro@trenfe.com';"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('JOVEN',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('DORADA',40.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('NUMEROSA',20.0);"
         "INSERT OR IGNORE INTO DESCUENTOS VALUES ('ABONO',50.0);";
 
-    if (sqlite3_exec(db, sql, 0, 0, &err) != SQLITE_OK) {
-        fprintf(stderr, "[SEED] Error: %s\n", err);
-        sqlite3_free(err);
-    } else {
-        printf("[SEED] Datos de prueba cargados.\n");
-        printf("       admin@trenfe.com / admin123\n");
-        printf("       juan@trenfe.com  / pass123\n");
-        printf("       pedro@trenfe.com / maq123\n");
-        printf("       maria@trenfe.com / pass456\n");
+    if (sqlite3_exec(db, sql_usuarios, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error usuarios: %s\n", err);
+        sqlite3_free(err); err = NULL;
     }
+
+    /* ── Bloque 2: Estaciones españolas principales ── */
+    const char *sql_estaciones =
+        "INSERT OR IGNORE INTO ESTACIONES (id_est,nombre,ciudad,provincia,num_andenes,tiene_sala_espera) VALUES"
+        " (1,'Madrid Atocha','Madrid','Madrid',22,1),"
+        " (2,'Madrid Chamartín','Madrid','Madrid',16,1),"
+        " (3,'Barcelona Sants','Barcelona','Barcelona',14,1),"
+        " (4,'Barcelona Passeig de Gràcia','Barcelona','Barcelona',4,0),"
+        " (5,'Sevilla Santa Justa','Sevilla','Sevilla',8,1),"
+        " (6,'Valencia Joaquín Sorolla','Valencia','Valencia',8,1),"
+        " (7,'Bilbao Abando','Bilbao','Bizkaia',4,1),"
+        " (8,'Málaga María Zambrano','Málaga','Málaga',6,1),"
+        " (9,'Zaragoza Delicias','Zaragoza','Zaragoza',8,1),"
+        " (10,'Córdoba','Córdoba','Córdoba',4,1),"
+        " (11,'Valladolid Campo Grande','Valladolid','Valladolid',4,1),"
+        " (12,'Alicante Terminal','Alicante','Alicante',4,1);";
+
+    if (sqlite3_exec(db, sql_estaciones, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error estaciones: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    /* ── Bloque 3: Trenes Renfe ── */
+    const char *sql_trenes =
+        "INSERT OR IGNORE INTO TRENES (id_t,nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision) VALUES"
+        " (1,'AVE Serie 103','S103-001',2006,'OPERATIVO','2024-06-01'),"
+        " (2,'AVE Serie 103','S103-002',2007,'OPERATIVO','2024-07-15'),"
+        " (3,'Alvia Serie 730','S730-001',2011,'OPERATIVO','2024-05-20'),"
+        " (4,'Alvia Serie 730','S730-002',2012,'OPERATIVO','2024-08-10'),"
+        " (5,'Avant Serie 121','S121-001',2008,'OPERATIVO','2024-04-18'),"
+        " (6,'AVE Serie 112','S112-001',2002,'REVISION','2024-09-01'),"
+        " (7,'Euromed Serie 130','S130-001',1996,'OPERATIVO','2024-03-12');";
+
+    if (sqlite3_exec(db, sql_trenes, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error trenes: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    /* ── Bloque 4: Vagones (2 turista + 1 business por tren) ── */
+    const char *sql_vagones =
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES"
+        " (1,1,'T',50),(1,2,'T',50),(1,3,'B',30),"
+        " (2,1,'T',50),(2,2,'T',50),(2,3,'B',30),"
+        " (3,1,'T',48),(3,2,'T',48),(3,3,'B',24),"
+        " (4,1,'T',48),(4,2,'T',48),(4,3,'B',24),"
+        " (5,1,'T',60),(5,2,'T',60),"
+        " (6,1,'T',50),(6,2,'T',50),(6,3,'B',30),"
+        " (7,1,'T',55),(7,2,'T',55),(7,3,'B',25);";
+
+    if (sqlite3_exec(db, sql_vagones, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error vagones: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    /* ── Bloque 5: Trayectos (rutas principales) ── */
+    const char *sql_trayectos =
+        "INSERT OR IGNORE INTO TRAYECTOS (id_tr,id_est_origen,id_est_destino,id_t,hora_salida,hora_llegada,precio_base,dias_operacion,activo) VALUES"
+        /* Madrid-Barcelona */
+        " (1,1,3,1,'07:00','09:30',75.00,'LMXJVSD',1),"
+        " (2,1,3,2,'10:00','12:30',75.00,'LMXJVSD',1),"
+        " (3,3,1,1,'16:00','18:30',75.00,'LMXJVSD',1),"
+        /* Madrid-Sevilla */
+        " (4,1,5,3,'08:30','11:00',55.00,'LMXJVSD',1),"
+        " (5,5,1,4,'17:00','19:30',55.00,'LMXJVSD',1),"
+        /* Madrid-Valencia */
+        " (6,1,6,3,'09:00','11:45',40.00,'LMXJVSD',1),"
+        " (7,6,1,4,'18:00','20:45',40.00,'LMXJVSD',1),"
+        /* Madrid-Málaga */
+        " (8,1,8,2,'07:30','09:50',65.00,'LMXJVSD',1),"
+        " (9,8,1,2,'16:30','18:50',65.00,'LMXJVSD',1),"
+        /* Barcelona-Sevilla */
+        " (10,3,5,1,'11:00','14:30',95.00,'LMXJVS',1),"
+        /* Madrid-Zaragoza */
+        " (11,1,9,5,'06:50','08:10',30.00,'LMXJVSD',1),"
+        " (12,9,1,5,'19:00','20:20',30.00,'LMXJVSD',1),"
+        /* Madrid-Valladolid */
+        " (13,2,11,5,'07:15','08:35',25.00,'LMXJVSD',1),"
+        " (14,11,2,5,'18:30','19:50',25.00,'LMXJVSD',1),"
+        /* Valencia-Barcelona */
+        " (15,6,3,7,'09:30','12:00',45.00,'LMXJVSD',1);";
+
+    if (sqlite3_exec(db, sql_trayectos, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error trayectos: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    /* ── Bloque 6: Tarifas por trayecto ── */
+    const char *sql_tarifas =
+        "INSERT OR IGNORE INTO TARIFAS (id_tr,precio_base,coef_turista,coef_business,suplemento_bici,exceso_kg_precio) VALUES"
+        " (1,75.00,1.0,1.8,30.0,12.0),(2,75.00,1.0,1.8,30.0,12.0),(3,75.00,1.0,1.8,30.0,12.0),"
+        " (4,55.00,1.0,1.8,30.0,12.0),(5,55.00,1.0,1.8,30.0,12.0),"
+        " (6,40.00,1.0,1.8,30.0,12.0),(7,40.00,1.0,1.8,30.0,12.0),"
+        " (8,65.00,1.0,1.8,30.0,12.0),(9,65.00,1.0,1.8,30.0,12.0),"
+        " (10,95.00,1.0,1.8,30.0,12.0),"
+        " (11,30.00,1.0,1.8,30.0,12.0),(12,30.00,1.0,1.8,30.0,12.0),"
+        " (13,25.00,1.0,1.8,30.0,12.0),(14,25.00,1.0,1.8,30.0,12.0),"
+        " (15,45.00,1.0,1.8,30.0,12.0);";
+
+    if (sqlite3_exec(db, sql_tarifas, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error tarifas: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    /* ── Bloque 7: Servicios programados (próximas semanas) ── */
+    const char *sql_servicios =
+        "INSERT OR IGNORE INTO SERVICIOS (id_serv,id_tr,id_t,fecha,estado,retraso_min) VALUES"
+        " (1,1,1,'2026-05-26','PROGRAMADO',0),"
+        " (2,2,2,'2026-05-26','PROGRAMADO',0),"
+        " (3,4,3,'2026-05-26','PROGRAMADO',0),"
+        " (4,6,3,'2026-05-26','PROGRAMADO',0),"
+        " (5,8,2,'2026-05-26','PROGRAMADO',0),"
+        " (6,11,5,'2026-05-26','PROGRAMADO',0),"
+        " (7,1,1,'2026-05-27','PROGRAMADO',0),"
+        " (8,4,3,'2026-05-27','PROGRAMADO',0),"
+        " (9,6,3,'2026-05-27','PROGRAMADO',0),"
+        " (10,15,7,'2026-05-27','PROGRAMADO',0);";
+
+    if (sqlite3_exec(db, sql_servicios, 0, 0, &err) != SQLITE_OK) {
+        fprintf(stderr, "[SEED] Error servicios: %s\n", err);
+        sqlite3_free(err); err = NULL;
+    }
+
+    printf("[SEED] Datos de prueba cargados:\n");
+    printf("       admin@trenfe.com / admin123  (ADMIN)\n");
+    printf("       juan@trenfe.com  / pass123   (PASAJERO)\n");
+    printf("       pedro@trenfe.com / maq123    (MAQUINISTA)\n");
+    printf("       maria@trenfe.com / pass456   (PASAJERO)\n");
+    printf("       %d estaciones | 7 trenes | 15 trayectos\n", 12);
+
     sqlite3_close(db);
 }
 
@@ -400,7 +519,9 @@ int insertar_usuario_db(Usuario u) {
     sqlite3_bind_text(stmt,4, u.email, -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,5, u.telf,-1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,6, u.fecha_nac, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt,7, u.pass_hash, -1, SQLITE_TRANSIENT);
+    char hash_hex[65];
+    sha256_hex(u.pass_hash, hash_hex);
+    sqlite3_bind_text(stmt, 7, hash_hex, -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt,8, rol_a_texto(u.rol),-1, SQLITE_TRANSIENT);
     sqlite3_bind_int (stmt,9, u.activo);
 
@@ -672,11 +793,12 @@ int cambiar_contrasenia_db(const char *email, const char *nueva_pass){
 	 sqlite3_stmt *stmt;
 	 const char *sql = "UPDATE USUARIOS SET pass_hash=? WHERE email=?;";
 	 sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-	 char hash_hex[65];
-	 sha256_hex(nueva_pass, hash_hex);
-	 sqlite3_bind_text(stmt, 1, hash_hex, -1, SQLITE_TRANSIENT);
-	 sqlite3_bind_text(stmt,2,email,-1,SQLITE_TRANSIENT);
-	 int rc = sqlite3_step(stmt); //ejecuta el stmt
+	 /* El cliente ya envía sha256(nueva_pass). Guardamos el hash directamente,
+	    sin volver a hashear. Si hasheáramos aquí, la BD quedaría con
+	    sha256(sha256(pass)) y el login siguiente fallaría siempre. */
+	 sqlite3_bind_text(stmt, 1, nueva_pass, -1, SQLITE_TRANSIENT);
+	 sqlite3_bind_text(stmt, 2, email,      -1, SQLITE_TRANSIENT);
+	 int rc = sqlite3_step(stmt);
 	 sqlite3_finalize(stmt);
 	 sqlite3_close(db);
 	 return (rc == SQLITE_DONE) ? 0 : 1;
@@ -777,7 +899,7 @@ TipoDescuento obtener_descuento_usuario(int id_u) {
 int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo){
 	sqlite3 *db = abrir_bd();
 		if(!db) return -1;
-		char descuento = "";
+		const char *descuento = "";
 		if (tipo == DESCUENTO_JOVEN){
 			descuento = "JOVEN";
 		}else if (tipo == DESCUENTO_DORADA){
@@ -790,7 +912,7 @@ int  actualizar_descuento_usuario(int id_u, TipoDescuento tipo){
 		sqlite3_stmt *stmt;
 		const char *sql = "UPDATE DATOS_PASAJEROS SET tipo_descuento = ? WHERE id_u = ?";
 		 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-			        sqlite3_bind_int(stmt, 1, descuento);
+			        sqlite3_bind_text(stmt, 1, descuento, -1, SQLITE_STATIC);
 			        sqlite3_bind_int(stmt, 2, id_u);
 			        sqlite3_step(stmt);
 			        sqlite3_finalize(stmt);
@@ -996,7 +1118,7 @@ int modificar_tren_db(int id_t, const char *modelo, const char *num_serie,int an
 int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
 	sqlite3 *db = abrir_bd();
 			if(!db) return -1;
-			char et = "";
+			const char *et = "";
 			if (estado == TREN_AVERIA){
 				et = "AVERIA";
 			}else if (estado == TREN_OPERATIVO){
@@ -1009,7 +1131,7 @@ int  cambiar_estado_tren_db(int id_t, EstadoMantenimiento estado){
 			sqlite3_stmt *stmt;
 			const char *sql = "UPDATE TRENES SET estado_mant = ? WHERE id_t = ?";
 			 if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) == SQLITE_OK) {
-				        sqlite3_bind_int(stmt, 1, et);
+				        sqlite3_bind_text(stmt, 1, et, -1, SQLITE_STATIC);
 				        sqlite3_bind_int(stmt, 2, id_t);
 				        sqlite3_step(stmt);
 				        sqlite3_finalize(stmt);
@@ -1359,6 +1481,48 @@ Estacion obtener_estacion_por_id(int id_est) {
     return e;
 }
 
+void migrar_passwords_a_hash(void) {
+    sqlite3 *db;
+    if (sqlite3_open(cfg.db_path, &db) != SQLITE_OK) return;
+
+    sqlite3_stmt *sel, *upd;
+
+    /* Seleccionar usuarios cuya contraseña NO sea un hash SHA-256 (64 chars hex) */
+    sqlite3_prepare_v2(db,
+        "SELECT id_u, pass_hash FROM USUARIOS WHERE LENGTH(pass_hash) != 64;",
+        -1, &sel, NULL);
+
+    sqlite3_prepare_v2(db,
+        "UPDATE USUARIOS SET pass_hash=? WHERE id_u=?;",
+        -1, &upd, NULL);
+
+    int migrados = 0;
+    while (sqlite3_step(sel) == SQLITE_ROW) {
+        int         id_u  = sqlite3_column_int (sel, 0);
+        const char *plain = (const char*)sqlite3_column_text(sel, 1);
+        if (!plain) continue;
+
+        char hash[65];
+        sha256_hex(plain, hash);
+
+        sqlite3_bind_text(upd, 1, hash, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int (upd, 2, id_u);
+        sqlite3_step(upd);
+        sqlite3_reset(upd);
+        migrados++;
+        printf("[MIGRACION] Usuario id=%d hasheado correctamente\n", id_u);
+    }
+
+    sqlite3_finalize(sel);
+    sqlite3_finalize(upd);
+    sqlite3_close(db);
+
+
+    if (migrados > 0)
+        printf("[MIGRACION] %d contrasenas migradas a SHA-256\n", migrados);
+    else
+        printf("[MIGRACION] Todas las contrasenas ya estaban hasheadas\n");
+}
 
 
 
@@ -3141,4 +3305,28 @@ void resumen_ultima_importacion(void) {
     sqlite3_finalize(s);
     printf("[GTFS] ───────────────────────────────\n");
     sqlite3_close(db);
+}
+
+bool verificar_hash_directo(const char *email, const char *pass_hash) {
+    sqlite3 *db = abrir_bd();
+    if (!db) return false;
+
+    sqlite3_stmt *stmt;
+    bool ok = false;
+
+    if (sqlite3_prepare_v2(db,
+        "SELECT pass_hash FROM USUARIOS WHERE email=? AND activo=1;",
+        -1, &stmt, NULL) == SQLITE_OK) {
+
+        sqlite3_bind_text(stmt, 1, email, -1, SQLITE_TRANSIENT);
+
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            const char *hash_bd = (const char*)sqlite3_column_text(stmt, 0);
+            /* Comparación directa: pass_hash ya viene hasheado del cliente */
+            ok = (hash_bd && strcmp(hash_bd, pass_hash) == 0);
+        }
+        sqlite3_finalize(stmt);
+    }
+    sqlite3_close(db);
+    return ok;
 }

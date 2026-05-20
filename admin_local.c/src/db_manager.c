@@ -3142,3 +3142,5 @@ void resumen_ultima_importacion(void) {
     printf("[GTFS] ───────────────────────────────\n");
     sqlite3_close(db);
 }
+
+

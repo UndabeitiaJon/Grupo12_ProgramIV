@@ -106,22 +106,120 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
     }
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+   Helper: seleccionar estacion en tres pasos
+   Equivalente a HashMap<Provincia, HashMap<Ciudad, List<Estacion>>>.
+   Flujo:
+     1. Muestra provincias numeradas.
+     2. El usuario elige provincia.
+     3. Muestra ciudades de esa provincia numeradas.
+     4. El usuario elige ciudad.
+     5. Muestra estaciones de esa ciudad con su ID real.
+     6. El usuario introduce el ID de la estacion.
+   Devuelve el ID de la estacion elegida, o "" si cancela.
+
+   Formato del servidor: ESTACION|id|nombre|ciudad|provincia|andenes|sala
+                         campo:    0   1      2      3         4
+   ───────────────────────────────────────────────────────────────────── */
+static std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
+                                       const std::string& etiqueta)
+{
+    typedef std::pair<std::string, std::string>              ParEstacion;   /* {id, nombre} */
+    typedef std::pair<std::string, std::vector<ParEstacion>> EntradaCiudad; /* {ciudad, estaciones} */
+    typedef std::pair<std::string, std::vector<EntradaCiudad>> EntradaProv; /* {prov, ciudades} */
+
+    /* ── 1. Construir mapa provincia -> ciudad -> estaciones ───────── */
+    std::vector<EntradaProv> mapaProv;
+
+    for (const auto& e : cacheEstaciones) {
+        if (campo(e, 0) != "ESTACION") continue;
+        std::string idEst    = campo(e, 1);
+        std::string nomEst   = campo(e, 2);
+        std::string ciudad   = campo(e, 3);
+        std::string provincia = campo(e, 4);
+        if (provincia.empty()) provincia = "Otras";
+        if (ciudad.empty())    ciudad    = nomEst;
+
+        /* Buscar o crear provincia */
+        EntradaProv* prov = nullptr;
+        for (auto& ep : mapaProv)
+            if (ep.first == provincia) { prov = &ep; break; }
+        if (!prov) {
+            mapaProv.push_back({provincia, {}});
+            prov = &mapaProv.back();
+        }
+
+        /* Buscar o crear ciudad dentro de la provincia */
+        EntradaCiudad* ciu = nullptr;
+        for (auto& ec : prov->second)
+            if (ec.first == ciudad) { ciu = &ec; break; }
+        if (!ciu) {
+            prov->second.push_back({ciudad, {}});
+            ciu = &prov->second.back();
+        }
+
+        ciu->second.push_back({idEst, nomEst});
+    }
+
+    /* ── 2. Mostrar provincias ─────────────────────────────────────── */
+    std::cout << "\n  -- Provincias disponibles (" << etiqueta << ") --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (size_t i = 0; i < mapaProv.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << mapaProv[i].first << "\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    std::cout << "  Numero de provincia (0 = cancelar): ";
+    std::string s_np;
+    std::getline(std::cin, s_np);
+    int np = 0;
+    try { np = std::stoi(s_np); } catch (...) { np = 0; }
+    if (np <= 0 || np > (int)mapaProv.size()) return "";
+
+    const std::vector<EntradaCiudad>& ciudades = mapaProv[np - 1].second;
+    const std::string& provElegida             = mapaProv[np - 1].first;
+
+    /* ── 3. Mostrar ciudades de esa provincia ──────────────────────── */
+    std::cout << "\n  -- Ciudades en " << provElegida << " --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (size_t i = 0; i < ciudades.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << ciudades[i].first << "\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    std::cout << "  Numero de ciudad (0 = cancelar): ";
+    std::string s_nc;
+    std::getline(std::cin, s_nc);
+    int nc = 0;
+    try { nc = std::stoi(s_nc); } catch (...) { nc = 0; }
+    if (nc <= 0 || nc > (int)ciudades.size()) return "";
+
+    const std::vector<ParEstacion>& estaciones = ciudades[nc - 1].second;
+    const std::string& ciudadElegida           = ciudades[nc - 1].first;
+
+    /* ── 4. Mostrar estaciones de esa ciudad ───────────────────────── */
+    std::cout << "\n  -- Estaciones en " << ciudadElegida << " --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (const auto& est : estaciones)
+        std::cout << "  [" << est.first << "] " << est.second << "\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    /* ── 5. Pedir ID real de la estacion ───────────────────────────── */
+    std::string s_id;
+    std::cout << "  ID estacion " << etiqueta << " (0 = cancelar): ";
+    std::getline(std::cin, s_id);
+    if (s_id == "0" || s_id.empty()) return "";
+    return s_id;
+}
+
 void Pasajero::menuBuscarTrayecto() {
     cargarEstaciones();   /* usa caché la segunda vez */
 
-    /* Mostrar estaciones disponibles */
-    std::cout << "\n  -- Estaciones disponibles --\n";
-    for (const auto& e : cacheEstaciones) {
-        /* ESTACION|id|nombre|ciudad|provincia|andenes|sala */
-        if (campo(e, 0) == "ESTACION") {
-            std::cout << "  [" << campo(e, 1) << "] "
-                      << campo(e, 2) << " (" << campo(e, 3) << ")\n";
-        }
-    }
+    std::string s_orig = seleccionarEstacion(cacheEstaciones, "origen");
+    if (s_orig.empty()) return;
 
-    std::string s_orig, s_dest, fecha, clase;
-    std::cout << "\n  ID estación origen  : "; std::getline(std::cin, s_orig);
-    std::cout << "  ID estación destino : "; std::getline(std::cin, s_dest);
+    std::string s_dest = seleccionarEstacion(cacheEstaciones, "destino");
+    if (s_dest.empty()) return;
+
+    std::string fecha, clase;
     std::cout << "  Fecha (AAAA-MM-DD)  : "; std::getline(std::cin, fecha);
     std::cout << "  Clase (T/B)         : "; std::getline(std::cin, clase);
     if (clase != "B" && clase != "b") clase = "T";
@@ -150,7 +248,7 @@ void Pasajero::menuBuscarTrayecto() {
             break;
         }
     }
-    menuHacerReserva(s_id_tr, orig_nombre, dest_nombre);
+    menuHacerReserva(s_id_tr, orig_nombre, dest_nombre, fecha, clase);
 }
 
 /* ══════════════════════════════════════════════
@@ -158,16 +256,16 @@ void Pasajero::menuBuscarTrayecto() {
    ══════════════════════════════════════════════ */
 
 void Pasajero::menuHacerReserva(const std::string& id_tr,
-                                 const std::string& id_origen,
-                                 const std::string& id_destino) {
-    (void)id_origen; (void)id_destino;
+                                 const std::string& orig_nombre,
+                                 const std::string& dest_nombre,
+                                 const std::string& fecha,
+                                 const std::string& clase) {
+    /* B-20: fecha y clase ya fueron preguntadas en menuBuscarTrayecto, no se vuelven a pedir */
 
-    std::string fecha, clase, s_vagon, s_asiento, tipo_eq, peso_eq;
+    std::string s_vagon, s_asiento, tipo_eq, peso_eq;
 
-    std::cout << "\n  -- Nueva reserva (trayecto " << id_tr << ") --\n";
-    std::cout << "  Fecha de viaje (AAAA-MM-DD) : "; std::getline(std::cin, fecha);
-    std::cout << "  Clase (T=Turista / B=Business): "; std::getline(std::cin, clase);
-    if (clase != "B" && clase != "b") clase = "T"; else clase = "B";
+    std::cout << "\n  -- Nueva reserva: " << orig_nombre << " → " << dest_nombre
+              << " (" << fecha << ", clase " << clase << ") --\n";
     std::cout << "  Número de vagón             : "; std::getline(std::cin, s_vagon);
     std::cout << "  Número de asiento           : "; std::getline(std::cin, s_asiento);
     std::cout << "  Equipaje (MANO/BODEGA/BICI/ESQUI, Enter=ninguno): ";
@@ -176,7 +274,8 @@ void Pasajero::menuHacerReserva(const std::string& id_tr,
         std::cout << "  Peso equipaje (kg)          : "; std::getline(std::cin, peso_eq);
     }
 
-    std::string cmd = "HACER_RESERVA|" + std::to_string(id_u) + "|" + id_tr + "|" +
+    /* B-13: el servidor obtiene id_u de la sesión, no lo enviamos desde el cliente */
+    std::string cmd = "HACER_RESERVA|" + id_tr + "|" +
                       fecha + "|" + clase + "|" + s_vagon + "|" + s_asiento;
     if (!tipo_eq.empty()) cmd += "|" + tipo_eq + "|" + (peso_eq.empty() ? "0" : peso_eq);
     else                  cmd += "|MANO|0";
@@ -231,7 +330,7 @@ void Pasajero::mostrarReservas(const std::vector<std::string>& lista) {
 }
 
 void Pasajero::menuMisReservas() {
-    conn.enviar("MIS_RESERVAS|" + std::to_string(id_u));
+    conn.enviar("MIS_RESERVAS");   /* B-15: el servidor usa id_u de la sesion */
     std::vector<std::string> reservas = conn.recibirLista();
     mostrarReservas(reservas);
 
@@ -242,7 +341,7 @@ void Pasajero::menuMisReservas() {
     std::getline(std::cin, opcion);
     if (opcion == "0" || opcion.empty()) return;
 
-    conn.enviar("CANCELAR_RESERVA|" + opcion + "|" + std::to_string(id_u));
+    conn.enviar("CANCELAR_RESERVA|" + opcion);   /* B-13: sin id_u */
     std::string resp = conn.recibir();
     if (campo(resp, 0) == "OK") {
         std::cout << "  Reserva cancelada correctamente.\n";
@@ -256,7 +355,7 @@ void Pasajero::menuMisReservas() {
    ══════════════════════════════════════════════ */
 
 void Pasajero::menuPuntos() {
-    conn.enviar("MIS_PUNTOS|" + std::to_string(id_u));
+    conn.enviar("MIS_PUNTOS");   /* B-15: sin id_u */
     std::string resp = conn.recibir();
     int puntos = std::stoi(campo(resp, 1).empty() ? "0" : campo(resp, 1));
 
@@ -270,7 +369,7 @@ void Pasajero::menuPuntos() {
     std::string s_cant;
     std::getline(std::cin, s_cant);
 
-    conn.enviar("CANJEAR_PUNTOS|" + std::to_string(id_u) + "|" + s_cant);
+    conn.enviar("CANJEAR_PUNTOS|" + s_cant);   /* B-14: sin id_u */
     resp = conn.recibir();
     if (campo(resp, 0) == "OK") {
         std::cout << "  Canje realizado. Puntos restantes: " << campo(resp, 1) << "\n";
@@ -278,5 +377,3 @@ void Pasajero::menuPuntos() {
         std::cout << "  Error: " << campo(resp, 1) << "\n";
     }
 }
-
-
