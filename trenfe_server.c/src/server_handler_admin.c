@@ -536,7 +536,6 @@ void hadmin_resolver_incidencia(sock_t fd, char *param, const char *email_admin)
 
 void hadmin_informe_ocupacion(sock_t fd, char *param) {
     /* param: "id_t" */
-<<<<<<< HEAD
     if (!param || param[0] == '\0') {
         enviar_mensaje(fd, "ERROR|400|Formato: INFORME_OCUPACION|id_t");
         return;
@@ -571,27 +570,6 @@ void hadmin_informe_ocupacion(sock_t fd, char *param) {
             ctxt(s,1), ctxt(s,2),
             sqlite3_column_int(s,3),
             sqlite3_column_double(s,4));
-=======
-    if (!param) { enviar_mensaje(fd,"ERROR|400|Falta id_t"); return; }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
-    sqlite3_stmt *s;
-    /* Cuenta reservas ACTIVAS por trayecto del tren dado */
-    sqlite3_prepare_v2(db,
-        "SELECT t.id_tr, eo.nombre, ed.nombre, COUNT(r.id_res) AS reservas"
-        " FROM TRAYECTOS t"
-        " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
-        " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
-        " LEFT JOIN RESERVAS r ON r.id_tr = t.id_tr AND r.estado='ACTIVA'"
-        " WHERE t.id_t = ?"
-        " GROUP BY t.id_tr ORDER BY t.id_tr;",
-        -1, &s, NULL);
-    sqlite3_bind_int(s, 1, atoi(param));
-    int n = 0;
-    while (sqlite3_step(s) == SQLITE_ROW) {
-        enviar_fmt(fd, "OCUPACION|%d|%s|%s|%d",
-            sqlite3_column_int(s,0), ctxt(s,1), ctxt(s,2),
-            sqlite3_column_int(s,3));
->>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
         n++;
     }
     sqlite3_finalize(s); sqlite3_close(db);

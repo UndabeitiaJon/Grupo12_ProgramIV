@@ -170,40 +170,24 @@ bool Conexion::enviar(const std::string& msg) {
    ══════════════════════════════════════════════ */
 
 std::string Conexion::recibir() {
-    if (!conectado) {
-        printf("[RECIBIR] conectado=false al entrar. Retornando vacio.\n");
-        fflush(stdout);
-        return "";
-    }
+    if (!conectado) return "";
 
     std::string resultado;
     char c;
-
     while (resultado.size() < PROTO_BUF_MAX - 1) {
 #ifdef _WIN32
         int ret = recv(fd, &c, 1, 0);
-        if (ret == 0) {
-            printf("[RECIBIR] recv=0: el servidor cerro la conexion.\n");
-            fflush(stdout);
-            conectado = false; break;
-        }
-        if (ret == SOCKET_ERROR) {
-            printf("[RECIBIR] recv=SOCKET_ERROR: codigo=%d\n", WSAGetLastError());
-            fflush(stdout);
-            conectado = false; break;
-        }
+        if (ret == 0)            { conectado = false; break; }
+        if (ret == SOCKET_ERROR) { conectado = false; break; }
 #else
         int ret = (int)recv(fd, &c, 1, 0);
-        if (ret == 0)  { printf("[RECIBIR] recv=0\n"); fflush(stdout); conectado = false; break; }
-        if (ret < 0)   { printf("[RECIBIR] recv<0\n"); fflush(stdout); conectado = false; break; }
+        if (ret == 0) { conectado = false; break; }
+        if (ret < 0)  { conectado = false; break; }
 #endif
         if (c == '\n') break;
         if (c == '\r') continue;
         resultado += c;
     }
-
-    printf("[RECIBIR] resultado='%s'\n", resultado.c_str());
-    fflush(stdout);
     return resultado;
 }
 /* ══════════════════════════════════════════════
