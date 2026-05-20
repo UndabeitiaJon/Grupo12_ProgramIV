@@ -26,6 +26,15 @@
  * y devuelve el objeto de usuario correcto según el rol.
  */
 
+/*
+ * client_auth.cpp  -  Sistema TRENFE  -  Fase 2
+ *
+ * Implementa login() y registrar():
+ *   - login()     pide credenciales, las envía y devuelve el objeto de usuario.
+ *   - registrar() recoge y valida campo a campo los datos del nuevo cliente
+ *                 y los envía al servidor para crear la cuenta.
+ */
+
 #include <iostream>
 #include <string>
 #include <limits>
@@ -36,7 +45,12 @@
 
 extern "C" {
 #include "hash.h"
+#include "validacion.h"
 }
+
+/* ──────────────────────────────────────────
+   Utilidades internas
+   ────────────────────────────────────────── */
 
 static std::string obtenerCampo(const std::string& linea, int pos) {
     int i = 0;
@@ -59,8 +73,26 @@ static std::string pedirCadena(const std::string& prompt) {
 }
 
 /*
- * login()
+ * pedirCampoValido()
  *
+ * Muestra `prompt`, lee una cadena y la pasa a `validador`.
+ * Si no es válida vuelve a pedirla (indefinidamente hasta que lo sea).
+ * Devuelve el valor validado.
+ */
+static std::string pedirCampoValido(const std::string& prompt,
+                                    int (*validador)(const char*)) {
+    std::string valor;
+    do {
+        valor = pedirCadena(prompt);
+    } while (!validador(valor.c_str()));
+    return valor;
+}
+
+/* ──────────────────────────────────────────
+   login()
+   ────────────────────────────────────────── */
+
+/*
  * Devuelve puntero al objeto de usuario correcto, o nullptr si falla.
  * El llamador debe hacer delete sobre el puntero.
  */
@@ -117,59 +149,78 @@ UsuarioBase* login(Conexion& conn) {
 
     std::cout << "  [ERROR] Rol desconocido: " << rol << "\n";
     return nullptr;
-
 }
+
+/* ──────────────────────────────────────────
+   registrar()
+   ────────────────────────────────────────── */
+
+/*
+ * Recoge los datos del nuevo pasajero, valida cada campo antes de continuar
+ * y envía la solicitud de registro al servidor.
+ *
+ * Devuelve true si el servidor confirma el alta, false en caso contrario.
+ */
 bool registrar(Conexion& conn) {
     std::cout << "\n  ─────────────────────────────────────\n";
     std::cout << "        REGISTRO DE NUEVO USUARIO\n";
     std::cout << "  ─────────────────────────────────────\n";
 
-    std::string nombre    = pedirCadena("  Nombre           : ");
-    std::string apellido  = pedirCadena("  Apellido(s)       : ");
-    std::string dni       = pedirCadena("  DNI/NIE           : ");
-    std::string email     = pedirCadena("  Email             : ");
-    std::string telf      = pedirCadena("  Teléfono          : ");
-    std::string fecha_nac = pedirCadena("  Fecha nac (AAAA-MM-DD): ");
+    /* ── Nombre ── */
+    std::string nombre = pedirCampoValido(
+        "  Nombre            : ", validar_nombre);
 
-    /* Pedir contraseña con confirmación */
+    /* ── Apellido(s) ── */
+    std::string apellido = pedirCampoValido(
+        "  Apellido(s)        : ", validar_nombre);
+
+    /* ── DNI/NIE ── */
+    std::string dni = pedirCampoValido(
+        "  DNI/NIE (ej: 12345678A): ", validar_dni);
+
+    /* ── Email ── */
+    std::string email = pedirCampoValido(
+        "  Email              : ", validar_email);
+
+    /* ── Teléfono ── */
+    std::string telf = pedirCampoValido(
+        "  Teléfono (9 dígitos): ", validar_telefono);
+
+    /* ── Fecha de nacimiento ── */
+    std::string fecha_nac = pedirCampoValido(
+        "  Fecha nac (AAAA-MM-DD): ", validar_fecha);
+
+    /* ── Contraseña con confirmación ── */
     std::string pass1, pass2;
     int intentos = 0;
+
     do {
         if (intentos > 0)
             std::cout << "  Las contraseñas no coinciden. Inténtalo de nuevo.\n";
-        pass1 = pedirCadena("  Contraseña        : ");
-        pass2 = pedirCadena("  Confirmar contraseña: ");
+
+        /* Pedir contraseña hasta que cumpla la longitud mínima */
+        do {
+            pass1 = pedirCadena("  Contraseña (mín. 6 caracteres): ");
+        } while (!validar_contrasenia(pass1.c_str()));
+
+        pass2 = pedirCadena("  Confirmar contraseña           : ");
         intentos++;
+
     } while (pass1 != pass2 && intentos < 3);
 
     if (pass1 != pass2) {
         std::cout << "  [ERROR] Las contraseñas no coinciden tras 3 intentos.\n";
         return false;
     }
-    if (pass1.size() < 6) {
-        std::cout << "  [ERROR] La contraseña debe tener al menos 6 caracteres.\n";
-        return false;
-    }
 
-    /* Validación local básica */
-    if (nombre.empty() || apellido.empty() || dni.empty() ||
-        email.empty() || telf.empty() || fecha_nac.empty()) {
-        std::cout << "  [ERROR] Todos los campos son obligatorios.\n";
-        return false;
-    }
-    if (email.find('@') == std::string::npos) {
-        std::cout << "  [ERROR] El email no tiene formato válido.\n";
-        return false;
-    }
-
-    /* Hashear contraseña antes de enviar */
+    /* ── Hashear contraseña antes de enviar ── */
     char hash[65];
     sha256_hex(pass1.c_str(), hash);
 
-    /* Enviar al servidor */
-    std::string cmd = "REGISTRO|" + nombre   + "|" + apellido  + "|" +
-                                    dni       + "|" + email     + "|" +
-                                    telf      + "|" + fecha_nac + "|" +
+    /* ── Enviar al servidor ── */
+    std::string cmd = "REGISTRO|" + nombre    + "|" + apellido  + "|" +
+                                    dni        + "|" + email     + "|" +
+                                    telf       + "|" + fecha_nac + "|" +
                                     std::string(hash);
 
     if (!conn.enviar(cmd)) {

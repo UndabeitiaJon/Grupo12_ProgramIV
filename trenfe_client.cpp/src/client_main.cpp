@@ -6,6 +6,14 @@
  */
 
 /*
+/*
+ * client_main.cpp
+ *
+ *  Created on: 8 may 2026
+ *      Author: Grupo12
+ */
+
+/*
  * client_main.cpp  -  Sistema TRENFE  -  Fase 2
  *
  * Para activar el test del Bloque 1, cambia:
@@ -25,8 +33,9 @@
 #define MODO_TEST 0
 
 
-/* login() está implementada en client_auth.cpp */
+/* login() y registrar() están implementadas en client_auth.cpp */
 UsuarioBase* login(Conexion& conn);
+bool registrar(Conexion& conn);
 
 extern "C" {
 #include "hash.h"
@@ -140,20 +149,55 @@ int main() {
     std::cout << "  Conexion establecida.\n\n";
 
     UsuarioBase* usuario = nullptr;
-    int intentos = 0;
+    int intentosFallidos = 0;
 
-    while (usuario == nullptr && intentos < 3) {
-        if (intentos > 0)
-            std::cout << "\n  Intento " << (intentos+1) << " de 3\n";
-        std::cout << "  --- INICIO DE SESION ---\n";
+    while (usuario == nullptr) {
+        /* ── Menú de acceso ── */
+        std::cout << "  ----------------------------------------\n";
+        std::cout << "   1. Iniciar sesión\n";
+        std::cout << "   2. Registrarse\n";
+        std::cout << "   0. Salir\n";
+        std::cout << "  ----------------------------------------\n";
+        std::cout << "  Opción: ";
+
+        std::string opStr;
+        std::getline(std::cin, opStr);
+        int opcion = -1;
+        if (!opStr.empty() && opStr[0] >= '0' && opStr[0] <= '9')
+            opcion = opStr[0] - '0';
+
+        if (opcion == 0) {
+            std::cout << "\n  Hasta luego.\n\n";
+            conn.desconectar();
+            return 0;
+        }
+
+        if (opcion == 2) {
+            /* Registro: si tiene éxito el usuario puede hacer login a continuación */
+            registrar(conn);
+            continue;
+        }
+
+        if (opcion != 1) {
+            std::cout << "  [ERROR] Opción no válida.\n\n";
+            continue;
+        }
+
+        /* ── Login ── */
+        if (intentosFallidos > 0)
+            std::cout << "\n  Intento " << (intentosFallidos + 1) << " de 3\n";
+
+        std::cout << "  --- INICIO DE SESIÓN ---\n";
         usuario = login(conn);
-        intentos++;
-    }
 
-    if (usuario == nullptr) {
-        std::cout << "\n  Demasiados intentos fallidos. Cerrando.\n";
-        conn.desconectar();
-        return 1;
+        if (usuario == nullptr) {
+            intentosFallidos++;
+            if (intentosFallidos >= 3) {
+                std::cout << "\n  Demasiados intentos fallidos. Cerrando.\n";
+                conn.desconectar();
+                return 1;
+            }
+        }
     }
 
     usuario->mostrarMenuPrincipal();
