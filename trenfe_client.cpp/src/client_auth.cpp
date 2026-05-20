@@ -5,35 +5,8 @@
  *      Author: Grupo12
  */
 
-/*
- * client_auth.cpp  -  Sistema TRENFE  -  Fase 2
- *
- * Implementa la función login() que:
- *   1. Pide email y contraseña al usuario
- *   2. Calcula el hash SHA-256 de la contraseña
- *   3. Envía LOGIN|email|hash al servidor
- *   4. Recibe AUTH_OK|id_u|rol|nombre  o  AUTH_FAIL|motivo
- *   5. Crea y devuelve el objeto de usuario correcto (Pasajero, etc.)
- *
- * Por ahora solo existe la clase Pasajero.
- * Maquinista y Administrador se añadirán en fases posteriores.
- */
 
-/*
- * client_auth.cpp  -  Sistema TRENFE  -  Fase 2
- *
- * Función login(): pide credenciales, las envía al servidor
- * y devuelve el objeto de usuario correcto según el rol.
- */
 
-/*
- * client_auth.cpp  -  Sistema TRENFE  -  Fase 2
- *
- * Implementa login() y registrar():
- *   - login()     pide credenciales, las envía y devuelve el objeto de usuario.
- *   - registrar() recoge y valida campo a campo los datos del nuevo cliente
- *                 y los envía al servidor para crear la cuenta.
- */
 
 #include <iostream>
 #include <string>
@@ -72,13 +45,7 @@ static std::string pedirCadena(const std::string& prompt) {
     return v;
 }
 
-/*
- * pedirCampoValido()
- *
- * Muestra `prompt`, lee una cadena y la pasa a `validador`.
- * Si no es válida vuelve a pedirla (indefinidamente hasta que lo sea).
- * Devuelve el valor validado.
- */
+
 static std::string pedirCampoValido(const std::string& prompt,
                                     int (*validador)(const char*)) {
     std::string valor;
@@ -92,10 +59,7 @@ static std::string pedirCampoValido(const std::string& prompt,
    login()
    ────────────────────────────────────────── */
 
-/*
- * Devuelve puntero al objeto de usuario correcto, o nullptr si falla.
- * El llamador debe hacer delete sobre el puntero.
- */
+
 UsuarioBase* login(Conexion& conn) {
     std::string email = pedirCadena("  Email     : ");
     std::string pass  = pedirCadena("  Contraseña: ");
@@ -155,42 +119,37 @@ UsuarioBase* login(Conexion& conn) {
    registrar()
    ────────────────────────────────────────── */
 
-/*
- * Recoge los datos del nuevo pasajero, valida cada campo antes de continuar
- * y envía la solicitud de registro al servidor.
- *
- * Devuelve true si el servidor confirma el alta, false en caso contrario.
- */
+
 bool registrar(Conexion& conn) {
     std::cout << "\n  ─────────────────────────────────────\n";
     std::cout << "        REGISTRO DE NUEVO USUARIO\n";
     std::cout << "  ─────────────────────────────────────\n";
 
-    /* ── Nombre ── */
+    // Nombre
     std::string nombre = pedirCampoValido(
         "  Nombre            : ", validar_nombre);
 
-    /* ── Apellido(s) ── */
+    // Apellido(s)
     std::string apellido = pedirCampoValido(
         "  Apellido(s)        : ", validar_nombre);
 
-    /* ── DNI/NIE ── */
+    //DNI
     std::string dni = pedirCampoValido(
         "  DNI/NIE (ej: 12345678A): ", validar_dni);
 
-    /* ── Email ── */
+    //Email
     std::string email = pedirCampoValido(
         "  Email              : ", validar_email);
 
-    /* ── Teléfono ── */
+    //Teléfono
     std::string telf = pedirCampoValido(
         "  Teléfono (9 dígitos): ", validar_telefono);
 
-    /* ── Fecha de nacimiento ── */
+    // Fecha de nacimiento
     std::string fecha_nac = pedirCampoValido(
         "  Fecha nac (AAAA-MM-DD): ", validar_fecha);
 
-    /* ── Contraseña con confirmación ── */
+    //Contraseña con confirmación
     std::string pass1, pass2;
     int intentos = 0;
 
@@ -198,7 +157,7 @@ bool registrar(Conexion& conn) {
         if (intentos > 0)
             std::cout << "  Las contraseñas no coinciden. Inténtalo de nuevo.\n";
 
-        /* Pedir contraseña hasta que cumpla la longitud mínima */
+        // Pedir contraseña hasta que cumpla la longitud mínima
         do {
             pass1 = pedirCadena("  Contraseña (mín. 6 caracteres): ");
         } while (!validar_contrasenia(pass1.c_str()));
@@ -213,11 +172,11 @@ bool registrar(Conexion& conn) {
         return false;
     }
 
-    /* ── Hashear contraseña antes de enviar ── */
+    //Hashear contraseña antes de enviar
     char hash[65];
     sha256_hex(pass1.c_str(), hash);
 
-    /* ── Enviar al servidor ── */
+    //Enviar al servidor
     std::string cmd = "REGISTRO|" + nombre    + "|" + apellido  + "|" +
                                     dni        + "|" + email     + "|" +
                                     telf       + "|" + fecha_nac + "|" +
@@ -236,7 +195,7 @@ bool registrar(Conexion& conn) {
         std::cout << "  Ya puedes iniciar sesión con tu email y contraseña.\n\n";
         return true;
     } else {
-        /* ERROR|409|Email o DNI ya registrado */
+        // ERROR|409|Email o DNI ya registrado
         std::cout << "\n  [ERROR] " << obtenerCampo(resp, 2) << "\n\n";
         return false;
     }

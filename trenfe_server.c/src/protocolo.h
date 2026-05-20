@@ -5,16 +5,7 @@
  *      Author: e.aranoa
  */
 
-/*
- * protocolo.h  -  Sistema TRENFE  -  Fase 2
- *
- * Contrato de comunicaciones cliente <-> servidor.
- * Este fichero se incluye TANTO en el servidor (C) como en el cliente (C++).
- *
- * Formato de mensaje:  COMANDO|param1|param2|...\n
- * Cada mensaje es una linea de texto terminada en '\n'.
- * El separador de campos dentro de un mensaje es '|'.
- */
+
 
 
 

@@ -13,7 +13,7 @@
 
 class Maquinista : public UsuarioBase {
 private:
-    /* Caché del cuadrante — se pide una sola vez por sesión */
+    // Caché del cuadrante — se pide una sola vez por sesión
     std::vector<std::string> cacheCuadrante;
     bool cuadranteCargado = false;
 
