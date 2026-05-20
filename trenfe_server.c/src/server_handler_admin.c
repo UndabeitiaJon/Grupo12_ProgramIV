@@ -40,6 +40,9 @@ static sqlite3 *abrir_db_admin(sock_t fd) {
         enviar_mensaje(fd, "ERROR|500|Base de datos no disponible");
         return NULL;
     }
+    sqlite3_busy_timeout(db, 3000);
+    sqlite3_exec(db, "PRAGMA foreign_keys = ON;",  0, 0, NULL);
+    sqlite3_exec(db, "PRAGMA journal_mode = WAL;", 0, 0, NULL);
     return db;
 }
 
@@ -376,7 +379,7 @@ void hadmin_listar_servicios(sock_t fd, char *param) {
         " JOIN TRAYECTOS t  ON so.id_tr = t.id_tr"
         " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
         " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
-        " WHERE so.fecha = ? ORDER BY t.hora_salida;";
+        " WHERE so.fecha = ? ORDER BY so.id_serv;";
     const char *sql_sin =
         "SELECT so.id_serv, so.fecha, t.id_t, eo.nombre, ed.nombre,"
         "       t.hora_salida, t.hora_llegada, so.estado_serv, so.minutos_retraso"
@@ -384,7 +387,7 @@ void hadmin_listar_servicios(sock_t fd, char *param) {
         " JOIN TRAYECTOS t  ON so.id_tr = t.id_tr"
         " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
         " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
-        " ORDER BY so.fecha, t.hora_salida;";
+        " ORDER BY so.id_serv;";
 
     if (param && param[0] != '\0') {
         sqlite3_prepare_v2(db, sql_con, -1, &s, NULL);
@@ -443,6 +446,63 @@ void hadmin_cancelar_servicio(sock_t fd, char *param) {
     sqlite3_finalize(s); sqlite3_close(db);
 }
 
+/*
+ * hadmin_asignar_empleado()
+ *
+ * param: "id_serv|id_u|rol_servicio"
+ * Inserta en ASIGNACION_PERSONAL. Obtiene id_t del tren del servicio.
+ * Responde: OK|id_asig  o  ERROR|...
+ */
+void hadmin_asignar_empleado(sock_t fd, char *param) {
+    char *s_id_serv = strtok(param, "|");
+    char *s_id_u    = strtok(NULL,  "|");
+    char *rol       = strtok(NULL,  "|");
+
+    if (!s_id_serv || !s_id_u || !rol) {
+        enviar_mensaje(fd, "ERROR|400|Formato: ASIGNAR_EMPLEADO|id_serv|id_u|rol");
+        return;
+    }
+    int id_serv = atoi(s_id_serv);
+    int id_u    = atoi(s_id_u);
+
+    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+
+    /* Obtener id_t del tren asociado al servicio */
+    sqlite3_stmt *st;
+    int id_t = 0;
+    sqlite3_prepare_v2(db,
+        "SELECT t.id_t FROM SERVICIOS_OPERATIVOS so"
+        " JOIN TRAYECTOS t ON so.id_tr = t.id_tr"
+        " WHERE so.id_serv = ?;",
+        -1, &st, NULL);
+    sqlite3_bind_int(st, 1, id_serv);
+    if (sqlite3_step(st) == SQLITE_ROW) id_t = sqlite3_column_int(st, 0);
+    sqlite3_finalize(st);
+
+    if (id_t == 0) {
+        enviar_mensaje(fd, "ERROR|404|Servicio no encontrado");
+        sqlite3_close(db); return;
+    }
+
+    /* Insertar asignación */
+    sqlite3_stmt *si;
+    sqlite3_prepare_v2(db,
+        "INSERT INTO ASIGNACION_PERSONAL(id_serv,id_u,id_t,rol_servicio)"
+        " VALUES(?,?,?,?);",
+        -1, &si, NULL);
+    sqlite3_bind_int (si, 1, id_serv);
+    sqlite3_bind_int (si, 2, id_u);
+    sqlite3_bind_int (si, 3, id_t);
+    sqlite3_bind_text(si, 4, rol, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(si) == SQLITE_DONE)
+        enviar_fmt(fd, "OK|%d", (int)sqlite3_last_insert_rowid(db));
+    else
+        enviar_mensaje(fd, "ERROR|500|No se pudo asignar el empleado");
+    sqlite3_finalize(si);
+    sqlite3_close(db);
+}
+
 /* ══════════════════════════════════════════════
    INCIDENCIAS
    ══════════════════════════════════════════════ */
@@ -455,13 +515,13 @@ void hadmin_listar_incidencias(sock_t fd, char *param) {
 
     if (filtrar) {
         sqlite3_prepare_v2(db,
-            "SELECT id_inc, id_serv, tipo_incidencia, prioridad, estado, descripcion"
+            "SELECT id_inc, id_serv, tipo, prioridad, estado, descripcion"
             " FROM INCIDENCIAS WHERE estado=? ORDER BY prioridad DESC, id_inc;",
             -1, &s, NULL);
         sqlite3_bind_text(s, 1, param, -1, SQLITE_STATIC);
     } else {
         sqlite3_prepare_v2(db,
-            "SELECT id_inc, id_serv, tipo_incidencia, prioridad, estado, descripcion"
+            "SELECT id_inc, id_serv, tipo, prioridad, estado, descripcion"
             " FROM INCIDENCIAS ORDER BY prioridad DESC, id_inc;",
             -1, &s, NULL);
     }
@@ -491,8 +551,8 @@ void hadmin_insertar_incidencia(sock_t fd, char *param) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "INSERT INTO INCIDENCIAS(id_serv,tipo_incidencia,descripcion,prioridad,estado)"
-        " VALUES(?,?,?,?,'ABIERTA');", -1, &s, NULL);
+        "INSERT INTO INCIDENCIAS(id_serv,tipo,descripcion,prioridad,estado,fecha_reporte)"
+        " VALUES(?,?,?,?,'ABIERTA',date('now'));", -1, &s, NULL);
     sqlite3_bind_int (s,1,atoi(s_id_serv));
     sqlite3_bind_text(s,2,tipo,-1,SQLITE_STATIC);
     sqlite3_bind_text(s,3,desc,-1,SQLITE_STATIC);
@@ -501,7 +561,8 @@ void hadmin_insertar_incidencia(sock_t fd, char *param) {
     if (sqlite3_step(s) == SQLITE_DONE)
         enviar_fmt(fd, "OK|%d", (int)sqlite3_last_insert_rowid(db));
     else
-        enviar_mensaje(fd, "ERROR|500|No se pudo insertar la incidencia");
+        enviar_fmt(fd, "ERROR|500|No se pudo insertar la incidencia: %s",
+                   sqlite3_errmsg(db));
     sqlite3_finalize(s); sqlite3_close(db);
 }
 
@@ -579,19 +640,49 @@ void hadmin_informe_ocupacion(sock_t fd, char *param) {
 void hadmin_informe_ingresos(sock_t fd, char *param) {
     /* param: "id_tr" */
     if (!param) { enviar_mensaje(fd,"ERROR|400|Falta id_tr"); return; }
+    int id_tr = atoi(param);
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+
+    /* Datos del trayecto */
+    sqlite3_stmt *st;
+    sqlite3_prepare_v2(db,
+        "SELECT eo.nombre, ed.nombre, t.hora_salida, t.hora_llegada, t.precio_base"
+        " FROM TRAYECTOS t"
+        " JOIN ESTACIONES eo ON t.id_est_origen  = eo.id_est"
+        " JOIN ESTACIONES ed ON t.id_est_destino = ed.id_est"
+        " WHERE t.id_tr = ?;", -1, &st, NULL);
+    sqlite3_bind_int(st, 1, id_tr);
+    char origen[128]="?", destino[128]="?", h_sal[16]="?", h_ll[16]="?";
+    double precio_base = 0.0;
+    if (sqlite3_step(st) == SQLITE_ROW) {
+        snprintf(origen,  sizeof(origen),  "%s", ctxt(st,0));
+        snprintf(destino, sizeof(destino), "%s", ctxt(st,1));
+        snprintf(h_sal,   sizeof(h_sal),   "%s", ctxt(st,2));
+        snprintf(h_ll,    sizeof(h_ll),    "%s", ctxt(st,3));
+        precio_base = sqlite3_column_double(st,4);
+    }
+    sqlite3_finalize(st);
+
+    /* Ingresos reales: reservas CONFIRMADAS (estado real en BD) */
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "SELECT COUNT(id_res), SUM(precio_final)"
-        " FROM RESERVAS WHERE id_tr=? AND estado='ACTIVA';",
+        "SELECT COUNT(id_res), COALESCE(SUM(precio_final),0.0)"
+        " FROM RESERVAS WHERE id_tr=? AND estado='CONFIRMADA';",
         -1, &s, NULL);
-    sqlite3_bind_int(s, 1, atoi(param));
-    if (sqlite3_step(s) == SQLITE_ROW)
-        enviar_fmt(fd, "INGRESOS|%d|%.2f",
-            sqlite3_column_int(s,0), sqlite3_column_double(s,1));
-    else
-        enviar_mensaje(fd, "INGRESOS|0|0.00");
-    sqlite3_finalize(s); sqlite3_close(db);
+    sqlite3_bind_int(s, 1, id_tr);
+    int    n_reservas = 0;
+    double ingresos   = 0.0;
+    if (sqlite3_step(s) == SQLITE_ROW) {
+        n_reservas = sqlite3_column_int(s, 0);
+        ingresos   = sqlite3_column_double(s, 1);
+    }
+    sqlite3_finalize(s);
+    sqlite3_close(db);
+
+    /* INGRESOS|id_tr|origen|destino|h_sal|h_ll|precio_base|n_reservas|total */
+    enviar_fmt(fd, "INGRESOS|%d|%s|%s|%s|%s|%.2f|%d|%.2f",
+               id_tr, origen, destino, h_sal, h_ll,
+               precio_base, n_reservas, ingresos);
 }
 
 void hadmin_informe_incidencias(sock_t fd, char *param) {
@@ -605,7 +696,7 @@ void hadmin_informe_incidencias(sock_t fd, char *param) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "SELECT i.id_inc, so.fecha, i.tipo_incidencia, i.prioridad, i.estado"
+        "SELECT i.id_inc, so.fecha, i.tipo, i.prioridad, i.estado"
         " FROM INCIDENCIAS i"
         " JOIN SERVICIOS_OPERATIVOS so ON i.id_serv = so.id_serv"
         " WHERE so.fecha BETWEEN ? AND ?"

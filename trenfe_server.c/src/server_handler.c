@@ -25,6 +25,11 @@
 #include "server_socket.h"
 #include "protocolo.h"
 #include "config.h"
+
+/* Comando añadido posterior al protocolo original */
+#ifndef CMD_ASIGNAR_EMPLEADO
+#define CMD_ASIGNAR_EMPLEADO "ASIGNAR_EMPLEADO"
+#endif
 #include "logs.h"
 #include "db_manager.h"
 #include "sqlite3.h"
@@ -392,24 +397,26 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
     char *s_asiento = strtok(NULL,  SEP);
     char *s_tipo_eq = strtok(NULL,  SEP);
     char *s_peso_eq = strtok(NULL,  SEP);
+    char *s_puntos  = strtok(NULL,  SEP);   /* campo opcional: puntos a canjear */
 
     if (!s_id_tr || !fecha || !clase || !s_vagon || !s_asiento) {
         enviar_mensaje(fd, "ERROR|400|Faltan parametros en HACER_RESERVA");
         return;
     }
 
-    int    id_u    = ses->id_u;          /* B-13: siempre de la sesion */
+    int    id_u    = ses->id_u;
     int    id_tr   = atoi(s_id_tr);
     int    vagon   = atoi(s_vagon);
     int    asiento = atoi(s_asiento);
+    int    puntos_canje = s_puntos ? atoi(s_puntos) : 0;
 
-    /* Validar que el asiento esté libre */
+    /* Validar asiento libre */
     if (!asiento_libre(id_tr, fecha, vagon, asiento)) {
         enviar_mensaje(fd, "ERROR|409|Asiento ya ocupado");
         return;
     }
 
-    /* Calcular suplemento de equipaje */
+    /* Suplemento equipaje */
     double sup_equipaje = 0.0;
     if (s_tipo_eq && s_peso_eq) {
         TipoEquipaje tipo_eq = EQUIPAJE_MANO;
@@ -419,55 +426,79 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
         sup_equipaje = calcular_suplemento_equipaje(tipo_eq, atof(s_peso_eq), clase);
     }
 
-    /* Obtener descuento del pasajero */
+    /* Descuento de tarjeta del pasajero */
     TipoDescuento desc = obtener_descuento_usuario(id_u);
 
-    /* Obtener precio base del trayecto (sin descuentos) para auditoría */
+    /* Precio base para auditoría */
     Trayecto tr_base = obtener_trayecto_por_id(id_tr);
     double precio_base_trayecto = (tr_base.id_tr > 0) ? tr_base.precio_base : 0.0;
 
-    /* Calcular precio final con descuentos y suplementos */
+    /* Precio tras descuento de tarjeta + equipaje */
     double precio_final = calcular_precio_final(id_tr, clase, desc, sup_equipaje);
+
+    /* ── Aplicar canje de puntos (100 puntos = 1 EUR) ── */
+    if (puntos_canje > 0) {
+        int puntos_actuales = obtener_puntos_fidelidad(id_u);
+        if (puntos_canje > puntos_actuales)
+            puntos_canje = puntos_actuales;   /* no gastar más de los que tiene */
+
+        double descuento_pts = puntos_canje / 100.0;
+        if (descuento_pts > precio_final)
+            descuento_pts = precio_final;     /* el precio nunca baja de 0 */
+
+        precio_final -= descuento_pts;
+
+        /* Restar puntos ya aquí para que el log los refleje */
+        actualizar_puntos_fidelidad(id_u, -puntos_canje);
+    }
 
     /* Rellenar struct Reserva */
     Reserva r;
     memset(&r, 0, sizeof(r));
-    r.id_u        = id_u;
-    r.id_tr       = id_tr;
-    r.num_vagon   = vagon;
-    r.num_asiento = asiento;
-    r.precio_base  = precio_base_trayecto;   /* precio sin descuentos ni suplementos */
-    r.precio_final = precio_final;           /* precio final aplicando descuento y equipaje */
+    r.id_u         = id_u;
+    r.id_tr        = id_tr;
+    r.num_vagon    = vagon;
+    r.num_asiento  = asiento;
+    r.precio_base  = precio_base_trayecto;
+    r.precio_final = precio_final;
     strncpy(r.clase,       clase, sizeof(r.clase) - 1);
     strncpy(r.fecha_viaje, fecha, sizeof(r.fecha_viaje) - 1);
     generar_codigo_validacion(r.codigo_validacion, sizeof(r.codigo_validacion));
 
     int id_res = insertar_reserva_db(r);
     if (id_res <= 0) {
+        /* Si falló la inserción y ya restamos puntos, los devolvemos */
+        if (puntos_canje > 0) actualizar_puntos_fidelidad(id_u, puntos_canje);
         enviar_mensaje(fd, "ERROR|500|No se pudo crear la reserva");
         return;
     }
 
-    /* Insertar equipaje si lo hay */
+    /* Equipaje */
     if (s_tipo_eq && s_peso_eq && sup_equipaje > 0.0) {
         Equipaje eq;
         memset(&eq, 0, sizeof(eq));
-        eq.id_res     = id_res;
-        eq.peso_kg    = atof(s_peso_eq);
+        eq.id_res          = id_res;
+        eq.peso_kg         = atof(s_peso_eq);
         eq.suplemento_pago = sup_equipaje;
-        if (strcmp(s_tipo_eq, "BODEGA") == 0)      eq.tipo = EQUIPAJE_BODEGA;
-        else if (strcmp(s_tipo_eq, "BICI") == 0)   eq.tipo = EQUIPAJE_BICI;
-        else if (strcmp(s_tipo_eq, "ESQUI") == 0)  eq.tipo = EQUIPAJE_ESQUI;
-        else                                         eq.tipo = EQUIPAJE_MANO;
+        if (strcmp(s_tipo_eq, "BODEGA") == 0)    eq.tipo = EQUIPAJE_BODEGA;
+        else if (strcmp(s_tipo_eq, "BICI") == 0) eq.tipo = EQUIPAJE_BICI;
+        else if (strcmp(s_tipo_eq, "ESQUI") == 0)eq.tipo = EQUIPAJE_ESQUI;
+        else                                      eq.tipo = EQUIPAJE_MANO;
         insertar_equipaje_db(eq);
     }
 
-    enviar_fmt(fd, "OK|%d|%.2f|%s", id_res, precio_final, r.codigo_validacion);
+    /* Puntos restantes tras la reserva (insertar_reserva_db suma los nuevos) */
+    int puntos_restantes = obtener_puntos_fidelidad(id_u);
+
+    /* OK|id_res|precio_final|codigo_validacion|puntos_restantes */
+    enviar_fmt(fd, "OK|%d|%.2f|%s|%d",
+               id_res, precio_final, r.codigo_validacion, puntos_restantes);
 
     /* Log */
-    char msg[128];
-    snprintf(msg, sizeof(msg), "Reserva creada id_res=%d trayecto=%d fecha=%s",
-             id_res, id_tr, fecha);
+    char msg[160];
+    snprintf(msg, sizeof(msg),
+             "Reserva creada id_res=%d trayecto=%d fecha=%s puntos_canjeados=%d",
+             id_res, id_tr, fecha, puntos_canje);
     log_evento(cfg.log_path, ses->email, "RESERVA", msg);
 }
 
@@ -1175,6 +1206,8 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
         else if (strcmp(cmd, CMD_DETALLE_TRAYECTO)  == 0) handle_detalle_trayecto(fd, param);
         else if (strcmp(cmd, CMD_LISTAR_ESTACIONES) == 0) handle_listar_estaciones(fd);
         else if (strcmp(cmd, CMD_LISTAR_CIUDADES)   == 0) handle_listar_ciudades(fd);      /* B-07 */
+        else if (strcmp(cmd, CMD_LISTAR_VAGONES)    == 0) handle_listar_vagones(fd, param);
+        else if (strcmp(cmd, CMD_MAPA_VAGON)        == 0) handle_mapa_vagon(fd, param);
         else if (strcmp(cmd, CMD_HACER_RESERVA)     == 0) handle_hacer_reserva(fd, param, &ses);
         else if (strcmp(cmd, CMD_CANCELAR_RESERVA)  == 0) handle_cancelar_reserva(fd, param, &ses);
         else if (strcmp(cmd, CMD_MIS_RESERVAS)      == 0) handle_mis_reservas(fd, &ses);
@@ -1216,6 +1249,7 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
             else if (strcmp(cmd, CMD_LISTAR_SERVICIOS)    == 0) hadmin_listar_servicios(fd, param);
             else if (strcmp(cmd, CMD_INSERTAR_SERVICIO)   == 0) hadmin_insertar_servicio(fd, param);
             else if (strcmp(cmd, CMD_CANCELAR_SERVICIO)   == 0) hadmin_cancelar_servicio(fd, param);
+            else if (strcmp(cmd, CMD_ASIGNAR_EMPLEADO)    == 0) hadmin_asignar_empleado(fd, param);
             else if (strcmp(cmd, CMD_LISTAR_INCIDENCIAS)  == 0) hadmin_listar_incidencias(fd, param);
             else if (strcmp(cmd, CMD_INSERTAR_INCIDENCIA) == 0) hadmin_insertar_incidencia(fd, param);
             else if (strcmp(cmd, CMD_RESOLVER_INCIDENCIA) == 0) hadmin_resolver_incidencia(fd, param, ses.email);

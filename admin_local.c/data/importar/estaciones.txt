@@ -12,23 +12,23 @@ stop_id,nombre,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club
 18000,Madrid - Atocha Cercanías,Madrid,Madrid,40.4066191,-3.6894391,0,0
 35001,Leganés,Leganés,Madrid,40.328643,-3.7713161,0,0
 30002,Plasencia,Cáceres,Cáceres,40.022282,-6.099397,0,0
-56312,Almeria,Almería,Almeria,36.834951,-2.455519,0,0
-56310,Huercal-Viator,Almería,Almeria,36.885155,-2.436718,0,0
+56312,Almería,Almería,Almería,36.834951,-2.455519,0,0
+56310,Huercal-Viator,Almería,Almería,36.885155,-2.436718,0,0
 56200,Guadix,Granada,Granada,37.316873,-3.127209,0,0
 56100,Moreda,Granada,Granada,37.431216,-3.310516,0,0
-56009,Cabra del Santo Cristo Y Alicun,Cabra del Santo Cristo Y Alicun,Jaen,37.6567129,-3.262623,0,0
-56004,Jodar-Ubeda,Jodar-Ubeda,Jaen,37.913343,-3.34892,0,0
-50300,Linares-Baeza,Linares-Baeza,Jaen,38.068864,-3.589396,0,0
-50207,Vilches,Jaén,Jaen,38.215742,-3.517576,0,0
+56009,Cabra del Santo Cristo Y Alicun,Cabra del Santo Cristo Y Alicun,Jaén,37.6567129,-3.262623,0,0
+56004,Jodar-Ubeda,Jodar-Ubeda,Jaén,37.913343,-3.34892,0,0
+50300,Linares-Baeza,Linares-Baeza,Jaén,38.068864,-3.589396,0,0
+50207,Vilches,Jaén,Jaén,38.215742,-3.517576,0,0
 60400,Alcazar de San Juan,Alcázar de San Juan,Ciudad Real,39.395628,-3.205744,0,0
 11200,Miranda De Ebro,Miranda de Ebro,Burgos,42.691024,-2.940366,0,0
 13200,Bilbao-Abando Indalecio Prieto,Bilbao,Bizkaia,43.2601304,-2.9285592,0,0
-13106,Llodio,LLodio,Alava,43.1423514,-2.9606511,0,0
-11511,San Sebastián/Donostia,San Sebastián,Gipouzkoa,43.3176961,-1.9767172,0,0
-11208,Vitoria/Gasteiz,Vitoria-Gasteiz,Alava,42.841517,-2.672601,0,0
+13106,Llodio,Llodio,Álava,43.1423514,-2.9606511,0,0
+11511,San Sebastián/Donostia,San Sebastián,Gipuzkoa,43.3176961,-1.9767172,0,0
+11208,Vitoria/Gasteiz,Vitoria-Gasteiz,Álava,42.841517,-2.672601,0,0
 11300,Altsasu/Alsasua-Estación,Altsasu,Navarra,42.894847,-2.181237,0,0
-11400,Zumarraga,Zumarraga,Guipuzkoa,43.0870824,-2.3202298,0,0
-22308,Vigo Guixar,Vigo,Vigo,42.2392656,-8.7146089,0,0
+11400,Zumarraga,Zumarraga,Gipuzkoa,43.0870824,-2.3202298,0,0
+22308,Vigo Guixar,Vigo,Pontevedra,42.2392656,-8.7146089,0,0
 94346,Porto Campanha,Porto,Portugal,41.1489,-8.58544,0,0
 94021,Nine,Nine,Portugal,41.45534,-8.54513,0,0
 96122,BARCELOS,Barcelos,Portugal,41.53673,-8.60907,0,0
@@ -282,7 +282,7 @@ stop_id,nombre,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club
 51103,Dos Hermanas,Dos Hermanas,Sevilla,37.2872259,-5.9235322,0,0
 51100,Sevilla-San Bernardo,Sevilla,Sevilla,37.3777778,-5.9796142,0,0
 51110,Sevilla-Virgen Del Rocío,Sevilla,Sevilla,37.3628091,-5.9760105,0,0
-3100,Jaen,Jaén,Jaén,37.779827,-3.790798,0,0
+3100,Jaén,Jaén,Jaén,37.779827,-3.790798,0,0
 50504,Posadas,Posadas,Córdoba,37.803986,-5.106325,0,0
 50506,Palma del Rio,Palma del Río,Córdoba,37.718081,-5.29276,0,0
 50507,Peñaflor,Peñaflor,Sevilla,37.707502,-5.341609,0,0
@@ -320,7 +320,7 @@ stop_id,nombre,ciudad,provincia,latitud,longitud,num_andenes,tiene_sala_club
 54408,Cártama,Cártama,Málaga,36.7337392,-4.6083966,0,0
 54407,Aljaima,Cártama,Málaga,36.7330833,-4.6645001,0,0
 54406,Pizarra,Pizarra,Málaga,36.7641515,-4.7118313,0,0
-54405,álora,Álora,Málaga,36.8198747,-4.6996105,0,0
+54405,Álora,Álora,Málaga,36.8198747,-4.6996105,0,0
 54404,Las Mellizas,Álora,Málaga,36.873306,-4.719433,0,0
 50413,Alcolea de Cordoba (apt),Córdoba,Córdoba,37.922326,-4.694751,0,0
 50417,Campus Universitario Rabanales/ Cordoba,Córdoba,Córdoba,37.91256,-4.72086,0,0

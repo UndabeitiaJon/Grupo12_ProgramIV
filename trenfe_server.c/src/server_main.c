@@ -50,19 +50,23 @@
 //Socket global para poder cerrarlo en la señal SIGINT
 static sock_t g_fd_servidor = SOCK_INVALIDO;
 
+/* Flag de cierre — volatile para que el bucle while(1) lo vea */
+static volatile int g_ejecutando = 1;
+
 /* ─────────────────────────────────────────────
    Manejador de CTRL+C — cierre limpio
    ───────────────────────────────────────────── */
 static void manejador_sigint(int sig) {
     (void)sig;
     printf("\n[SERVIDOR] Señal de cierre recibida. Apagando...\n");
+    g_ejecutando = 0;
     if (g_fd_servidor != SOCK_INVALIDO) {
         cerrar_socket(g_fd_servidor);
         g_fd_servidor = SOCK_INVALIDO;
     }
-    socket_limpiar();
-    log_evento(cfg.log_path, "SISTEMA", "CIERRE", "Servidor TRENFE detenido por señal");
-    exit(EXIT_SUCCESS);
+    /* NO llamar socket_limpiar() ni exit() aquí en Windows:
+       WSACleanup dentro de un signal handler en Windows puede colgar.
+       El bucle detecta g_ejecutando=0 y sale limpiamente. */
 }
 
 /* ─────────────────────────────────────────────
@@ -126,13 +130,13 @@ int main(void) {
            cfg.puerto_servidor);
 
     //Bucle principal — un cliente cada vez (sin hilos, según enunciado)
-    while (1) {
+    while (g_ejecutando) {
         char ip_cliente[46] = "";
 
         sock_t fd_cliente = aceptar_cliente(g_fd_servidor,
                                             ip_cliente, sizeof(ip_cliente));
         if (fd_cliente == SOCK_INVALIDO) {
-
+            if (!g_ejecutando) break;   /* cierre limpio por señal */
             fprintf(stderr, "[SERVIDOR] accept() fallo. Reintentando...\n");
             continue;
         }
@@ -158,11 +162,11 @@ int main(void) {
         log_evento(cfg.log_path, "SISTEMA", "DESCONEXION", msg_log);
     }
 
-    //Limpieza (normalmente se llega por señal, no por aqui)
-    cerrar_socket(g_fd_servidor);
+    //Limpieza al salir del bucle (por señal SIGINT)
+    if (g_fd_servidor != SOCK_INVALIDO) cerrar_socket(g_fd_servidor);
     socket_limpiar();
     log_evento(cfg.log_path, "SISTEMA", "CIERRE",
                "Servidor TRENFE detenido");
-
+    printf("[SERVIDOR] Apagado limpio completado.\n");
     return EXIT_SUCCESS;
 }
