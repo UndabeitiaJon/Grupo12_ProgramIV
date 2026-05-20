@@ -13,6 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <sstream>
 #include <vector>
 #include <string>
 #include "clase_administrador.h"
@@ -34,6 +35,15 @@ static std::string pedirLinea(const std::string& prompt) {
     std::string v;
     std::cout << prompt;
     std::getline(std::cin, v);
+    return v;
+}
+
+/* Si el usuario pulsa ENTER sin escribir nada, devuelve defaultVal */
+static std::string pedirLineaConDefault(const std::string& label, const std::string& defaultVal) {
+    std::string v;
+    std::cout << "  " << label << " [" << defaultVal << "] (ENTER=mantener): ";
+    std::getline(std::cin, v);
+    if (v.empty()) return defaultVal;
     return v;
 }
 
@@ -109,16 +119,45 @@ void Administrador::menuGestionTrenes() {
             conn.enviar("INSERTAR_TREN|"+modelo+"|"+serie+"|"+anio+"|"+estado+"|"+frev);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 3) {
-            std::string id_t   = pedirLinea("  ID tren       : ");
-            std::string modelo = pedirLinea("  Nuevo modelo  : ");
-            std::string serie  = pedirLinea("  Nueva serie   : ");
-            std::string anio   = pedirLinea("  Nuevo año     : ");
-            std::string estado = pedirLinea("  Nuevo estado  : ");
-            std::string frev   = pedirLinea("  Nueva rev.    : ");
+            // Primero listamos los trenes disponibles
+            conn.enviar("LISTAR_TRENES");
+            std::vector<std::string> lista = conn.recibirLista();
+            mostrarLista(lista);
+
+            std::string id_t = pedirLinea("\n  ID tren a modificar: ");
+
+            // Buscar datos actuales del tren en la lista (formato: TREN|id|modelo|serie|anio|estado|fecha_rev)
+            std::string cur_modelo, cur_serie, cur_anio, cur_estado, cur_frev;
+            for (const auto& fila : lista) {
+                // Parsear campos separados por '|'
+                std::vector<std::string> campos;
+                std::stringstream ss(fila);
+                std::string token;
+                while (std::getline(ss, token, '|')) campos.push_back(token);
+                // Esperamos al menos 7 campos: TREN|id|modelo|serie|anio|estado|fecha_rev
+                if (campos.size() >= 7 && campos[1] == id_t) {
+                    cur_modelo = campos[2];
+                    cur_serie  = campos[3];
+                    cur_anio   = campos[4];
+                    cur_estado = campos[5];
+                    cur_frev   = campos[6];
+                    break;
+                }
+            }
+
+            std::cout << "\n  ══ MODIFICAR TREN  (ENTER = mantener valor actual) ══\n";
+            std::string modelo = pedirLineaConDefault("Modelo      ", cur_modelo);
+            std::string serie  = pedirLineaConDefault("Num. serie  ", cur_serie);
+            std::string anio   = pedirLineaConDefault("Año         ", cur_anio);
+            std::string estado = pedirLineaConDefault("Estado (0=Operativo 1=Revision 2=Averia 3=Retirado)", cur_estado);
+            std::string frev   = pedirLineaConDefault("Fecha rev.  (AAAA-MM-DD)", cur_frev);
+
             conn.enviar("MODIFICAR_TREN|"+id_t+"|"+modelo+"|"+serie+"|"+anio+"|"+estado+"|"+frev);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 4) {
-            std::string id_t = pedirLinea("  ID tren a eliminar: ");
+            conn.enviar("LISTAR_TRENES");
+            mostrarLista(conn.recibirLista());
+            std::string id_t = pedirLinea("\n  ID tren a eliminar: ");
             conn.enviar("ELIMINAR_TREN|"+id_t);
             std::cout << "  " << conn.recibir() << "\n";
         }
