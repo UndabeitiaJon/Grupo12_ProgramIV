@@ -14,7 +14,6 @@
 
 class Administrador : public UsuarioBase {
 private:
-    /* Sub-menús por sección */
     void menuGestionTrenes();
     void menuGestionEstaciones();
     void menuGestionTrayectos();
@@ -24,7 +23,6 @@ private:
     void menuInformes();
     void menuLogs();
 
-    /* Helpers de presentación */
     void mostrarLista(const std::vector<std::string>& lista);
 
 public:

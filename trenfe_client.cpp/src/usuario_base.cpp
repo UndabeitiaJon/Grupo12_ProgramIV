@@ -19,11 +19,10 @@ extern "C" {
 #include "hash.h"
 }
 
-/* ══════════════════════════════════════════════
-   HELPERS
-   ══════════════════════════════════════════════ */
+//HELPERS
 
-/* Divide 'linea' por '|' y devuelve el campo en posición 'pos' (0-based) */
+
+// Divide 'linea' por '|' y devuelve el campo en posición
 std::string campo(const std::string& linea, int pos) {
     std::istringstream ss(linea);
     std::string tok;
@@ -41,24 +40,21 @@ void mostrarCabecera(const std::string& nombre, const std::string& rol) {
     std::cout << "========================================\n";
 }
 
-/* ══════════════════════════════════════════════
-   CONSTRUCTOR
-   ══════════════════════════════════════════════ */
+//CONSTRUCTOR
+
 
 UsuarioBase::UsuarioBase(int id, const std::string& nom, const std::string& ape,
                          const std::string& mail, const std::string& r, Conexion& c)
     : id_u(id), nombre(nom), apellido(ape), email(mail), rol(r), conn(c)
 {}
 
-/* ══════════════════════════════════════════════
-   MIS DATOS
-   ══════════════════════════════════════════════ */
+//MIS DATOS
+
 
 void UsuarioBase::mostrarMisDatos() {
     conn.enviar("MIS_DATOS|" + std::to_string(id_u));
     std::string resp = conn.recibir();
 
-    /* DATOS|nombre|apellido|dni|email|telf|fecha_nac|rol */
     if (campo(resp, 0) != "DATOS") {
         std::cout << "  Error al obtener datos: " << resp << "\n";
         return;
@@ -73,9 +69,8 @@ void UsuarioBase::mostrarMisDatos() {
     std::cout << "  Rol      : " << campo(resp, 7) << "\n";
 }
 
-/* ══════════════════════════════════════════════
-   CAMBIAR CONTRASEÑA
-   ══════════════════════════════════════════════ */
+//CAMBIAR CONTRASEÑA
+
 
 void UsuarioBase::cambiarContrasenia() {
     std::string pass1, pass2;

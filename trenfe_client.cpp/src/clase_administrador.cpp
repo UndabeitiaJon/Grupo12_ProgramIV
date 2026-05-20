@@ -48,9 +48,7 @@ static std::string pedirLineaConDefault(const std::string& label, const std::str
     return v;
 }
 
-/* ══════════════════════════════════════════════
-   MENÚ PRINCIPAL
-   ══════════════════════════════════════════════ */
+//MENÚ PRINCIPAL
 
 void Administrador::mostrarMenuPrincipal() {
     int op = 0;
@@ -72,16 +70,36 @@ void Administrador::mostrarMenuPrincipal() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (op) {
-            case 1:  menuGestionTrenes();      break;
-            case 2:  menuGestionEstaciones();  break;
-            case 3:  menuGestionTrayectos();   break;
-            case 4:  menuGestionUsuarios();    break;
-            case 5:  menuGestionServicios();   break;
-            case 6:  menuGestionIncidencias(); break;
-            case 7:  menuInformes();           break;
-            case 8:  menuLogs();               break;
-            case 9:  mostrarMisDatos();        break;
-            case 10: cambiarContrasenia();     break;
+            case 1:
+            	menuGestionTrenes();
+            break;
+            case 2:
+            	menuGestionEstaciones();
+            break;
+            case 3:
+            	menuGestionTrayectos();
+            break;
+            case 4:
+            	menuGestionUsuarios();
+            break;
+            case 5:
+            	menuGestionServicios();
+            break;
+            case 6:
+            	menuGestionIncidencias();
+            break;
+            case 7:
+            	menuInformes();
+            break;
+            case 8:
+            	menuLogs();
+            break;
+            case 9:
+            	mostrarMisDatos();
+            break;
+            case 10:
+            	cambiarContrasenia();
+            break;
             case 0:
                 conn.enviar("LOGOUT");
                 conn.recibir();
@@ -91,9 +109,8 @@ void Administrador::mostrarMenuPrincipal() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   GESTIÓN DE TRENES
-   ══════════════════════════════════════════════ */
+//GESTIÓN DE TRENES
+
 
 void Administrador::menuGestionTrenes() {
     int op = 0;
@@ -120,14 +137,14 @@ void Administrador::menuGestionTrenes() {
             conn.enviar("INSERTAR_TREN|"+modelo+"|"+serie+"|"+anio+"|"+estado+"|"+frev);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 3) {
-            // Primero listamos los trenes disponibles
+            // Listar los trenes disponibles
             conn.enviar("LISTAR_TRENES");
             std::vector<std::string> lista = conn.recibirLista();
             mostrarLista(lista);
 
             std::string id_t = pedirLinea("\n  ID tren a modificar: ");
 
-            // Buscar datos actuales del tren en la lista (formato: TREN|id|modelo|serie|anio|estado|fecha_rev)
+            // Buscar datos actuales del tren en la lista
             std::string cur_modelo, cur_serie, cur_anio, cur_estado, cur_frev;
             for (const auto& fila : lista) {
                 // Parsear campos separados por '|'
@@ -135,7 +152,6 @@ void Administrador::menuGestionTrenes() {
                 std::stringstream ss(fila);
                 std::string token;
                 while (std::getline(ss, token, '|')) campos.push_back(token);
-                // Esperamos al menos 7 campos: TREN|id|modelo|serie|anio|estado|fecha_rev
                 if (campos.size() >= 7 && campos[1] == id_t) {
                     cur_modelo = campos[2];
                     cur_serie  = campos[3];
@@ -165,9 +181,7 @@ void Administrador::menuGestionTrenes() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   GESTIÓN DE ESTACIONES
-   ══════════════════════════════════════════════ */
+// GESTIÓN DE ESTACIONES
 
 void Administrador::menuGestionEstaciones() {
     int op = 0;
@@ -184,7 +198,7 @@ void Administrador::menuGestionEstaciones() {
         if (op == 1) {
             conn.enviar("LISTAR_ESTACIONES");
             auto lista = conn.recibirLista();
-            /* Ordenar por nombre (campo 2) */
+            // Ordenar por nombre
             std::sort(lista.begin(), lista.end(), [](const std::string& a, const std::string& b){
                 auto ca = a; auto cb = b;
                 size_t p1a = ca.find('|'); if (p1a!=std::string::npos) p1a=ca.find('|',p1a+1);
@@ -202,11 +216,11 @@ void Administrador::menuGestionEstaciones() {
             conn.enviar("INSERTAR_ESTACION|"+nombre+"|"+ciudad+"|"+prov+"|"+and_);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 3) {
-            /* Mostrar lista ordenada por ID antes de pedir el ID */
+            // Mostrar lista ordenada por ID antes de pedir el ID
             conn.enviar("LISTAR_ESTACIONES");
             std::vector<std::string> lista = conn.recibirLista();
 
-            /* Ordenar por ID numérico (campo 1) */
+            // Ordenar por ID
             std::sort(lista.begin(), lista.end(), [](const std::string& a, const std::string& b){
                 int ia = 0, ib = 0;
                 size_t p = a.find('|');
@@ -216,7 +230,6 @@ void Administrador::menuGestionEstaciones() {
                 return ia < ib;
             });
 
-            /* Tabla compacta: ID | Nombre | Ciudad | Provincia */
             std::cout << "\n  " << std::left
                       << std::setw(5)  << "ID"
                       << std::setw(30) << "NOMBRE"
@@ -234,17 +247,17 @@ void Administrador::menuGestionEstaciones() {
             std::cout << "\n";
 
             std::string id = pedirLinea("  ID estación a modificar (0=cancelar): ");
-            if (id == "0" || id.empty()) continue;
+            if (id == "0" || id.empty()){
+            	continue;
+            }
 
-            /* Buscar datos actuales parseando con stringstream (igual que bloque trenes) */
-            /* Formato servidor: ESTACION|id|nombre|ciudad|provincia|andenes|sala */
+            // Buscar datos actuales parseando con stringstream
             std::string cur_nom, cur_ciu, cur_prov, cur_and;
             for (const auto& e : lista) {
                 std::vector<std::string> campos;
                 std::stringstream ss(e);
                 std::string token;
                 while (std::getline(ss, token, '|')) campos.push_back(token);
-                /* campos[0]=ESTACION  [1]=id  [2]=nombre  [3]=ciudad  [4]=provincia  [5]=andenes */
                 if (campos.size() >= 6 && campos[0] == "ESTACION" && campos[1] == id) {
                     cur_nom  = campos[2];
                     cur_ciu  = campos[3];
@@ -265,9 +278,8 @@ void Administrador::menuGestionEstaciones() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   GESTIÓN DE TRAYECTOS
-   ══════════════════════════════════════════════ */
+//GESTIÓN DE TRAYECTOS
+
 
 void Administrador::menuGestionTrayectos() {
     int op = 0;
@@ -287,19 +299,23 @@ void Administrador::menuGestionTrayectos() {
             conn.enviar("LISTAR_TRAYECTOS");
             mostrarLista(conn.recibirLista());
         } else if (op == 2) {
-            /* ── 1. Cargar estaciones y elegir origen/destino ────── */
+            // Cargar estaciones y elegir origen/destino
             conn.enviar("LISTAR_ESTACIONES");
             auto estaciones = conn.recibirLista();
 
             std::cout << "\n  Selecciona estación ORIGEN:\n";
             std::string orig = seleccionarEstacion(estaciones, "origen");
-            if (orig.empty()) { std::cout << "  Cancelado.\n"; continue; }
+            if (orig.empty()) {
+            	std::cout << "  Cancelado.\n";
+            	continue;
+            }
 
             std::cout << "\n  Selecciona estación DESTINO:\n";
             std::string dest = seleccionarEstacion(estaciones, "destino");
-            if (dest.empty()) { std::cout << "  Cancelado.\n"; continue; }
-
-            /* ── 2. Hora, duración, días ─────────────────────────── */
+            if (dest.empty()) {
+            	std::cout << "  Cancelado.\n";
+            	continue;
+            }
             std::string h_sal  = pedirLinea("  Hora salida  (HH:MM)  : ");
             std::string h_ll   = pedirLinea("  Hora llegada (HH:MM)  : ");
             std::string dur    = pedirLinea("  Duración (min)        : ");
@@ -333,7 +349,7 @@ void Administrador::menuGestionTrayectos() {
             std::cout << "  " << conn.recibir() << "\n";
 
         } else if (op == 3) {
-            /* Mostrar lista de trayectos primero */
+            // Mostrar lista de trayectos
             conn.enviar("LISTAR_TRAYECTOS");
             std::vector<std::string> lista = conn.recibirLista();
             mostrarLista(lista);
@@ -341,10 +357,7 @@ void Administrador::menuGestionTrayectos() {
             std::string id_tr = pedirLinea("\n  ID trayecto a modificar (0=cancelar): ");
             if (id_tr == "0" || id_tr.empty()) continue;
 
-            /* Buscar datos actuales.
-             * Formato real de LISTAR_TRAYECTOS:
-             *   TRAYECTO|id_tr|origen|destino|h_sal|h_ll|precio|estado
-             *   campos:    0     1      2       3     4    5     6     7   */
+            // Buscar datos actuales
             std::string cur_hsal, cur_hll, cur_precio, cur_dias;
             for (const auto& t : lista) {
                 std::vector<std::string> campos;
@@ -358,10 +371,9 @@ void Administrador::menuGestionTrayectos() {
                     break;
                 }
             }
-            /* dias_operacion no viene en LISTAR_TRAYECTOS → pedimos DETALLE */
             conn.enviar("DETALLE_TRAYECTO|" + id_tr);
-            auto detalle = conn.recibirLista();  /* consume también FIN_LISTA de paradas */
-            /* DETALLE|id|origen|destino|h_sal|h_ll|dur|precio|dias */
+            auto detalle = conn.recibirLista();
+
             for (const auto& d : detalle) {
                 std::vector<std::string> dc;
                 std::stringstream ss2(d);
@@ -382,23 +394,26 @@ void Administrador::menuGestionTrayectos() {
             std::cout << "  " << conn.recibir() << "\n";
 
         } else if (op == 4) {
-            /* Mostrar lista antes de pedir ID */
             conn.enviar("LISTAR_TRAYECTOS");
             mostrarLista(conn.recibirLista());
 
             std::string id_tr  = pedirLinea("\n  ID trayecto (0=cancelar): ");
-            if (id_tr == "0" || id_tr.empty()) continue;
+            if (id_tr == "0" || id_tr.empty()){
+            	continue;
+            }
             std::string estado = pedirLinea("  Estado (ACTIVO/SUSPENDIDO/ELIMINADO): ");
             conn.enviar("ESTADO_TRAYECTO|"+id_tr+"|"+estado);
             std::cout << "  " << conn.recibir() << "\n";
 
         } else if (op == 5) {
-            /* Mostrar lista antes de pedir ID */
+            // Mostrar lista antes de pedir ID
             conn.enviar("LISTAR_TRAYECTOS");
             mostrarLista(conn.recibirLista());
 
             std::string id_tr  = pedirLinea("\n  ID trayecto (0=cancelar): ");
-            if (id_tr == "0" || id_tr.empty()) continue;
+            if (id_tr == "0" || id_tr.empty()) {
+            	continue;
+            }
             std::string precio = pedirLinea("  Nuevo precio base: ");
             conn.enviar("MOD_PRECIO_BASE|"+id_tr+"|"+precio);
             std::cout << "  " << conn.recibir() << "\n";
@@ -406,9 +421,8 @@ void Administrador::menuGestionTrayectos() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   GESTIÓN DE USUARIOS
-   ══════════════════════════════════════════════ */
+//GESTIÓN DE USUARIOS
+
 
 void Administrador::menuGestionUsuarios() {
     int op = 0;
@@ -431,8 +445,6 @@ void Administrador::menuGestionUsuarios() {
         } else if (op == 3) {
             conn.enviar("LISTAR_USUARIOS");
             std::vector<std::string> lista = conn.recibirLista();
-
-            /* Tabla: ID | Nombre | Apellido | Email | Rol | Activo */
             std::cout << "\n  " << std::left
                       << std::setw(5)  << "ID"
                       << std::setw(16) << "NOMBRE"
@@ -442,8 +454,9 @@ void Administrador::menuGestionUsuarios() {
                       << "ACTIVO\n";
             std::cout << "  " << std::string(78, '-') << "\n";
             for (const auto& u : lista) {
-                /* USUARIO|id|nombre|apellido|email|rol|activo */
-                if (campo(u,0) != "USUARIO") continue;
+                if (campo(u,0) != "USUARIO") {
+                	continue;
+                }
                 std::string activo_txt = (campo(u,6) == "1") ? "Sí" : "NO";
                 std::cout << "  " << std::left
                           << std::setw(5)  << campo(u,1)
@@ -456,7 +469,9 @@ void Administrador::menuGestionUsuarios() {
             std::cout << "\n";
 
             std::string id = pedirLinea("  ID usuario a habilitar/deshabilitar (0=cancelar): ");
-            if (id == "0" || id.empty()) continue;
+            if (id == "0" || id.empty()) {
+            	continue;
+            }
             conn.enviar("DESHABILITAR_USER|"+id);
             std::cout << "  " << conn.recibir() << "\n";
         }
@@ -488,7 +503,7 @@ void Administrador::menuGestionServicios() {
             conn.enviar("LISTAR_SERVICIOS|"+fecha);
             mostrarLista(conn.recibirLista());
         } else if (op == 3) {
-            /* Mostrar trayectos disponibles para elegir ID */
+            // Mostrar trayectos disponibles para elegir ID
             conn.enviar("LISTAR_TRAYECTOS");
             auto trays = conn.recibirLista();
             std::cout << "\n  " << std::left
@@ -499,7 +514,6 @@ void Administrador::menuGestionServicios() {
                       << "LLEGADA\n";
             std::cout << "  " << std::string(74, '-') << "\n";
             for (const auto& t : trays) {
-                /* TRAYECTO|id|origen|destino|h_sal|h_ll|precio|estado */
                 if (campo(t,0) != "TRAYECTO") continue;
                 std::cout << "  " << std::left
                           << std::setw(6)  << campo(t,1)
@@ -516,7 +530,7 @@ void Administrador::menuGestionServicios() {
             std::string resp_serv = conn.recibir();
             std::cout << "  " << resp_serv << "\n";
 
-            /* Si el servicio se creó, ofrecer asignar empleado */
+            // Si el servicio se ha creado, ofrecer asignar empleado
             if (campo(resp_serv, 0) == "OK") {
                 std::string id_serv_nuevo = campo(resp_serv, 1);
 
@@ -535,7 +549,6 @@ void Administrador::menuGestionServicios() {
                               << "ROL\n";
                     std::cout << "  " << std::string(70, '-') << "\n";
                     for (const auto& e : emps) {
-                        /* EMPLEADO|id|nombre|apellido|email|rol_emp|estado */
                         if (campo(e,0) != "EMPLEADO") continue;
                         std::cout << "  " << std::left
                                   << std::setw(5)  << campo(e,1)
@@ -558,7 +571,7 @@ void Administrador::menuGestionServicios() {
                 }
             }
         } else if (op == 4) {
-            /* Mostrar servicios antes de pedir cuál cancelar */
+            // Mostrar servicios antes de pedir cuál cancelar
             conn.enviar("LISTAR_SERVICIOS|");
             auto servs = conn.recibirLista();
             std::cout << "\n  " << std::left
@@ -569,8 +582,9 @@ void Administrador::menuGestionServicios() {
                       << "ESTADO\n";
             std::cout << "  " << std::string(76, '-') << "\n";
             for (const auto& s : servs) {
-                /* SERVICIO|id_serv|fecha|id_t|origen|destino|h_sal|h_ll|estado|retraso */
-                if (campo(s,0) != "SERVICIO") continue;
+                if (campo(s,0) != "SERVICIO") {
+                	continue;
+                }
                 std::cout << "  " << std::left
                           << std::setw(6)  << campo(s,1)
                           << std::setw(12) << campo(s,2)
@@ -580,16 +594,17 @@ void Administrador::menuGestionServicios() {
             }
             std::cout << "\n";
             std::string id = pedirLinea("  ID servicio a cancelar (0=cancelar): ");
-            if (id == "0" || id.empty()) continue;
+            if (id == "0" || id.empty()){
+            	continue;
+            }
             conn.enviar("CANCELAR_SERVICIO|"+id);
             std::cout << "  " << conn.recibir() << "\n";
         }
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   GESTIÓN DE INCIDENCIAS
-   ══════════════════════════════════════════════ */
+//GESTIÓN DE INCIDENCIAS
+
 
 void Administrador::menuGestionIncidencias() {
     int op = 0;
@@ -611,7 +626,7 @@ void Administrador::menuGestionIncidencias() {
             conn.enviar("LISTAR_INCIDENCIAS|TODAS");
             mostrarLista(conn.recibirLista());
         } else if (op == 3) {
-            /* Mostrar servicios disponibles para elegir ID */
+            // Mostrar servicios disponibles para elegir ID
             conn.enviar("LISTAR_SERVICIOS|");
             auto servs = conn.recibirLista();
             std::cout << "\n  " << std::left
@@ -622,7 +637,9 @@ void Administrador::menuGestionIncidencias() {
                       << "ESTADO\n";
             std::cout << "  " << std::string(76, '-') << "\n";
             for (const auto& s : servs) {
-                if (campo(s,0) != "SERVICIO") continue;
+                if (campo(s,0) != "SERVICIO") {
+                	continue;
+                }
                 std::cout << "  " << std::left
                           << std::setw(6)  << campo(s,1)
                           << std::setw(12) << campo(s,2)
@@ -632,7 +649,9 @@ void Administrador::menuGestionIncidencias() {
             }
             std::cout << "\n";
             std::string id_serv = pedirLinea("  ID servicio (0=cancelar): ");
-            if (id_serv == "0" || id_serv.empty()) continue;
+            if (id_serv == "0" || id_serv.empty()) {
+            	continue;
+            }
             std::string tipo    = pedirLinea("  Tipo (AVERIA/RETRASO/ACCIDENTE/OTRO): ");
             std::string desc    = pedirLinea("  Descripción   : ");
             std::string prior   = pedirLinea("  Prioridad (ALTA/MEDIA/BAJA): ");
@@ -646,9 +665,8 @@ void Administrador::menuGestionIncidencias() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   INFORMES
-   ══════════════════════════════════════════════ */
+//INFORMES
+
 
 void Administrador::menuInformes() {
     int op = 0;
@@ -678,7 +696,9 @@ void Administrador::menuInformes() {
                               << campo(t,5) << "\n";
 
             std::string id_t = pedirLinea("\n  ID tren (0=cancelar): ");
-            if (id_t == "0" || id_t.empty()) continue;
+            if (id_t == "0" || id_t.empty()) {
+            	continue;
+            }
             conn.enviar("INFORME_OCUPACION|"+id_t);
             auto lista = conn.recibirLista();
 
@@ -697,7 +717,9 @@ void Administrador::menuInformes() {
                 std::cout << "  " << std::string(78, '-') << "\n";
                 /* OCUPACION|id_tr|origen|destino|reservas|pct */
                 for (const auto& linea : lista) {
-                    if (campo(linea,0) != "OCUPACION") continue;
+                    if (campo(linea,0) != "OCUPACION") {
+                    	continue;
+                    }
                     std::cout << "  " << std::left
                               << std::setw(6)  << campo(linea,1)
                               << std::setw(28) << campo(linea,2)
@@ -708,7 +730,7 @@ void Administrador::menuInformes() {
             }
 
         } else if (op == 2) {
-            /* Mostrar trayectos antes de pedir ID */
+            // Mostrar trayectos antes de pedir ID
             conn.enviar("LISTAR_TRAYECTOS");
             auto trays = conn.recibirLista();
             std::cout << "\n  " << std::left
@@ -719,7 +741,9 @@ void Administrador::menuInformes() {
                       << "LLEGADA\n";
             std::cout << "  " << std::string(78, '-') << "\n";
             for (const auto& t : trays) {
-                if (campo(t,0) != "TRAYECTO") continue;
+                if (campo(t,0) != "TRAYECTO") {
+                	continue;
+                }
                 std::cout << "  " << std::left
                           << std::setw(6)  << campo(t,1)
                           << std::setw(28) << campo(t,2)
@@ -728,10 +752,11 @@ void Administrador::menuInformes() {
                           << campo(t,5) << "\n";
             }
             std::string id_tr = pedirLinea("\n  ID trayecto (0=cancelar): ");
-            if (id_tr == "0" || id_tr.empty()) continue;
+            if (id_tr == "0" || id_tr.empty()) {
+            	continue;
+            }
             conn.enviar("INFORME_INGRESOS|"+id_tr);
             std::string resp = conn.recibir();
-            /* INGRESOS|id_tr|origen|destino|h_sal|h_ll|precio_base|n_reservas|total */
             if (campo(resp,0) == "INGRESOS") {
                 std::cout << "\n  ============================================================\n";
                 std::cout << "  INFORME DE INGRESOS — TRAYECTO " << campo(resp,1) << "\n";
@@ -754,9 +779,8 @@ void Administrador::menuInformes() {
     } while (op != 0);
 }
 
-/* ══════════════════════════════════════════════
-   LOGS
-   ══════════════════════════════════════════════ */
+//LOGS
+
 
 void Administrador::menuLogs() {
     std::cout << "\n  Filtro de fecha (AAAA-MM-DD, Enter=todos): ";
