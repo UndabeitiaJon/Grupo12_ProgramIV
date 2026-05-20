@@ -1,19 +1,11 @@
 /*
  * client_main.cpp
  *
- *  Created on: 8 may 2026
- *      Author: e.aranoa
+ *  Created on:
+ *      Author:
  */
 
-/*
 
- *
- * Para activar el test del Bloque 1, cambia:
- *   #define MODO_TEST 0   →   #define MODO_TEST 1
- *
- * Para el cliente normal:
- *   #define MODO_TEST 0
- */
 
 #include <iostream>
 #include <string>
@@ -144,7 +136,7 @@ int main() {
     int intentosFallidos = 0;
 
     while (usuario == nullptr) {
-        /* ── Menú de acceso ── */
+        //Menú de acceso
         std::cout << "  ----------------------------------------\n";
         std::cout << "   1. Iniciar sesión\n";
         std::cout << "   2. Registrarse\n";
@@ -165,7 +157,7 @@ int main() {
         }
 
         if (opcion == 2) {
-            /* Registro: si tiene éxito el usuario puede hacer login a continuación */
+            // Registro: si tiene éxito el usuario puede hacer login a continuación
             registrar(conn);
             continue;
         }
@@ -175,7 +167,7 @@ int main() {
             continue;
         }
 
-        /* ── Login ── */
+        // Login
         if (intentosFallidos > 0)
             std::cout << "\n  Intento " << (intentosFallidos + 1) << " de 3\n";
 

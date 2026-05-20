@@ -5,21 +5,7 @@
  *      Author: Grupo12
  */
 
-<<<<<<< HEAD
-/*
- *
- * Implementa la función login() que:
- *   1. Pide email y contraseña al usuario
- *   2. Calcula el hash SHA-256 de la contraseña
- *   3. Envía LOGIN|email|hash al servidor
- *   4. Recibe AUTH_OK|id_u|rol|nombre  o  AUTH_FAIL|motivo
- *   5. Crea y devuelve el objeto de usuario correcto (Pasajero, etc.)
- *
- * Por ahora solo existe la clase Pasajero.
- * Maquinista y Administrador se añadirán en fases posteriores.
- */
-=======
->>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+
 
 
 

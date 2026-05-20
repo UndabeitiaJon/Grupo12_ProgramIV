@@ -4,8 +4,7 @@
  *  Created on: 9 may 2026
  *      Author: e.aranoa
  */
-/*
- */
+
 
 #include <iostream>
 #include <iomanip>
@@ -33,7 +32,7 @@ void Maquinista::mostrarMenuPrincipal() {
         std::cout << "  6. Cambiar contraseña\n";
         std::cout << "  0. Cerrar sesión\n";
         std::cout << "  Opción: ";
-        std::cin  >> opcion;
+        std::cin >> opcion;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (opcion) {
@@ -44,7 +43,7 @@ void Maquinista::mostrarMenuPrincipal() {
                 std::cout << "  ID servicio a iniciar: ";
                 std::getline(std::cin, id);
                 menuMarcarInicio(id);
-                cuadranteCargado = false;  /* invalidar caché */
+                cuadranteCargado = false;
                 break;
             }
             case 3: {
@@ -62,6 +61,7 @@ void Maquinista::mostrarMenuPrincipal() {
                 std::cout << "  ID servicio: ";
                 std::getline(std::cin, id);
                 menuReportarRetraso(id);
+                cuadranteCargado = false;  // forzar recarga para mostrar retraso actualizado
                 break;
             }
             case 5: mostrarMisDatos();    break;
@@ -138,10 +138,12 @@ void Maquinista::menuMarcarInicio(const std::string& id_serv) {
 void Maquinista::menuMarcarFin(const std::string& id_serv) {
     conn.enviar("MARCAR_FIN|" + id_serv);
     std::string resp = conn.recibir();
-    if (campo(resp, 0) == "OK")
-        std::cout << "  ✓ Servicio " << id_serv << " marcado como FINALIZADO.\n";
-    else
-        std::cout << "  ✗ Error: " << campo(resp, 1) << "\n";
+    if (campo(resp, 0) == "OK"){
+    	std::cout << "  ✓ Servicio " << id_serv << " marcado como FINALIZADO.\n";
+    }
+    else{
+    	std::cout << "  ✗ Error: " << campo(resp, 1) << "\n";
+    }
 }
 
 /* ══════════════════════════════════════════════
@@ -162,6 +164,3 @@ void Maquinista::menuReportarRetraso(const std::string& id_serv) {
     else
         std::cout << "  ✗ Error: " << campo(resp, 1) << "\n";
 }
-
-
-

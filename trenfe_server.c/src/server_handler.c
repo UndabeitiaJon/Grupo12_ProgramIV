@@ -181,8 +181,8 @@ static void handle_listar_trayectos(sock_t fd) {
 static void handle_buscar_trayecto(sock_t fd, char *param) {
     char *s_orig = strtok(param, SEP);
     char *s_dest = strtok(NULL,  SEP);
-    char *fecha  = strtok(NULL,  SEP);
-    char *clase  = strtok(NULL,  SEP);
+    char *fecha = strtok(NULL,  SEP);
+    char *clase = strtok(NULL,  SEP);
 
     if (!s_orig || !s_dest || !fecha || !clase) {
         enviar_mensaje(fd, "ERROR|400|Formato: BUSCAR_TRAYECTO|id_orig|id_dest|fecha|clase");
@@ -348,13 +348,13 @@ static void handle_listar_estaciones(sock_t fd) {
 
 static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
     char *s_id_tr   = strtok(param, SEP);
-    char *fecha     = strtok(NULL,  SEP);
-    char *clase     = strtok(NULL,  SEP);
-    char *s_vagon   = strtok(NULL,  SEP);
+    char *fecha  = strtok(NULL,  SEP);
+    char *clase = strtok(NULL,  SEP);
+    char *s_vagon = strtok(NULL,  SEP);
     char *s_asiento = strtok(NULL,  SEP);
     char *s_tipo_eq = strtok(NULL,  SEP);
     char *s_peso_eq = strtok(NULL,  SEP);
-    char *s_puntos  = strtok(NULL,  SEP);   /* campo opcional: puntos a canjear */
+    char *s_puntos  = strtok(NULL,  SEP);   //campo opcional: puntos a canjear
 
     if (!s_id_tr || !fecha || !clase || !s_vagon || !s_asiento) {
         enviar_mensaje(fd, "ERROR|400|Faltan parametros en HACER_RESERVA");
@@ -382,7 +382,7 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
         sup_equipaje = calcular_suplemento_equipaje(tipo_eq, atof(s_peso_eq), clase);
     }
 
-    /* Descuento de tarjeta del pasajero */
+    // Descuento de tarjeta del pasajero
     TipoDescuento desc = obtener_descuento_usuario(id_u);
 
     /* Precio base para auditoría */
@@ -392,7 +392,7 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
     /* Precio tras descuento de tarjeta + equipaje */
     double precio_final = calcular_precio_final(id_tr, clase, desc, sup_equipaje);
 
-    /* ── Aplicar canje de puntos (100 puntos = 1 EUR) ── */
+    // Aplicar canje de puntos (100 puntos = 1 EUR)
     if (puntos_canje > 0) {
         int puntos_actuales = obtener_puntos_fidelidad(id_u);
         if (puntos_canje > puntos_actuales)
@@ -411,19 +411,19 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
 
     Reserva r;
     memset(&r, 0, sizeof(r));
-    r.id_u         = id_u;
-    r.id_tr        = id_tr;
-    r.num_vagon    = vagon;
+    r.id_u  = id_u;
+    r.id_tr = id_tr;
+    r.num_vagon= vagon;
     r.num_asiento  = asiento;
     r.precio_base  = precio_base_trayecto;
     r.precio_final = precio_final;
-    strncpy(r.clase,       clase, sizeof(r.clase) - 1);
+    strncpy(r.clase, clase, sizeof(r.clase) - 1);
     strncpy(r.fecha_viaje, fecha, sizeof(r.fecha_viaje) - 1);
     generar_codigo_validacion(r.codigo_validacion, sizeof(r.codigo_validacion));
 
     int id_res = insertar_reserva_db(r);
     if (id_res <= 0) {
-        /* Si falló la inserción y ya restamos puntos, los devolvemos */
+        //Si falló la inserción y ya restamos puntos, los devolvemos
         if (puntos_canje > 0) actualizar_puntos_fidelidad(id_u, puntos_canje);
         enviar_mensaje(fd, "ERROR|500|No se pudo crear la reserva");
         return;
@@ -436,21 +436,29 @@ static void handle_hacer_reserva(sock_t fd, char *param, Sesion *ses) {
         eq.id_res          = id_res;
         eq.peso_kg         = atof(s_peso_eq);
         eq.suplemento_pago = sup_equipaje;
-        if (strcmp(s_tipo_eq, "BODEGA") == 0)    eq.tipo = EQUIPAJE_BODEGA;
-        else if (strcmp(s_tipo_eq, "BICI") == 0) eq.tipo = EQUIPAJE_BICI;
-        else if (strcmp(s_tipo_eq, "ESQUI") == 0)eq.tipo = EQUIPAJE_ESQUI;
-        else                                      eq.tipo = EQUIPAJE_MANO;
+        if (strcmp(s_tipo_eq, "BODEGA") == 0) {
+        	eq.tipo = EQUIPAJE_BODEGA;
+        }
+        else if (strcmp(s_tipo_eq, "BICI") == 0){
+        	eq.tipo = EQUIPAJE_BICI;
+        }
+        else if (strcmp(s_tipo_eq, "ESQUI") == 0){
+        	eq.tipo = EQUIPAJE_ESQUI;
+        }
+        else {
+        	eq.tipo = EQUIPAJE_MANO;
+        }
         insertar_equipaje_db(eq);
     }
 
-    /* Puntos restantes tras la reserva (insertar_reserva_db suma los nuevos) */
+    // Puntos restantes tras la reserva
     int puntos_restantes = obtener_puntos_fidelidad(id_u);
 
     /* OK|id_res|precio_final|codigo_validacion|puntos_restantes */
     enviar_fmt(fd, "OK|%d|%.2f|%s|%d",
                id_res, precio_final, r.codigo_validacion, puntos_restantes);
 
-    /* Log */
+    // Log
     char msg[160];
     snprintf(msg, sizeof(msg),
              "Reserva creada id_res=%d trayecto=%d fecha=%s puntos_canjeados=%d",
@@ -486,7 +494,9 @@ static void handle_mis_reservas(sock_t fd, Sesion *ses) {
     int id_u = ses->id_u;   /* B-15: id_u siempre de la sesion autenticada */
 
     sqlite3 *db = abrir_db(fd);
-    if (!db) return;
+    if (!db){
+    	return;
+    }
 
     sqlite3_stmt *stmt;
     const char *sql =
@@ -527,10 +537,12 @@ static void handle_mis_reservas(sock_t fd, Sesion *ses) {
 
 
 static void handle_historial(sock_t fd, Sesion *ses) {
-    int id_u = ses->id_u;   /* B-15/19: id_u de sesion */
+    int id_u = ses->id_u;
 
     sqlite3 *db = abrir_db(fd);
-    if (!db) return;
+    if (!db) {
+    	return;
+    }
 
     sqlite3_stmt *stmt;
     const char *sql =
@@ -576,7 +588,7 @@ static void handle_historial(sock_t fd, Sesion *ses) {
 
 
 static void handle_mis_puntos(sock_t fd, Sesion *ses) {
-    int puntos = obtener_puntos_fidelidad(ses->id_u);   /* B-15: id_u de sesion */
+    int puntos = obtener_puntos_fidelidad(ses->id_u);
     enviar_fmt(fd, "OK|%d", puntos);
 }
 
@@ -587,7 +599,7 @@ static void handle_canjear_puntos(sock_t fd, char *param, Sesion *ses) {
         enviar_mensaje(fd, "ERROR|400|Formato: CANJEAR_PUNTOS|cantidad");
         return;
     }
-    int id_u    = ses->id_u;   /* B-14: id_u siempre de la sesion autenticada */
+    int id_u = ses->id_u;   /* id_u siempre de la sesion autenticada */
     int cantidad = atoi(s_cant);
 
     int actuales = obtener_puntos_fidelidad(id_u);
@@ -816,7 +828,7 @@ static void handle_listar_ciudades(sock_t fd) {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   B-06 — DETALLE DE RESERVA
+    DETALLE DE RESERVA
    ══════════════════════════════════════════════════════════════ */
 
 
@@ -894,22 +906,47 @@ static void handle_listar_vagones(sock_t fd, char *param) {
     sqlite3 *db = abrir_db(fd);
     if (!db) return;
 
-    sqlite3_stmt *s;
+    // Comprobar si el tren tiene vagones registrados
+    sqlite3_stmt *chk;
+    int tiene_vagones = 0;
+    if (sqlite3_prepare_v2(db,
+        "SELECT COUNT(*) FROM VAGONES WHERE id_tren=?;",
+        -1, &chk, NULL) == SQLITE_OK) {
+        sqlite3_bind_int(chk, 1, tr.id_t);
+        if (sqlite3_step(chk) == SQLITE_ROW) {
+            tiene_vagones = sqlite3_column_int(chk, 0);
+        }
+        sqlite3_finalize(chk);
+    }
 
+    // Si no tiene vagones, crearlos automaticamente (2 turista + 1 business)
+    if (tiene_vagones == 0) {
+        sqlite3_stmt *ins_s;
+        if (sqlite3_prepare_v2(db,
+            "INSERT OR IGNORE INTO VAGONES(id_tren,numero_vagon,clase,capacidad_total)"
+            " VALUES(?1,1,'T',50),(?1,2,'T',50),(?1,3,'B',30);",
+            -1, &ins_s, NULL) == SQLITE_OK) {
+            sqlite3_bind_int(ins_s, 1, tr.id_t);
+            sqlite3_step(ins_s);
+            sqlite3_finalize(ins_s);
+        }
+    }
+
+    sqlite3_stmt *s;
     const char *sql =
         "SELECT v.numero_vagon, v.capacidad_total,"
-        "v.capacidad_total - COALESCE("
-        "(SELECT COUNT(*) FROM RESERVAS r"
-        "WHERE r.id_tr=?1 AND r.fecha_viaje=?2"
-        "AND r.num_vagon=v.numero_vagon"
-        "AND r.estado NOT IN ('CANCELADA'))"
-        ",0) AS libres"
+        " v.capacidad_total - COALESCE("
+        "  (SELECT COUNT(*) FROM RESERVAS r"
+        "   WHERE r.id_tr=? AND r.fecha_viaje=?"
+        "   AND r.num_vagon=v.numero_vagon"
+        "   AND r.estado NOT IN ('CANCELADA'))"
+        " ,0) AS libres"
         " FROM VAGONES v"
-        " WHERE v.id_tren=?3 AND v.clase=?4"
+        " WHERE v.id_tren=? AND v.clase=?"
         " ORDER BY v.numero_vagon;";
 
     if (sqlite3_prepare_v2(db, sql, -1, &s, NULL) != SQLITE_OK) {
-        enviar_mensaje(fd, "ERROR|500|Consulta vagones fallida");
+        enviar_fmt(fd, "ERROR|500|Consulta vagones fallida: %s", sqlite3_errmsg(db));
         sqlite3_close(db); return;
     }
     sqlite3_bind_int (s, 1, id_tr);
@@ -952,7 +989,7 @@ static void handle_mapa_vagon(sock_t fd, char *param) {
     sqlite3 *db = abrir_db(fd);
     if (!db) return;
 
-    /* 1. Capacidad del vagón */
+    // Capacidad del vagón
     sqlite3_stmt *s1;
     int capacidad = 0;
     if (sqlite3_prepare_v2(db,
@@ -969,7 +1006,7 @@ static void handle_mapa_vagon(sock_t fd, char *param) {
         sqlite3_close(db); return;
     }
 
-    /* 2. Asientos ocupados */
+    //Asientos ocupados
     int ocupado[MAX_ASIENTOS + 1];
     memset(ocupado, 0, sizeof(ocupado));
     sqlite3_stmt *s2;
@@ -989,7 +1026,7 @@ static void handle_mapa_vagon(sock_t fd, char *param) {
     }
     sqlite3_close(db);
 
-    /* 3. Enviar mapa */
+    //Enviar mapa
     enviar_fmt(fd, "MAPA_INFO|%d|%d", num_v, capacidad);
     for (int i = 1; i <= capacidad; i++)
         enviar_fmt(fd, "ASIENTO|%d|%d", i, ocupado[i]);
@@ -1003,17 +1040,17 @@ static void handle_mapa_vagon(sock_t fd, char *param) {
 void manejar_cliente(sock_t fd, const char *ip_cliente) {
     Sesion ses;
     memset(&ses, 0, sizeof(ses));
-    ses.fd    = fd;
-    ses.id_u  = -1;
+    ses.fd = fd;
+    ses.id_u = -1;
     strncpy(ses.ip, ip_cliente ? ip_cliente : "?", sizeof(ses.ip) - 1);
 
     char buf[PROTO_BUF_MAX];
 
     while (recibir_mensaje(fd, buf, sizeof(buf)) > 0) {
 
-        /* Parsear comando y resto del mensaje */
-        char *cmd   = strtok(buf, SEP);
-        char *param = strtok(NULL, "\n");   /* todo lo que sigue al primer | */
+        // Parsear comando y resto del mensaje
+        char *cmd= strtok(buf, SEP);
+        char *param = strtok(NULL, "\n");
 
         if (!cmd || cmd[0] == '\0'){
         	continue;
@@ -1021,7 +1058,7 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
 
         if (strcmp(cmd, CMD_LOGIN) == 0) {
             handle_login(fd, param, &ses);
-            /* Traza post-login: si tuvo exito, ses.email ya esta relleno */
+            //Traza post-login: si tuvo exito, ses.email ya esta relleno
             printf("[HANDLER] [%s] CMD=%s\n", ses.email[0] ? ses.email : "no-auth", cmd);
             continue;
         }
@@ -1031,17 +1068,17 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
             continue;
         }
 
-        /* ── Traza en consola del servidor ── */
+        //Traza en consola del servidor
         printf("[HANDLER] [%s] CMD=%s\n",
                ses.email[0] ? ses.email : "no-auth", cmd);
 
-        /* ── Guardia: el resto de comandos requieren autenticación ── */
+        //el resto de comandos requieren autenticación
         if (ses.id_u < 0) {
             enviar_mensaje(fd, "ERROR|401|No autenticado");
             continue;
         }
 
-        /* ── LOGOUT ── */
+        // LOGOUT
         if (strcmp(cmd, CMD_LOGOUT) == 0) {
             enviar_mensaje(fd, "OK|Sesion cerrada");
             log_evento(cfg.log_path, ses.email, "LOGOUT", "Cierre de sesion");
@@ -1069,7 +1106,7 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
         else if (strcmp(cmd, CMD_MIS_PUNTOS) == 0) handle_mis_puntos(fd, &ses);
         else if (strcmp(cmd, CMD_CANJEAR_PUNTOS) == 0) handle_canjear_puntos(fd, param, &ses);
 
-        /* ════ MAQUINISTA ─ solo roles MAQUINISTA y ADMIN ════ */
+
 
         else if (strcmp(cmd, CMD_CUADRANTE) == 0 ||
                  strcmp(cmd, CMD_MARCAR_INICIO) == 0 ||
@@ -1087,7 +1124,7 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
 
 
         else if (strcmp(ses.rol, "ADMIN") == 0) {
-            if      (strcmp(cmd, CMD_LISTAR_TRENES) == 0) hadmin_listar_trenes(fd);
+            if (strcmp(cmd, CMD_LISTAR_TRENES) == 0) hadmin_listar_trenes(fd);
             else if (strcmp(cmd, CMD_INSERTAR_TREN) == 0) hadmin_insertar_tren(fd, param);
             else if (strcmp(cmd, CMD_MODIFICAR_TREN) == 0) hadmin_modificar_tren(fd, param);
             else if (strcmp(cmd, CMD_ELIMINAR_TREN) == 0) hadmin_eliminar_tren(fd, param);
@@ -1118,14 +1155,14 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
             else { enviar_fmt(fd, "ERROR|400|Comando admin desconocido: %s", cmd); }
         }
 
-        /* ════ Comando desconocido o rol sin permiso ════ */
+
 
         else {
             enviar_fmt(fd, "ERROR|400|Comando desconocido o sin permiso: %s", cmd);
         }
     }
 
-    /* El cliente cerró la conexión o mandó LOGOUT */
+    // El cliente cerró la conexión o mandó LOGOUT
     printf("[HANDLER] Sesion de %s (%s) finalizada.\n",
            ses.email[0] ? ses.email : "no-auth",
            ses.ip);

@@ -1,14 +1,11 @@
 /*
  * clase_administrador.cpp
  *
- *  Created on: 9 may 2026
- *      Author: e.aranoa
+ *  Created on:
+ *      Author:
  */
 
 
-/*
- * clase_administrador.cpp  -  Sistema TRENFE  -  Fase 2
- */
 
 #include <iostream>
 #include <iomanip>
@@ -18,14 +15,14 @@
 #include <vector>
 #include <string>
 #include "clase_administrador.h"
-#include "usuario_base.h"   /* seleccionarEstacion() */
+#include "usuario_base.h"
 
 Administrador::Administrador(int id, const std::string& nom, const std::string& ape,
                              const std::string& mail, Conexion& c)
     : UsuarioBase(id, nom, ape, mail, "ADMIN", c)
 {}
 
-/* Imprime una lista de líneas recibidas del servidor */
+//Imprime una lista de líneas recibidas del servidor
 void Administrador::mostrarLista(const std::vector<std::string>& lista) {
     if (lista.empty()) { std::cout << "  (sin resultados)\n"; return; }
     for (const auto& l : lista)
@@ -39,7 +36,7 @@ static std::string pedirLinea(const std::string& prompt) {
     return v;
 }
 
-/* Si el usuario pulsa ENTER sin escribir nada, devuelve defaultVal */
+// Si el usuario pulsa ENTER sin escribir nada, devuelve defaultVal
 static std::string pedirLineaConDefault(const std::string& label, const std::string& defaultVal) {
     std::string v;
     std::cout << "  " << label << " [" << defaultVal << "] (ENTER=mantener): ";
@@ -322,11 +319,12 @@ void Administrador::menuGestionTrayectos() {
             std::string precio = pedirLinea("  Precio base           : ");
             std::string dias   = pedirLinea("  Días operación (LMXJVSD): ");
 
-            /* ── 3. Listar trenes justo antes de pedir ID tren ───── */
+            //Listar trenes justo antes de pedir ID tren
             conn.enviar("LISTAR_TRENES");
             auto trenes = conn.recibirLista();
             if (trenes.empty()) {
-                std::cout << "  (sin trenes — inserta un tren primero)\n"; continue;
+                std::cout << "  (sin trenes — inserta un tren primero)\n";
+                continue;
             }
             std::cout << "\n  -- Trenes disponibles --\n";
             std::cout << "  " << std::left
@@ -337,7 +335,9 @@ void Administrador::menuGestionTrayectos() {
                       << "Estado\n";
             std::cout << "  " << std::string(62, '-') << "\n";
             for (const auto& t : trenes) {
-                if (campo(t,0) != "TREN") continue;
+                if (campo(t,0) != "TREN"){
+                	continue;
+                }
                 std::cout << "  " << std::setw(5)  << campo(t,1)
                           << std::setw(22) << campo(t,2)
                           << std::setw(16) << campo(t,3)
@@ -658,7 +658,35 @@ void Administrador::menuGestionIncidencias() {
             conn.enviar("INSERTAR_INCIDENCIA|"+id_serv+"|"+tipo+"|"+desc+"|"+prior);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 4) {
-            std::string id = pedirLinea("  ID incidencia: ");
+            // Mostrar incidencias abiertas antes de pedir ID
+            conn.enviar("LISTAR_INCIDENCIAS|ABIERTA");
+            auto incs = conn.recibirLista();
+            if (incs.empty()) {
+                std::cout << "  No hay incidencias abiertas.\n";
+            } else {
+                std::cout << "\n  " << std::left
+                          << std::setw(6)  << "ID"
+                          << std::setw(8)  << "SERV"
+                          << std::setw(12) << "TIPO"
+                          << std::setw(8)  << "PRIOR"
+                          << std::setw(10) << "ESTADO"
+                          << "DESCRIPCION\n";
+                std::cout << "  " << std::string(72, '-') << "\n";
+                for (const auto& inc : incs) {
+                    // INCIDENCIA|id|id_serv|tipo|prioridad|estado|descripcion
+                    if (campo(inc, 0) != "INCIDENCIA") continue;
+                    std::cout << "  " << std::left
+                              << std::setw(6)  << campo(inc, 1)
+                              << std::setw(8)  << campo(inc, 2)
+                              << std::setw(12) << campo(inc, 3)
+                              << std::setw(8)  << campo(inc, 4)
+                              << std::setw(10) << campo(inc, 5)
+                              << campo(inc, 6) << "\n";
+                }
+                std::cout << "\n";
+            }
+            std::string id = pedirLinea("  ID incidencia a resolver (0=cancelar): ");
+            if (id == "0" || id.empty()) continue;
             conn.enviar("RESOLVER_INCIDENCIA|"+id+"|"+std::to_string(id_u));
             std::cout << "  " << conn.recibir() << "\n";
         }
@@ -666,7 +694,6 @@ void Administrador::menuGestionIncidencias() {
 }
 
 //INFORMES
-
 
 void Administrador::menuInformes() {
     int op = 0;
@@ -780,7 +807,6 @@ void Administrador::menuInformes() {
 }
 
 //LOGS
-
 
 void Administrador::menuLogs() {
     std::cout << "\n  Filtro de fecha (AAAA-MM-DD, Enter=todos): ";
