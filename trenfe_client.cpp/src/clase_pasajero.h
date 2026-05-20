@@ -5,7 +5,12 @@
  *      Author: e.aranoa
  */
 
+<<<<<<< HEAD
+/*
+ */
+=======
 
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
 
 #ifndef CLASE_PASAJERO_H_
 #define CLASE_PASAJERO_H_

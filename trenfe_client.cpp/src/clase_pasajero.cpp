@@ -6,7 +6,6 @@
  */
 
 /*
- * clase_pasajero.cpp  -  Sistema TRENFE  -  Fase 2
  */
 
 #include <iostream>
@@ -43,10 +42,18 @@ void Pasajero::mostrarMenuPrincipal() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (opcion) {
-            case 1: menuBuscarTrayecto(); break;
-            case 2: menuMisReservas();    break;
-            case 3: mostrarMisDatos();    break;
-            case 4: cambiarContrasenia(); break;
+            case 1:
+            	menuBuscarTrayecto();
+            	break;
+            case 2:
+            	menuMisReservas();
+            	break;
+            case 3:
+            	mostrarMisDatos();
+            	break;
+            case 4:
+            	cambiarContrasenia();
+            	break;
             case 0:
                 conn.enviar("LOGOUT");
                 conn.recibir();
@@ -96,9 +103,13 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
 
         std::string libres = campo(linea, 7);
         std::string libres_txt;
-        if (libres.empty() || libres == "-1")   libres_txt = "?";
-        else if (libres == "0")                 libres_txt = "AGOTADO";
-        else                                    libres_txt = libres + " libres";
+        if (libres.empty() || libres == "-1"){
+        	libres_txt = "?";
+        }else if(libres == "0"){
+        	libres_txt = "AGOTADO";
+        }else {
+        	libres_txt = libres + " libres";
+        }
 
         std::cout << "  "
                   << std::left
@@ -114,20 +125,7 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
     std::cout << "\n";
 }
 
-/* ─────────────────────────────────────────────────────────────────────
-   Helper: seleccionar estacion buscando por nombre de ciudad
-   Igual que en el administrador local:
-     1. El usuario escribe (parte del) nombre de ciudad.
-     2. Se busca LIKE "%texto%" en la caché local de estaciones.
-     3. Se muestran las coincidencias con ID y nombre.
-     4. Si solo hay una, se selecciona automáticamente.
-     5. Si hay varias, el usuario elige por ID.
-     6. Permite reintentar si no hay resultados.
-   Devuelve el id_est (cadena) o "" si cancela.
 
-   Formato servidor: ESTACION|id|nombre|ciudad|provincia|andenes|sala
-                      campo:   0   1      2      3         4
-   ───────────────────────────────────────────────────────────────────── */
 std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
                                 const std::string& etiqueta)
 {
@@ -199,7 +197,7 @@ std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
 }
 
 void Pasajero::menuBuscarTrayecto() {
-    cargarEstaciones();   /* usa caché la segunda vez */
+    cargarEstaciones();
 
     std::string s_orig = seleccionarEstacion(cacheEstaciones, "origen");
     if (s_orig.empty()) return;
@@ -478,6 +476,4 @@ void Pasajero::menuMisReservas() {
     }
 }
 
-/* ══════════════════════════════════════════════
-   FIN
-   ══════════════════════════════════════════════ */
+

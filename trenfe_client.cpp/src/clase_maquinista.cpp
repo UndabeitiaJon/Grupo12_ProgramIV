@@ -5,7 +5,6 @@
  *      Author: e.aranoa
  */
 /*
- * clase_maquinista.cpp  -  Sistema TRENFE  -  Fase 2
  */
 
 #include <iostream>
