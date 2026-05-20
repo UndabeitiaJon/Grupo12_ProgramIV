@@ -229,6 +229,10 @@
 [2026-05-19 17:42:43] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-19 17:43:32] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
 [2026-05-19 17:43:37] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+<<<<<<< HEAD
+[2026-05-19 17:44:52] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-19 17:44:52] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+=======
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
 [2026-05-19 18:04:08] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-19 18:04:20] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
@@ -393,6 +397,7 @@
 [2026-05-20 12:53:59] [juan@trenfe.com] [LOGOUT] Cierre de sesion
 [2026-05-20 12:53:59] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
 [2026-05-20 12:54:14] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+<<<<<<< HEAD
 [2026-05-20 13:02:50] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
 [2026-05-20 13:03:01] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-20 13:03:16] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
@@ -417,3 +422,6 @@
 [2026-05-20 13:35:19] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
 [2026-05-20 13:35:32] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
 [2026-05-20 13:40:50] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+=======
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
+>>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git
