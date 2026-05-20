@@ -56,7 +56,7 @@ void hadmin_listar_trenes(sock_t fd) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     if (sqlite3_prepare_v2(db,
-        "SELECT id_t, nombre_modelo, num_serie, anio_fab, estado_mant, fecha_ultima_revision"
+    	"SELECT id_t, nombre_modelo, num_serie, anio_fab, estado_mant, fecha_ult_revision"
         " FROM TRENES ORDER BY id_t;", -1, &s, NULL) != SQLITE_OK) {
         enviar_mensaje(fd, "ERROR|500|Consulta de trenes fallida");
         sqlite3_close(db); return;
@@ -88,7 +88,7 @@ void hadmin_insertar_tren(sock_t fd, char *param) {
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
-        "INSERT INTO TRENES(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ultima_revision)"
+    	"INSERT INTO TRENES(nombre_modelo,num_serie,anio_fab,estado_mant,fecha_ult_revision)"
         " VALUES(?,?,?,?,?);", -1, &s, NULL);
     sqlite3_bind_text(s,1,modelo,-1,SQLITE_STATIC);
     sqlite3_bind_text(s,2,serie,-1,SQLITE_STATIC);
@@ -123,7 +123,7 @@ void hadmin_modificar_tren(sock_t fd, char *param) {
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE TRENES SET nombre_modelo=?,num_serie=?,anio_fab=?,"
-        "estado_mant=?,fecha_ultima_revision=? WHERE id_t=?;", -1, &s, NULL);
+    		"estado_mant=?,fecha_ult_revision=? WHERE id_t=?;", -1, &s, NULL);
     sqlite3_bind_text(s,1,modelo,-1,SQLITE_STATIC);
     sqlite3_bind_text(s,2,serie,-1,SQLITE_STATIC);
     sqlite3_bind_int (s,3,atoi(s_anio));

@@ -282,3 +282,38 @@
 [2026-05-19 18:50:16] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
 [2026-05-19 18:50:54] [admin@trenfe.com] [LOGOUT] Cierre de sesion
 [2026-05-19 18:50:54] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:12:55] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:13:06] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:13:40] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:15:21] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:15:29] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:18:14] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:18:14] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:18:14] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:18:14] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:18:14] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:18:35] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:18:49] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:18:55] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:19:10] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:19:13] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
+[2026-05-19 19:20:53] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:21:07] [SISTEMA] [ARRANQUE] Servidor remoto TRENFE iniciado
+[2026-05-19 19:21:42] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:22:04] [juan@trenfe.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-19 19:22:27] [juan@trenfe.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-19 19:22:31] [juan@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-19 19:22:31] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:22:44] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:23:02] [juan@trenfe.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-19 19:23:22] [juan@trenfe.com] [CAMBIO_PASS] Cambio de contrasenia
+[2026-05-19 19:23:25] [juan@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-19 19:23:25] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:23:36] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:23:54] [admin@trenfe.com] [AUTH_OK] Login correcto – rol=ADMIN ip=127.0.0.1
+[2026-05-19 19:25:07] [admin@trenfe.com] [LOGOUT] Cierre de sesion
+[2026-05-19 19:25:07] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:25:13] [SISTEMA] [CONEXION] Cliente conectado desde 127.0.0.1
+[2026-05-19 19:25:24] [juan@trenfe.com] [AUTH_OK] Login correcto – rol=PASAJERO ip=127.0.0.1
+[2026-05-19 19:26:56] [SISTEMA] [DESCONEXION] Cliente desconectado desde 127.0.0.1
+[2026-05-19 19:27:00] [SISTEMA] [CIERRE] Servidor TRENFE detenido por señal
