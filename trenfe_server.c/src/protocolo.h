@@ -50,6 +50,10 @@
 #define CMD_LISTAR_ESTACIONES "LISTAR_ESTACIONES"  /* LISTAR_ESTACIONES             */
 #define CMD_LISTAR_CIUDADES "LISTAR_CIUDADES"    /* LISTAR_CIUDADES               */
 
+/* -- Vagones y asientos -- */
+#define CMD_LISTAR_VAGONES "LISTAR_VAGONES"  /* LISTAR_VAGONES|id_tr|fecha|clase  */
+#define CMD_MAPA_VAGON     "MAPA_VAGON"      /* MAPA_VAGON|id_tr|fecha|num_vagon  */
+
 /* -- Reservas -- */
 #define CMD_HACER_RESERVA   "HACER_RESERVA"      /* HACER_RESERVA|id_u|id_tr|fecha|clase|vagon|asiento|tipo_eq|peso_eq */
 #define CMD_CANCELAR_RESERVA "CANCELAR_RESERVA"   /* CANCELAR_RESERVA|id_res|id_u  */
@@ -137,6 +141,9 @@
 #define ROW_INCIDENCIA "INCIDENCIA"  /* INCIDENCIA|id|tipo|prioridad|estado|desc */
 #define ROW_LOG "LOG"         /* LOG|timestamp|usuario|accion|nivel */
 #define ROW_PUNTOS  "PUNTOS"      /* PUNTOS|id_u|puntos|descuento       */
+#define ROW_VAGON   "VAGON"       /* VAGON|num_vagon|capacidad|libres   */
+#define ROW_MAPA_INFO "MAPA_INFO"  /* MAPA_INFO|num_vagon|capacidad      */
+#define ROW_ASIENTO "ASIENTO"     /* ASIENTO|num_asiento|ocupado(0/1)   */
 
 /* ══════════════════════════════════════════════
    CODIGOS DE ERROR

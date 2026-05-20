@@ -52,4 +52,15 @@ std::string campo(const std::string& linea, int pos);
 /* Muestra una cabecera de menú con el nombre y rol del usuario */
 void mostrarCabecera(const std::string& nombre, const std::string& rol);
 
+/*
+ * seleccionarEstacion()
+ *
+ * Muestra un selector provincia → ciudad → estación usando la caché
+ * de líneas "ESTACION|id|nombre|ciudad|provincia|..." recibidas del servidor.
+ * Devuelve el id_est real (cadena) de la estación elegida, o "" si cancela.
+ * Declarada aquí para que tanto Pasajero como Administrador puedan usarla.
+ */
+std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
+                                const std::string& etiqueta);
+
 #endif /* USUARIO_BASE_H_ */

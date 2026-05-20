@@ -156,7 +156,7 @@ int init_database(void) {
         "CREATE TABLE IF NOT EXISTS INCIDENCIAS ("
         "id_inc INTEGER PRIMARY KEY AUTOINCREMENT,"
         "id_serv INTEGER, id_u_reporta INTEGER,"
-        "tipo_incidencia TEXT, descripcion TEXT,"
+        "tipo TEXT, descripcion TEXT,"
         "prioridad TEXT DEFAULT 'MEDIA',"
         "estado TEXT DEFAULT 'ABIERTA',"
         "fecha_reporte TEXT, fecha_resolucion TEXT,"
@@ -243,7 +243,7 @@ void seed_database(void) {
 
     /* ── Bloque 2: Estaciones españolas principales ── */
     const char *sql_estaciones =
-        "INSERT OR IGNORE INTO ESTACIONES (id_est,nombre,ciudad,provincia,num_andenes,tiene_sala_espera) VALUES"
+        "INSERT OR IGNORE INTO ESTACIONES (id_est,nombre,ciudad,provincia,num_andenes,tiene_sala_club) VALUES"
         " (1,'Madrid Atocha','Madrid','Madrid',22,1),"
         " (2,'Madrid Chamartín','Madrid','Madrid',16,1),"
         " (3,'Barcelona Sants','Barcelona','Barcelona',14,1),"
@@ -278,16 +278,35 @@ void seed_database(void) {
         sqlite3_free(err); err = NULL;
     }
 
-    /* ── Bloque 4: Vagones (2 turista + 1 business por tren) ── */
+    /* ── Bloque 4: Vagones ── */
+    /* Crear índice único para que INSERT OR IGNORE funcione correctamente */
+    sqlite3_exec(db,
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_vagones_unico"
+        " ON VAGONES(id_tren, numero_vagon);",
+        0, 0, NULL);
+
     const char *sql_vagones =
         "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES"
-        " (1,1,'T',50),(1,2,'T',50),(1,3,'B',30),"
-        " (2,1,'T',50),(2,2,'T',50),(2,3,'B',30),"
-        " (3,1,'T',48),(3,2,'T',48),(3,3,'B',24),"
-        " (4,1,'T',48),(4,2,'T',48),(4,3,'B',24),"
-        " (5,1,'T',60),(5,2,'T',60),"
-        " (6,1,'T',50),(6,2,'T',50),(6,3,'B',30),"
-        " (7,1,'T',55),(7,2,'T',55),(7,3,'B',25);";
+        " (1,1,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (1,2,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (1,3,'B',30);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (2,1,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (2,2,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (2,3,'B',30);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (3,1,'T',48);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (3,2,'T',48);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (3,3,'B',24);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (4,1,'T',48);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (4,2,'T',48);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (4,3,'B',24);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (5,1,'T',60);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (5,2,'T',60);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (6,1,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (6,2,'T',50);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (6,3,'B',30);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (7,1,'T',55);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (7,2,'T',55);"
+        "INSERT OR IGNORE INTO VAGONES (id_tren,numero_vagon,clase,capacidad_total) VALUES (7,3,'B',25);";
 
     if (sqlite3_exec(db, sql_vagones, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error vagones: %s\n", err);
@@ -296,30 +315,30 @@ void seed_database(void) {
 
     /* ── Bloque 5: Trayectos (rutas principales) ── */
     const char *sql_trayectos =
-        "INSERT OR IGNORE INTO TRAYECTOS (id_tr,id_est_origen,id_est_destino,id_t,hora_salida,hora_llegada,precio_base,dias_operacion,activo) VALUES"
+        "INSERT OR IGNORE INTO TRAYECTOS (id_tr,id_est_origen,id_est_destino,id_t,hora_salida,hora_llegada,precio_base,dias_operacion) VALUES"
         /* Madrid-Barcelona */
-        " (1,1,3,1,'07:00','09:30',75.00,'LMXJVSD',1),"
-        " (2,1,3,2,'10:00','12:30',75.00,'LMXJVSD',1),"
-        " (3,3,1,1,'16:00','18:30',75.00,'LMXJVSD',1),"
+        " (1,1,3,1,'07:00','09:30',75.00,'LMXJVSD'),"
+        " (2,1,3,2,'10:00','12:30',75.00,'LMXJVSD'),"
+        " (3,3,1,1,'16:00','18:30',75.00,'LMXJVSD'),"
         /* Madrid-Sevilla */
-        " (4,1,5,3,'08:30','11:00',55.00,'LMXJVSD',1),"
-        " (5,5,1,4,'17:00','19:30',55.00,'LMXJVSD',1),"
+        " (4,1,5,3,'08:30','11:00',55.00,'LMXJVSD'),"
+        " (5,5,1,4,'17:00','19:30',55.00,'LMXJVSD'),"
         /* Madrid-Valencia */
-        " (6,1,6,3,'09:00','11:45',40.00,'LMXJVSD',1),"
-        " (7,6,1,4,'18:00','20:45',40.00,'LMXJVSD',1),"
+        " (6,1,6,3,'09:00','11:45',40.00,'LMXJVSD'),"
+        " (7,6,1,4,'18:00','20:45',40.00,'LMXJVSD'),"
         /* Madrid-Málaga */
-        " (8,1,8,2,'07:30','09:50',65.00,'LMXJVSD',1),"
-        " (9,8,1,2,'16:30','18:50',65.00,'LMXJVSD',1),"
+        " (8,1,8,2,'07:30','09:50',65.00,'LMXJVSD'),"
+        " (9,8,1,2,'16:30','18:50',65.00,'LMXJVSD'),"
         /* Barcelona-Sevilla */
-        " (10,3,5,1,'11:00','14:30',95.00,'LMXJVS',1),"
+        " (10,3,5,1,'11:00','14:30',95.00,'LMXJVS'),"
         /* Madrid-Zaragoza */
-        " (11,1,9,5,'06:50','08:10',30.00,'LMXJVSD',1),"
-        " (12,9,1,5,'19:00','20:20',30.00,'LMXJVSD',1),"
+        " (11,1,9,5,'06:50','08:10',30.00,'LMXJVSD'),"
+        " (12,9,1,5,'19:00','20:20',30.00,'LMXJVSD'),"
         /* Madrid-Valladolid */
-        " (13,2,11,5,'07:15','08:35',25.00,'LMXJVSD',1),"
-        " (14,11,2,5,'18:30','19:50',25.00,'LMXJVSD',1),"
+        " (13,2,11,5,'07:15','08:35',25.00,'LMXJVSD'),"
+        " (14,11,2,5,'18:30','19:50',25.00,'LMXJVSD'),"
         /* Valencia-Barcelona */
-        " (15,6,3,7,'09:30','12:00',45.00,'LMXJVSD',1);";
+        " (15,6,3,7,'09:30','12:00',45.00,'LMXJVSD');";
 
     if (sqlite3_exec(db, sql_trayectos, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error trayectos: %s\n", err);
@@ -343,19 +362,24 @@ void seed_database(void) {
         sqlite3_free(err); err = NULL;
     }
 
-    /* ── Bloque 7: Servicios programados (próximas semanas) ── */
+    /* ── Bloque 7: Servicios programados ── */
+    /* Índice único para evitar duplicar servicios por (id_tr, fecha) */
+    sqlite3_exec(db,
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_servicios_unico"
+        " ON SERVICIOS_OPERATIVOS(id_tr, fecha);",
+        0, 0, NULL);
+
     const char *sql_servicios =
-        "INSERT OR IGNORE INTO SERVICIOS (id_serv,id_tr,id_t,fecha,estado,retraso_min) VALUES"
-        " (1,1,1,'2026-05-26','PROGRAMADO',0),"
-        " (2,2,2,'2026-05-26','PROGRAMADO',0),"
-        " (3,4,3,'2026-05-26','PROGRAMADO',0),"
-        " (4,6,3,'2026-05-26','PROGRAMADO',0),"
-        " (5,8,2,'2026-05-26','PROGRAMADO',0),"
-        " (6,11,5,'2026-05-26','PROGRAMADO',0),"
-        " (7,1,1,'2026-05-27','PROGRAMADO',0),"
-        " (8,4,3,'2026-05-27','PROGRAMADO',0),"
-        " (9,6,3,'2026-05-27','PROGRAMADO',0),"
-        " (10,15,7,'2026-05-27','PROGRAMADO',0);";
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (1,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (2,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (4,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (6,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (8,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (11,'2026-06-02','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (1,'2026-06-03','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (4,'2026-06-03','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (6,'2026-06-03','PROGRAMADO',0);"
+        "INSERT OR IGNORE INTO SERVICIOS_OPERATIVOS (id_tr,fecha,estado_serv,minutos_retraso) VALUES (15,'2026-06-03','PROGRAMADO',0);";
 
     if (sqlite3_exec(db, sql_servicios, 0, 0, &err) != SQLITE_OK) {
         fprintf(stderr, "[SEED] Error servicios: %s\n", err);

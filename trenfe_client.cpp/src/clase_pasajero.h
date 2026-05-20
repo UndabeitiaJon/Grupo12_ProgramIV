@@ -32,7 +32,6 @@ private:
                           const std::string& fecha,
                           const std::string& clase);
     void menuMisReservas();
-    void menuPuntos();
 
     /* Helpers de presentación */
     void mostrarTrayectos(const std::vector<std::string>& lista);

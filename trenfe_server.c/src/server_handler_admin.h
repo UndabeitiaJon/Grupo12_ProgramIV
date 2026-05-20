@@ -42,6 +42,7 @@ void hadmin_deshabilitar_user (sock_t fd, char *param);
 void hadmin_listar_servicios  (sock_t fd, char *param);
 void hadmin_insertar_servicio (sock_t fd, char *param);
 void hadmin_cancelar_servicio (sock_t fd, char *param);
+void hadmin_asignar_empleado   (sock_t fd, char *param);
 
 /* ── Incidencias ── */
 void hadmin_listar_incidencias (sock_t fd, char *param);
