@@ -571,3 +571,49 @@
 >>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
 [2026-05-19 10:27:17] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
 [2026-05-19 10:27:31] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:37:20] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-19 18:37:33] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:38:09] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:38:18] [juan@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:38:18] [juan@trenfe.com] [BLOQUEO] Demasiados intentos de login
+[2026-05-19 18:38:23] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-19 18:41:33] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-19 18:41:52] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:41:54] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:41:54] [] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:41:54] [] [BLOQUEO] Demasiados intentos de login
+[2026-05-19 18:41:56] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-19 18:47:18] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-19 18:47:30] [admin@trenfe.com] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-19 18:47:41] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-19 18:47:53] [SISTEMA] [GTFS] Importacion completada
+[2026-05-19 18:47:53] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-05-19 18:49:11] [admin@trenfe.com] [CAMBIO_PASS] Contrasena admin cambiada
+[2026-05-19 18:49:18] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-19 18:49:20] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+<<<<<<< HEAD
+[2026-05-20 10:11:38] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-20 10:11:57] [maria@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-20 10:40:21] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-20 10:40:33] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-20 10:42:29] [SISTEMA] [GTFS] Importacion completada
+[2026-05-20 10:42:29] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-05-20 10:43:11] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-20 10:43:12] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-20 10:56:30] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-20 10:56:39] [admin123] [LOGIN_FAIL] Credenciales incorrectas
+[2026-05-20 10:56:51] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-20 10:58:05] [SISTEMA] [GTFS] Importacion completada
+[2026-05-20 10:58:05] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-05-20 11:40:55] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-20 11:41:02] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+[2026-05-20 11:41:08] [SISTEMA] [ARRANQUE] Administrador local TRENFE iniciado
+[2026-05-20 11:41:21] [admin@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-20 11:41:30] [SISTEMA] [GTFS] Importacion completada
+[2026-05-20 11:41:30] [admin@trenfe.com] [IMPORT_GTFS] ./data/importar
+[2026-05-20 11:41:39] [admin@trenfe.com] [LOGOUT] Sesion admin cerrada
+[2026-05-20 11:41:49] [juan@trenfe.com] [LOGIN] Sesion iniciada correctamente
+[2026-05-20 11:41:52] [juan@trenfe.com] [LOGOUT] Sesion pasajero cerrada
+[2026-05-20 11:41:54] [SISTEMA] [CIERRE] Administrador local TRENFE detenido
+=======
+>>>>>>> branch 'main' of https://github.com/UndabeitiaJon/Grupo12_ProgramIV.git

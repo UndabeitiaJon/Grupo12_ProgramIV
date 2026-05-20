@@ -16,6 +16,7 @@
 #include <vector>
 #include <string>
 #include "clase_administrador.h"
+#include "usuario_base.h"   /* seleccionarEstacion() */
 
 Administrador::Administrador(int id, const std::string& nom, const std::string& ape,
                              const std::string& mail, Conexion& c)
@@ -184,56 +185,49 @@ void Administrador::menuGestionTrayectos() {
             conn.enviar("LISTAR_TRAYECTOS");
             mostrarLista(conn.recibirLista());
         } else if (op == 2) {
-            /* Mostrar trenes disponibles */
-            std::cout << "\n  -- Trenes disponibles --\n";
+            /* ── 1. Listar trenes para elegir ID ─────────────────── */
             conn.enviar("LISTAR_TRENES");
             auto trenes = conn.recibirLista();
             if (trenes.empty()) {
-                std::cout << "  (sin trenes)\n";
+                std::cout << "  (sin trenes — inserta un tren primero)\n";
             } else {
+                std::cout << "\n  -- Trenes disponibles --\n";
                 std::cout << "  " << std::left
-                          << std::setw(6) << "ID"
-                          << std::setw(20) << "Modelo"
+                          << std::setw(5) << "ID"
+                          << std::setw(22) << "Modelo"
                           << std::setw(16) << "N.Serie"
-                          << std::setw(6)  << "Anio"
+                          << std::setw(6)  << "Año"
                           << "Estado\n";
-                std::cout << "  " << std::string(60, '-') << "\n";
+                std::cout << "  " << std::string(62, '-') << "\n";
                 for (const auto& t : trenes) {
-                    std::cout << "  " << std::setw(6)  << campo(t, 1)
-                              << std::setw(20) << campo(t, 2)
-                              << std::setw(16) << campo(t, 3)
-                              << std::setw(6)  << campo(t, 4)
-                              << campo(t, 5) << "\n";
+                    if (campo(t,0) != "TREN") continue;
+                    std::cout << "  " << std::setw(5)  << campo(t,1)
+                              << std::setw(22) << campo(t,2)
+                              << std::setw(16) << campo(t,3)
+                              << std::setw(6)  << campo(t,4)
+                              << campo(t,5) << "\n";
                 }
             }
 
-            /* Mostrar estaciones disponibles */
-            std::cout << "\n  -- Estaciones disponibles --\n";
+            /* ── 2. Cargar estaciones y elegir origen/destino ────── */
             conn.enviar("LISTAR_ESTACIONES");
             auto estaciones = conn.recibirLista();
-            if (estaciones.empty()) {
-                std::cout << "  (sin estaciones)\n";
-            } else {
-                std::cout << "  " << std::left
-                          << std::setw(6)  << "ID"
-                          << std::setw(30) << "Nombre"
-                          << "Ciudad\n";
-                std::cout << "  " << std::string(55, '-') << "\n";
-                for (const auto& e : estaciones) {
-                    std::cout << "  " << std::setw(6)  << campo(e, 1)
-                              << std::setw(30) << campo(e, 2)
-                              << campo(e, 3) << "\n";
-                }
-            }
-            std::cout << "\n";
-            std::string id_t   = pedirLinea("  ID tren       : ");
-            std::string orig   = pedirLinea("  ID est. origen : ");
-            std::string dest   = pedirLinea("  ID est. destino: ");
-            std::string h_sal  = pedirLinea("  Hora salida (HH:MM): ");
-            std::string h_ll   = pedirLinea("  Hora llegada  : ");
+
+            std::cout << "\n  Selecciona estación ORIGEN:\n";
+            std::string orig = seleccionarEstacion(estaciones, "origen");
+            if (orig.empty()) { std::cout << "  Cancelado.\n"; continue; }
+
+            std::cout << "\n  Selecciona estación DESTINO:\n";
+            std::string dest = seleccionarEstacion(estaciones, "destino");
+            if (dest.empty()) { std::cout << "  Cancelado.\n"; continue; }
+
+            /* ── 3. Resto de datos del trayecto ──────────────────── */
+            std::string id_t   = pedirLinea("  ID tren (de la lista arriba): ");
+            std::string h_sal  = pedirLinea("  Hora salida  (HH:MM): ");
+            std::string h_ll   = pedirLinea("  Hora llegada (HH:MM): ");
             std::string dur    = pedirLinea("  Duración (min): ");
-            std::string precio = pedirLinea("  Precio base   : ");
-            std::string dias   = pedirLinea("  Días (LMXJVSD): ");
+            std::string precio = pedirLinea("  Precio base (ej: 75.00): ");
+            std::string dias   = pedirLinea("  Días operación (LMXJVSD): ");
             conn.enviar("INSERTAR_TRAYECTO|"+id_t+"|"+orig+"|"+dest+"|"+h_sal+"|"+h_ll+"|"+dur+"|"+precio+"|"+dias);
             std::cout << "  " << conn.recibir() << "\n";
         } else if (op == 3) {
@@ -380,9 +374,42 @@ void Administrador::menuInformes() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (op == 1) {
+            conn.enviar("LISTAR_TRENES");
+            auto trenes = conn.recibirLista();
+            std::cout << "\n  -- Trenes --\n";
+            for (const auto& t : trenes)
+                if (campo(t,0) == "TREN")
+                    std::cout << "  [" << campo(t,1) << "] " << campo(t,2)
+                              << " (" << campo(t,3) << ")\n";
+
             std::string id_t = pedirLinea("  ID tren: ");
             conn.enviar("INFORME_OCUPACION|"+id_t);
-            mostrarLista(conn.recibirLista());
+            auto lista = conn.recibirLista();
+
+            std::cout << "\n  ========================================\n";
+            std::cout << "  INFORME DE OCUPACION - TREN " << id_t << "\n";
+            std::cout << "  ========================================\n";
+            if (lista.empty()) {
+                std::cout << "  Sin datos para este tren.\n";
+            } else {
+                std::cout << "  " << std::left
+                          << std::setw(4)  << "TR"
+                          << std::setw(22) << "ORIGEN"
+                          << std::setw(22) << "DESTINO"
+                          << std::setw(10) << "RESERVAS"
+                          << "OCUP%\n";
+                std::cout << "  " << std::string(62, '-') << "\n";
+                /* OCUPACION|id_tr|origen|destino|reservas|pct */
+                for (const auto& linea : lista) {
+                    if (campo(linea,0) != "OCUPACION") continue;
+                    std::cout << "  " << std::left
+                              << std::setw(4)  << campo(linea,1)
+                              << std::setw(22) << campo(linea,2)
+                              << std::setw(22) << campo(linea,3)
+                              << std::setw(10) << campo(linea,4)
+                              << campo(linea,5) << "%\n";
+                }
+            }
         } else if (op == 2) {
             std::string id_tr = pedirLinea("  ID trayecto: ");
             conn.enviar("INFORME_INGRESOS|"+id_tr);
@@ -414,4 +441,3 @@ void Administrador::menuLogs() {
     mostrarLista(lista);
     std::cout << "\n  (" << lista.size() << " entradas)\n";
 }
-

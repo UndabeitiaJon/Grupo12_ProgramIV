@@ -87,41 +87,148 @@ void Pasajero::mostrarTrayectos(const std::vector<std::string>& lista) {
               << std::setw(7)  << "SAL."
               << std::setw(7)  << "LLEGA"
               << std::setw(10) << "PRECIO"
+              << std::setw(8)  << "LIBRES"
               << "\n";
-    std::cout << "  " << std::string(72, '-') << "\n";
+    std::cout << "  " << std::string(80, '-') << "\n";
 
     for (const auto& linea : lista) {
-        /* TRAYECTO|id|origen|destino|hora_sal|hora_ll|precio|estado */
-        /* o con asientos libres: TRAYECTO|id|orig|dest|sal|ll|precio|libres|dias */
-        std::string tipo = campo(linea, 0);
-        if (tipo != "TRAYECTO") continue;
+        /* TRAYECTO|id|origen|destino|hora_sal|hora_ll|precio|libres|dias */
+        /*          1   2     3       4        5       6      7      8   */
+        if (campo(linea, 0) != "TRAYECTO") continue;
+
+        std::string libres = campo(linea, 7);
+        std::string libres_txt = libres.empty() ? "-" :
+                                 (libres == "0" ? "AGOTADO" : libres + " plz");
+
         std::cout << "  " << std::left
                   << std::setw(4)  << campo(linea, 1)
                   << std::setw(22) << campo(linea, 2)
                   << std::setw(22) << campo(linea, 3)
                   << std::setw(7)  << campo(linea, 4)
                   << std::setw(7)  << campo(linea, 5)
-                  << std::setw(10) << campo(linea, 6)
+                  << std::setw(10) << (campo(linea, 6) + " €")
+                  << std::setw(8)  << libres_txt
                   << "\n";
     }
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   Helper: seleccionar estacion en tres pasos
+   Equivalente a HashMap<Provincia, HashMap<Ciudad, List<Estacion>>>.
+   Flujo:
+     1. Muestra provincias numeradas.
+     2. El usuario elige provincia.
+     3. Muestra ciudades de esa provincia numeradas.
+     4. El usuario elige ciudad.
+     5. Muestra estaciones de esa ciudad con su ID real.
+     6. El usuario introduce el ID de la estacion.
+   Devuelve el ID de la estacion elegida, o "" si cancela.
+
+   Formato del servidor: ESTACION|id|nombre|ciudad|provincia|andenes|sala
+                         campo:    0   1      2      3         4
+   ───────────────────────────────────────────────────────────────────── */
+std::string seleccionarEstacion(const std::vector<std::string>& cacheEstaciones,
+                                       const std::string& etiqueta)
+{
+    typedef std::pair<std::string, std::string>              ParEstacion;   /* {id, nombre} */
+    typedef std::pair<std::string, std::vector<ParEstacion>> EntradaCiudad; /* {ciudad, estaciones} */
+    typedef std::pair<std::string, std::vector<EntradaCiudad>> EntradaProv; /* {prov, ciudades} */
+
+    /* ── 1. Construir mapa provincia -> ciudad -> estaciones ───────── */
+    std::vector<EntradaProv> mapaProv;
+
+    for (const auto& e : cacheEstaciones) {
+        if (campo(e, 0) != "ESTACION") continue;
+        std::string idEst    = campo(e, 1);
+        std::string nomEst   = campo(e, 2);
+        std::string ciudad   = campo(e, 3);
+        std::string provincia = campo(e, 4);
+        if (provincia.empty()) provincia = "Otras";
+        if (ciudad.empty())    ciudad    = nomEst;
+
+        /* Buscar o crear provincia */
+        EntradaProv* prov = nullptr;
+        for (auto& ep : mapaProv)
+            if (ep.first == provincia) { prov = &ep; break; }
+        if (!prov) {
+            mapaProv.push_back({provincia, {}});
+            prov = &mapaProv.back();
+        }
+
+        /* Buscar o crear ciudad dentro de la provincia */
+        EntradaCiudad* ciu = nullptr;
+        for (auto& ec : prov->second)
+            if (ec.first == ciudad) { ciu = &ec; break; }
+        if (!ciu) {
+            prov->second.push_back({ciudad, {}});
+            ciu = &prov->second.back();
+        }
+
+        ciu->second.push_back({idEst, nomEst});
+    }
+
+    /* ── 2. Mostrar provincias ─────────────────────────────────────── */
+    std::cout << "\n  -- Provincias disponibles (" << etiqueta << ") --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (size_t i = 0; i < mapaProv.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << mapaProv[i].first << "\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    std::cout << "  Numero de provincia (0 = cancelar): ";
+    std::string s_np;
+    std::getline(std::cin, s_np);
+    int np = 0;
+    try { np = std::stoi(s_np); } catch (...) { np = 0; }
+    if (np <= 0 || np > (int)mapaProv.size()) return "";
+
+    const std::vector<EntradaCiudad>& ciudades = mapaProv[np - 1].second;
+    const std::string& provElegida             = mapaProv[np - 1].first;
+
+    /* ── 3. Mostrar ciudades de esa provincia ──────────────────────── */
+    std::cout << "\n  -- Ciudades en " << provElegida << " --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (size_t i = 0; i < ciudades.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << ciudades[i].first << "\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    std::cout << "  Numero de ciudad (0 = cancelar): ";
+    std::string s_nc;
+    std::getline(std::cin, s_nc);
+    int nc = 0;
+    try { nc = std::stoi(s_nc); } catch (...) { nc = 0; }
+    if (nc <= 0 || nc > (int)ciudades.size()) return "";
+
+    const std::vector<ParEstacion>& estaciones = ciudades[nc - 1].second;
+    const std::string& ciudadElegida           = ciudades[nc - 1].first;
+
+    /* ── 4. Mostrar estaciones de esa ciudad con numeración ──────── */
+    std::cout << "\n  -- Estaciones en " << ciudadElegida << " --\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+    for (size_t i = 0; i < estaciones.size(); ++i)
+        std::cout << "  [" << (i + 1) << "] " << estaciones[i].second
+                  << "  (id: " << estaciones[i].first << ")\n";
+    std::cout << "  " << std::string(36, '-') << "\n";
+
+    /* ── 5. El usuario elige por número; devolvemos el id_est real ─ */
+    std::string s_ne;
+    std::cout << "  Número " << etiqueta << " (0 = cancelar): ";
+    std::getline(std::cin, s_ne);
+    int ne = 0;
+    try { ne = std::stoi(s_ne); } catch (...) { ne = 0; }
+    if (ne <= 0 || ne > (int)estaciones.size()) return "";
+    return estaciones[ne - 1].first;   /* id_est real de la BD */
 }
 
 void Pasajero::menuBuscarTrayecto() {
     cargarEstaciones();   /* usa caché la segunda vez */
 
-    /* Mostrar estaciones disponibles */
-    std::cout << "\n  -- Estaciones disponibles --\n";
-    for (const auto& e : cacheEstaciones) {
-        /* ESTACION|id|nombre|ciudad|provincia|andenes|sala */
-        if (campo(e, 0) == "ESTACION") {
-            std::cout << "  [" << campo(e, 1) << "] "
-                      << campo(e, 2) << " (" << campo(e, 3) << ")\n";
-        }
-    }
+    std::string s_orig = seleccionarEstacion(cacheEstaciones, "origen");
+    if (s_orig.empty()) return;
 
-    std::string s_orig, s_dest, fecha, clase;
-    std::cout << "\n  ID estación origen  : "; std::getline(std::cin, s_orig);
-    std::cout << "  ID estación destino : "; std::getline(std::cin, s_dest);
+    std::string s_dest = seleccionarEstacion(cacheEstaciones, "destino");
+    if (s_dest.empty()) return;
+
+    std::string fecha, clase;
     std::cout << "  Fecha (AAAA-MM-DD)  : "; std::getline(std::cin, fecha);
     std::cout << "  Clase (T/B)         : "; std::getline(std::cin, clase);
     if (clase != "B" && clase != "b") clase = "T";

@@ -971,6 +971,148 @@ static void handle_detalle_reserva(sock_t fd, char *param, Sesion *ses) {
 }
 
 /* ══════════════════════════════════════════════════════════════
+   PRIORIDAD 4 — VAGONES Y MAPA DE ASIENTOS
+   ══════════════════════════════════════════════════════════════ */
+
+/*
+ * handle_listar_vagones()
+ *
+ * param: "id_tr|fecha|clase"
+ * Responde una línea por vagón de la clase pedida:
+ *   VAGON|num_vagon|capacidad|libres
+ * La cuenta de libres se hace en la misma consulta (sin abrir BD extra).
+ */
+static void handle_listar_vagones(sock_t fd, char *param) {
+    char *s_id_tr = strtok(param, SEP);
+    char *fecha   = strtok(NULL,  SEP);
+    char *clase   = strtok(NULL,  SEP);
+
+    if (!s_id_tr || !fecha || !clase) {
+        enviar_mensaje(fd, "ERROR|400|Formato: LISTAR_VAGONES|id_tr|fecha|clase");
+        return;
+    }
+    int id_tr = atoi(s_id_tr);
+
+    Trayecto tr = obtener_trayecto_por_id(id_tr);
+    if (tr.id_tr <= 0) {
+        enviar_fmt(fd, "FIN_LISTA|0");
+        return;
+    }
+
+    sqlite3 *db = abrir_db(fd);
+    if (!db) return;
+
+    sqlite3_stmt *s;
+    /* Subconsulta correlacionada para contar reservas activas por vagón */
+    const char *sql =
+        "SELECT v.numero_vagon, v.capacidad_total,"
+        "       v.capacidad_total - COALESCE("
+        "         (SELECT COUNT(*) FROM RESERVAS r"
+        "          WHERE r.id_tr=?1 AND r.fecha_viaje=?2"
+        "            AND r.num_vagon=v.numero_vagon"
+        "            AND r.estado NOT IN ('CANCELADA'))"
+        "       ,0) AS libres"
+        " FROM VAGONES v"
+        " WHERE v.id_tren=?3 AND v.clase=?4"
+        " ORDER BY v.numero_vagon;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &s, NULL) != SQLITE_OK) {
+        enviar_mensaje(fd, "ERROR|500|Consulta vagones fallida");
+        sqlite3_close(db); return;
+    }
+    sqlite3_bind_int (s, 1, id_tr);
+    sqlite3_bind_text(s, 2, fecha, -1, SQLITE_STATIC);
+    sqlite3_bind_int (s, 3, tr.id_t);
+    sqlite3_bind_text(s, 4, clase, -1, SQLITE_STATIC);
+
+    int n = 0;
+    while (sqlite3_step(s) == SQLITE_ROW) {
+        enviar_fmt(fd, "VAGON|%d|%d|%d",
+                   sqlite3_column_int(s, 0),
+                   sqlite3_column_int(s, 1),
+                   sqlite3_column_int(s, 2));
+        n++;
+    }
+    sqlite3_finalize(s);
+    sqlite3_close(db);
+    enviar_fmt(fd, "FIN_LISTA|%d", n);
+}
+
+/*
+ * handle_mapa_vagon()
+ *
+ * param: "id_tr|fecha|num_vagon"
+ * Responde:
+ *   MAPA_INFO|num_vagon|capacidad
+ *   ASIENTO|num|0(libre) o 1(ocupado)   (uno por asiento)
+ *   FIN_LISTA|capacidad
+ */
+static void handle_mapa_vagon(sock_t fd, char *param) {
+    char *s_id_tr = strtok(param, SEP);
+    char *fecha   = strtok(NULL,  SEP);
+    char *s_num_v = strtok(NULL,  SEP);
+
+    if (!s_id_tr || !fecha || !s_num_v) {
+        enviar_mensaje(fd, "ERROR|400|Formato: MAPA_VAGON|id_tr|fecha|num_vagon");
+        return;
+    }
+    int id_tr = atoi(s_id_tr);
+    int num_v = atoi(s_num_v);
+
+    Trayecto tr = obtener_trayecto_por_id(id_tr);
+    if (tr.id_tr <= 0) {
+        enviar_mensaje(fd, "ERROR|404|Trayecto no encontrado");
+        return;
+    }
+
+    sqlite3 *db = abrir_db(fd);
+    if (!db) return;
+
+    /* 1. Capacidad del vagón */
+    sqlite3_stmt *s1;
+    int capacidad = 0;
+    if (sqlite3_prepare_v2(db,
+        "SELECT capacidad_total FROM VAGONES WHERE id_tren=? AND numero_vagon=?;",
+        -1, &s1, NULL) == SQLITE_OK) {
+        sqlite3_bind_int(s1, 1, tr.id_t);
+        sqlite3_bind_int(s1, 2, num_v);
+        if (sqlite3_step(s1) == SQLITE_ROW)
+            capacidad = sqlite3_column_int(s1, 0);
+        sqlite3_finalize(s1);
+    }
+    if (capacidad == 0) {
+        enviar_mensaje(fd, "ERROR|404|Vagon no encontrado o sin capacidad");
+        sqlite3_close(db); return;
+    }
+
+    /* 2. Asientos ocupados */
+    int ocupado[MAX_ASIENTOS + 1];
+    memset(ocupado, 0, sizeof(ocupado));
+    sqlite3_stmt *s2;
+    if (sqlite3_prepare_v2(db,
+        "SELECT num_asiento FROM RESERVAS"
+        " WHERE id_tr=? AND fecha_viaje=? AND num_vagon=?"
+        "   AND estado IN ('CONFIRMADA','PENDIENTE');",
+        -1, &s2, NULL) == SQLITE_OK) {
+        sqlite3_bind_int (s2, 1, id_tr);
+        sqlite3_bind_text(s2, 2, fecha, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int (s2, 3, num_v);
+        while (sqlite3_step(s2) == SQLITE_ROW) {
+            int a = sqlite3_column_int(s2, 0);
+            if (a > 0 && a <= MAX_ASIENTOS) ocupado[a] = 1;
+        }
+        sqlite3_finalize(s2);
+    }
+    sqlite3_close(db);
+
+    /* 3. Enviar mapa */
+    enviar_fmt(fd, "MAPA_INFO|%d|%d", num_v, capacidad);
+    for (int i = 1; i <= capacidad; i++)
+        enviar_fmt(fd, "ASIENTO|%d|%d", i, ocupado[i]);
+    enviar_fmt(fd, "FIN_LISTA|%d", capacidad);
+}
+
+/* ══════════════════════════════════════════════════════════════
    BUCLE PRINCIPAL DE SESIÓN
    ══════════════════════════════════════════════════════════════ */
 
@@ -990,6 +1132,10 @@ void manejar_cliente(sock_t fd, const char *ip_cliente) {
         char *param = strtok(NULL, "\n");   /* todo lo que sigue al primer | */
 
         if (!cmd || cmd[0] == '\0') continue;
+
+        /* ── Traza en consola del servidor ── */
+        printf("[HANDLER] [%s] CMD=%s\n",
+               ses.email[0] ? ses.email : "no-auth", cmd);
 
         /* ── LOGIN ── */
         if (strcmp(cmd, CMD_LOGIN) == 0) {
