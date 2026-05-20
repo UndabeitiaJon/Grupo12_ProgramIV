@@ -96,7 +96,7 @@ int validar_fecha(const char *fecha) {
         printf("  [ERROR] Fecha invalida: mes %d fuera de rango (01-12).\n", mes);
         return 0;
     }
-    /* Dias maximos por mes (sin bissexto completo, suficiente para validacion basica) */
+    // Dias maximos por mes
     int dias_mes[] = {0,31,29,31,30,31,30,31,31,30,31,30,31};
     if (dia < 1 || dia > dias_mes[mes]) {
         printf("  [ERROR] Fecha invalida: dia %d fuera de rango para el mes %02d.\n", dia, mes);
@@ -147,7 +147,7 @@ int validar_nombre(const char *nombre) {
     }
     for (size_t i = 0; i < strlen(nombre); i++) {
         unsigned char c = (unsigned char)nombre[i];
-        /* Permitir letras (incluidas acentuadas UTF-8 >= 128), espacio, guion, apostrofe */
+        // Permitir letras , espacio, guion, apostrofe
         if (!isalpha(c) && c != ' ' && c != '-' && c != '\'' && c < 128) {
             printf("  [ERROR] Nombre invalido: caracter no permitido '%c'. "
                    "Solo letras, espacios y guiones.\n", nombre[i]);

@@ -5,8 +5,12 @@
  *      Author: e.aranoa
  */
 
+<<<<<<< HEAD
 /*
  */
+=======
+
+>>>>>>> branch 'main' of git@github.com:UndabeitiaJon/Grupo12_ProgramIV.git
 
 #ifndef CLASE_PASAJERO_H_
 #define CLASE_PASAJERO_H_
@@ -17,13 +21,13 @@
 
 class Pasajero : public UsuarioBase {
 private:
-    /* Caché local — evita peticiones repetidas al servidor */
+    // Evita peticiones repetidas al servidor
     std::vector<std::string> cacheEstaciones;
     std::vector<std::string> cacheTrayectos;
     bool estacionesCargadas = false;
     bool trayectosCargados  = false;
 
-    /* Sub-menús */
+    // Sub-menús
     void menuBuscarTrayecto();
     void menuHacerReserva(const std::string& id_tr,
                           const std::string& orig_nombre,
@@ -32,7 +36,7 @@ private:
                           const std::string& clase);
     void menuMisReservas();
 
-    /* Helpers de presentación */
+    // Helpers de presentación
     void mostrarTrayectos(const std::vector<std::string>& lista);
     void mostrarReservas (const std::vector<std::string>& lista);
     void cargarEstaciones();

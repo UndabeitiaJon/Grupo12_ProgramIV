@@ -2,16 +2,11 @@
  * server_socket.c
  *
  *  Created on: 7 may 2026
- *      Author: e.aranoa
+ *      Author:
  */
 
 
-/*
- * server_socket.c  –  Sistema TRENFE  –  Fase 2
- *
- * Implementación portable de las utilidades de red.
- * Compatible con Windows (Winsock2) y Linux/macOS (POSIX sockets).
- */
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,9 +18,7 @@
 #include <errno.h>
 #endif
 
-/* ── Helper: mensaje de error portable ──
- * En Windows los sockets usan WSAGetLastError(), no errno.
- * En Linux/macOS se usa strerror(errno) directamente.         */
+
 static void sock_perror(const char *ctx) {
 #ifdef _WIN32
     fprintf(stderr, "[SOCKET] %s: WSA error %d\n", ctx, WSAGetLastError());
@@ -34,9 +27,8 @@ static void sock_perror(const char *ctx) {
 #endif
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 1 – Inicialización / limpieza
-   ───────────────────────────────────────────── */
+// Inicialización / limpieza
+
 
 int socket_inicializar(void) {
 #ifdef _WIN32
@@ -58,9 +50,8 @@ void socket_limpiar(void) {
 #endif
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 2 – Creación del socket de escucha
-   ───────────────────────────────────────────── */
+//Creación del socket de escucha
+
 
 sock_t crear_socket_servidor(int puerto) {
     sock_t fd;
@@ -100,7 +91,7 @@ sock_t crear_socket_servidor(int puerto) {
         return SOCK_INVALIDO;
     }
 
-    //Listen – cola de hasta 10 conexiones pendientes
+
     if (listen(fd, 10) == SOCK_ERROR) {
         sock_perror("listen()");
         cerrar_socket(fd);
@@ -111,9 +102,8 @@ sock_t crear_socket_servidor(int puerto) {
     return fd;
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 3 – Aceptar cliente
-   ───────────────────────────────────────────── */
+// Aceptar cliente
+
 
 sock_t aceptar_cliente(sock_t servidor, char *ip_cliente, int ip_buf_len) {
     struct sockaddr_in addr_cliente;
@@ -142,9 +132,8 @@ sock_t aceptar_cliente(sock_t servidor, char *ip_cliente, int ip_buf_len) {
     return fd_cliente;
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 4 – Cerrar socket
-   ───────────────────────────────────────────── */
+//Cerrar socket
+
 
 void cerrar_socket(sock_t fd) {
     if (fd == SOCK_INVALIDO) return;
@@ -155,9 +144,7 @@ void cerrar_socket(sock_t fd) {
 #endif
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 5 – Enviar mensaje
-   ───────────────────────────────────────────── */
+//Enviar mensaje
 
 int enviar_mensaje(sock_t fd, const char *msg) {
     if (!msg){
@@ -201,9 +188,7 @@ int enviar_mensaje(sock_t fd, const char *msg) {
     return enviado;
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 6 – Recibir mensaje (hasta '\n')
-   ───────────────────────────────────────────── */
+//Recibir mensaje (hasta '\n')
 
 int recibir_mensaje(sock_t fd, char *buf, int max) {
     if (!buf || max <= 0){
@@ -243,9 +228,8 @@ int recibir_mensaje(sock_t fd, char *buf, int max) {
     return total;
 }
 
-/* ─────────────────────────────────────────────
-   BLOQUE 7 – enviar_fmt (formato printf-style)
-   ───────────────────────────────────────────── */
+//enviar_fmt
+
 
 int enviar_fmt(sock_t fd, const char *fmt, ...) {
     char buf[SOCK_BUF_MAX];

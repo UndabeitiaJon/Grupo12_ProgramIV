@@ -1,14 +1,7 @@
-// server_handler_admin.c
-// Created on: 9 may 2026
-// Author: e.aranoa
 
 // server_handler_admin.cpp
 // Created on: 9 may 2026
 // Author: e.aranoa
-
-// server_handler_admin.c  -  Sistema TRENFE  -  Fase 2
-// Handlers exclusivos del rol ADMIN.
-// Cada función abre y cierra la BD por sí misma para ser independiente.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +15,7 @@
 #include "db_manager.h"
 #include "sqlite3.h"
 
-// ── Helpers locales ──
+// Helpers locales
 
 static sqlite3 *abrir_db_admin(sock_t fd) {
     sqlite3 *db;
@@ -97,11 +90,11 @@ void hadmin_insertar_tren(sock_t fd, char *param) {
 void hadmin_modificar_tren(sock_t fd, char *param) {
     // param: "id_t|modelo|serie|anio|estado|fecha_rev"
     char *s_id      = strtok(param, "|");
-    char *modelo    = strtok(NULL,  "|");
-    char *serie     = strtok(NULL,  "|");
-    char *s_anio    = strtok(NULL,  "|");
-    char *estado    = strtok(NULL,  "|");
-    char *fecha_rev = strtok(NULL,  "|");
+    char *modelo    = strtok(NULL, "|");
+    char *serie     = strtok(NULL, "|");
+    char *s_anio    = strtok(NULL, "|");
+    char *estado    = strtok(NULL, "|");
+    char *fecha_rev = strtok(NULL, "|");
 
     if (!s_id || !modelo || !serie || !s_anio || !estado || !fecha_rev) {
         enviar_mensaje(fd, "ERROR|400|Faltan parametros en MODIFICAR_TREN");
@@ -137,12 +130,10 @@ void hadmin_eliminar_tren(sock_t fd, char *param) {
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db, "DELETE FROM TRENES WHERE id_t=?;", -1, &s, NULL);
     sqlite3_bind_int(s, 1, atoi(param));
-    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0) {
         enviar_fmt(fd, "OK|Tren %s eliminado", param);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|404|Tren no encontrado o tiene servicios activos");
     }
     sqlite3_finalize(s); sqlite3_close(db);
@@ -150,16 +141,18 @@ void hadmin_eliminar_tren(sock_t fd, char *param) {
 
 void hadmin_insertar_estacion(sock_t fd, char *param) {
     // param: "nombre|ciudad|provincia|andenes"
-    char *nombre    = strtok(param, "|");
-    char *ciudad    = strtok(NULL,  "|");
-    char *provincia = strtok(NULL,  "|");
-    char *s_andenes = strtok(NULL,  "|");
+    char *nombre = strtok(param, "|");
+    char *ciudad = strtok(NULL, "|");
+    char *provincia = strtok(NULL, "|");
+    char *s_andenes = strtok(NULL, "|");
 
     if (!nombre || !ciudad || !provincia || !s_andenes) {
         enviar_mensaje(fd, "ERROR|400|Formato: INSERTAR_ESTACION|nombre|ciudad|provincia|andenes");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db){
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "INSERT INTO ESTACIONES(nombre,ciudad,provincia,num_andenes) VALUES(?,?,?,?);",
@@ -192,7 +185,9 @@ void hadmin_modificar_estacion(sock_t fd, char *param) {
         enviar_mensaje(fd, "ERROR|400|Faltan parametros en MODIFICAR_ESTACION");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db){
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE ESTACIONES SET nombre=?,ciudad=?,provincia=?,num_andenes=? WHERE id_est=?;",
@@ -290,7 +285,7 @@ void hadmin_modificar_trayecto(sock_t fd, char *param) {
 }
 
 void hadmin_estado_trayecto(sock_t fd, char *param) {
-    // param: "id_tr|estado"  (ACTIVO / SUSPENDIDO / ELIMINADO)
+    // param: "id_tr|estado" (ACTIVO / SUSPENDIDO / ELIMINADO)
     char *s_id_tr = strtok(param, "|");
     char *estado  = strtok(NULL,  "|");
     if (!s_id_tr || !estado) {
@@ -304,11 +299,9 @@ void hadmin_estado_trayecto(sock_t fd, char *param) {
     sqlite3_bind_text(s,1,estado,-1,SQLITE_STATIC);
     sqlite3_bind_int (s,2,atoi(s_id_tr));
 
-    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0) {
         enviar_fmt(fd, "OK|Estado del trayecto %s actualizado a %s", s_id_tr, estado);
-    }
-    else
+    } else
     {
         enviar_mensaje(fd, "ERROR|404|Trayecto no encontrado");
     }
@@ -359,12 +352,10 @@ void hadmin_deshabilitar_user(sock_t fd, char *param) {
         "UPDATE USUARIOS SET activo = CASE WHEN activo=1 THEN 0 ELSE 1 END WHERE id_u=?;",
         -1, &s, NULL);
     sqlite3_bind_int(s, 1, atoi(param));
-    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0) {
         enviar_fmt(fd, "OK|Estado del usuario %s actualizado", param);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|404|Usuario no encontrado");
     }
     sqlite3_finalize(s); sqlite3_close(db);
@@ -372,7 +363,9 @@ void hadmin_deshabilitar_user(sock_t fd, char *param) {
 
 void hadmin_listar_servicios(sock_t fd, char *param) {
     // param opcional: "fecha"
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     const char *sql_con =
         "SELECT so.id_serv, so.fecha, t.id_t, eo.nombre, ed.nombre,"
@@ -413,12 +406,14 @@ void hadmin_listar_servicios(sock_t fd, char *param) {
 void hadmin_insertar_servicio(sock_t fd, char *param) {
     // param: "id_tr|fecha"
     char *s_id_tr = strtok(param, "|");
-    char *fecha   = strtok(NULL,  "|");
+    char *fecha = strtok(NULL, "|");
     if (!s_id_tr || !fecha) {
         enviar_mensaje(fd, "ERROR|400|Formato: INSERTAR_SERVICIO|id_tr|fecha");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "INSERT INTO SERVICIOS_OPERATIVOS(id_tr,fecha,estado_serv,minutos_retraso)"
@@ -426,31 +421,32 @@ void hadmin_insertar_servicio(sock_t fd, char *param) {
     sqlite3_bind_int (s,1,atoi(s_id_tr));
     sqlite3_bind_text(s,2,fecha,-1,SQLITE_STATIC);
 
-    if (sqlite3_step(s) == SQLITE_DONE)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE) {
         enviar_fmt(fd, "OK|%d", (int)sqlite3_last_insert_rowid(db));
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|500|No se pudo crear el servicio");
     }
     sqlite3_finalize(s); sqlite3_close(db);
 }
 
 void hadmin_cancelar_servicio(sock_t fd, char *param) {
-    if (!param) { enviar_mensaje(fd, "ERROR|400|Falta id_serv"); return; }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    if (!param) {
+    	enviar_mensaje(fd, "ERROR|400|Falta id_serv");
+    	return;
+    }
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE SERVICIOS_OPERATIVOS SET estado_serv='CANCELADO' WHERE id_serv=?;",
         -1, &s, NULL);
     sqlite3_bind_int(s, 1, atoi(param));
-    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0){
         enviar_fmt(fd, "OK|Servicio %s cancelado", param);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|404|Servicio no encontrado");
     }
     sqlite3_finalize(s); sqlite3_close(db);
@@ -458,15 +454,15 @@ void hadmin_cancelar_servicio(sock_t fd, char *param) {
 
 void hadmin_asignar_empleado(sock_t fd, char *param) {
     char *s_id_serv = strtok(param, "|");
-    char *s_id_u    = strtok(NULL,  "|");
-    char *rol       = strtok(NULL,  "|");
+    char *s_id_u = strtok(NULL,  "|");
+    char *rol = strtok(NULL,  "|");
 
     if (!s_id_serv || !s_id_u || !rol) {
         enviar_mensaje(fd, "ERROR|400|Formato: ASIGNAR_EMPLEADO|id_serv|id_u|rol");
         return;
     }
     int id_serv = atoi(s_id_serv);
-    int id_u    = atoi(s_id_u);
+    int id_u = atoi(s_id_u);
 
     sqlite3 *db = abrir_db_admin(fd); if (!db) return;
 
@@ -479,7 +475,9 @@ void hadmin_asignar_empleado(sock_t fd, char *param) {
         " WHERE so.id_serv = ?;",
         -1, &st, NULL);
     sqlite3_bind_int(st, 1, id_serv);
-    if (sqlite3_step(st) == SQLITE_ROW) id_t = sqlite3_column_int(st, 0);
+    if (sqlite3_step(st) == SQLITE_ROW){
+    	id_t = sqlite3_column_int(st, 0);
+    }
     sqlite3_finalize(st);
 
     if (id_t == 0) {
@@ -498,12 +496,10 @@ void hadmin_asignar_empleado(sock_t fd, char *param) {
     sqlite3_bind_int (si, 3, id_t);
     sqlite3_bind_text(si, 4, rol, -1, SQLITE_STATIC);
 
-    if (sqlite3_step(si) == SQLITE_DONE)
-    {
+    if (sqlite3_step(si) == SQLITE_DONE) {
         enviar_fmt(fd, "OK|%d", (int)sqlite3_last_insert_rowid(db));
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|500|No se pudo asignar el empleado");
     }
     sqlite3_finalize(si);
@@ -543,15 +539,17 @@ void hadmin_listar_incidencias(sock_t fd, char *param) {
 void hadmin_insertar_incidencia(sock_t fd, char *param) {
     // param: "id_serv|tipo|descripcion|prioridad"
     char *s_id_serv = strtok(param, "|");
-    char *tipo      = strtok(NULL,  "|");
-    char *desc      = strtok(NULL,  "|");
+    char *tipo = strtok(NULL,  "|");
+    char *desc = strtok(NULL,  "|");
     char *prioridad = strtok(NULL,  "|");
 
     if (!s_id_serv || !tipo || !desc || !prioridad) {
         enviar_mensaje(fd, "ERROR|400|Faltan parametros en INSERTAR_INCIDENCIA");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "INSERT INTO INCIDENCIAS(id_serv,tipo,descripcion,prioridad,estado,fecha_reporte)"
@@ -574,10 +572,15 @@ void hadmin_insertar_incidencia(sock_t fd, char *param) {
 void hadmin_resolver_incidencia(sock_t fd, char *param, const char *email_admin) {
     // param: "id_inc|id_u_resolvio"
     char *s_id_inc = strtok(param, "|");
-    char *s_id_u   = strtok(NULL,  "|");
-    if (!s_id_inc) { enviar_mensaje(fd,"ERROR|400|Falta id_inc"); return; }
+    char *s_id_u = strtok(NULL,  "|");
+    if (!s_id_inc) {
+    	enviar_mensaje(fd,"ERROR|400|Falta id_inc");
+    	return;
+    }
 
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE INCIDENCIAS SET estado='RESUELTA' WHERE id_inc=?;",
@@ -603,7 +606,9 @@ void hadmin_informe_ocupacion(sock_t fd, char *param) {
         return;
     }
     int id_t = atoi(param);
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
 
     if (sqlite3_prepare_v2(db,
@@ -619,7 +624,8 @@ void hadmin_informe_ocupacion(sock_t fd, char *param) {
         " GROUP BY t.id_tr ORDER BY t.id_tr;",
         -1, &s, NULL) != SQLITE_OK) {
         enviar_mensaje(fd, "ERROR|500|Consulta de ocupacion fallida");
-        sqlite3_close(db); return;
+        sqlite3_close(db);
+        return;
     }
     sqlite3_bind_int(s, 1, id_t);
     int n = 0;
@@ -638,9 +644,14 @@ void hadmin_informe_ocupacion(sock_t fd, char *param) {
 
 void hadmin_informe_ingresos(sock_t fd, char *param) {
     // param: "id_tr"
-    if (!param) { enviar_mensaje(fd,"ERROR|400|Falta id_tr"); return; }
+    if (!param) {
+    	enviar_mensaje(fd,"ERROR|400|Falta id_tr");
+    	return;
+    }
     int id_tr = atoi(param);
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db){
+    	return;
+    }
 
     // Datos del trayecto
     sqlite3_stmt *st;
@@ -654,10 +665,10 @@ void hadmin_informe_ingresos(sock_t fd, char *param) {
     char origen[128]="?", destino[128]="?", h_sal[16]="?", h_ll[16]="?";
     double precio_base = 0.0;
     if (sqlite3_step(st) == SQLITE_ROW) {
-        snprintf(origen,  sizeof(origen),  "%s", ctxt(st,0));
+        snprintf(origen, sizeof(origen), "%s", ctxt(st,0));
         snprintf(destino, sizeof(destino), "%s", ctxt(st,1));
-        snprintf(h_sal,   sizeof(h_sal),   "%s", ctxt(st,2));
-        snprintf(h_ll,    sizeof(h_ll),    "%s", ctxt(st,3));
+        snprintf(h_sal, sizeof(h_sal), "%s", ctxt(st,2));
+        snprintf(h_ll, sizeof(h_ll), "%s", ctxt(st,3));
         precio_base = sqlite3_column_double(st,4);
     }
     sqlite3_finalize(st);
@@ -669,7 +680,7 @@ void hadmin_informe_ingresos(sock_t fd, char *param) {
         " FROM RESERVAS WHERE id_tr=? AND estado='CONFIRMADA';",
         -1, &s, NULL);
     sqlite3_bind_int(s, 1, id_tr);
-    int    n_reservas = 0;
+    int n_reservas = 0;
     double ingresos   = 0.0;
     if (sqlite3_step(s) == SQLITE_ROW) {
         n_reservas = sqlite3_column_int(s, 0);
@@ -692,7 +703,9 @@ void hadmin_informe_incidencias(sock_t fd, char *param) {
         enviar_mensaje(fd, "ERROR|400|Formato: INFORME_INCIDENCIAS|f_ini|f_fin");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "SELECT i.id_inc, so.fecha, i.tipo, i.prioridad, i.estado"
@@ -714,7 +727,9 @@ void hadmin_informe_incidencias(sock_t fd, char *param) {
 }
 
 void hadmin_listar_tarifas(sock_t fd) {
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     // Unimos TARIFAS con TRAYECTOS para mostrar id_tr y precio_base del trayecto
     if (sqlite3_prepare_v2(db,
@@ -749,12 +764,10 @@ void hadmin_mod_coef_business(sock_t fd, char *param) {
         return;
     }
     int rc = modificar_coef_business_db(atoi(s_id_tr), atof(s_coef));
-    if (rc == 0)
-    {
+    if (rc == 0) {
         enviar_fmt(fd, "OK|Coef. business del trayecto %s actualizado a %s", s_id_tr, s_coef);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|404|Trayecto no encontrado en TARIFAS");
     }
 }
@@ -765,12 +778,10 @@ void hadmin_mod_exceso_kg(sock_t fd, char *param) {
         return;
     }
     int rc = modificar_exceso_kg_db(atof(param));
-    if (rc == 0)
-    {
+    if (rc == 0) {
         enviar_fmt(fd, "OK|Precio exceso kg actualizado a %s eur/kg", param);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|500|No se pudo actualizar el precio de exceso de kg");
     }
 }
@@ -781,12 +792,10 @@ void hadmin_mod_supl_bici(sock_t fd, char *param) {
         return;
     }
     int rc = modificar_suplemento_bici_db(atof(param));
-    if (rc == 0)
-    {
+    if (rc == 0) {
         enviar_fmt(fd, "OK|Suplemento bicicleta actualizado a %s eur", param);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|500|No se pudo actualizar el suplemento de bicicleta");
     }
 }
@@ -799,18 +808,18 @@ void hadmin_mod_precio_base(sock_t fd, char *param) {
         enviar_mensaje(fd, "ERROR|400|Formato: MOD_PRECIO_BASE|id_tr|precio");
         return;
     }
-    sqlite3 *db = abrir_db_admin(fd); if (!db) return;
+    sqlite3 *db = abrir_db_admin(fd); if (!db) {
+    	return;
+    }
     sqlite3_stmt *s;
     sqlite3_prepare_v2(db,
         "UPDATE TRAYECTOS SET precio_base=? WHERE id_tr=?;", -1, &s, NULL);
     sqlite3_bind_double(s,1,atof(s_precio));
     sqlite3_bind_int   (s,2,atoi(s_id_tr));
-    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0)
-    {
+    if (sqlite3_step(s) == SQLITE_DONE && sqlite3_changes(db) > 0) {
         enviar_fmt(fd, "OK|Precio de trayecto %s actualizado a %s", s_id_tr, s_precio);
     }
-    else
-    {
+    else {
         enviar_mensaje(fd, "ERROR|404|Trayecto no encontrado");
     }
     sqlite3_finalize(s); sqlite3_close(db);
@@ -832,9 +841,13 @@ void hadmin_ver_logs(sock_t fd, char *param) {
         char tmp[256];
         strncpy(tmp, param, sizeof(tmp)-1);
         char *f_fecha = strtok(tmp, "|");
-        char *f_usr   = strtok(NULL, "|");
-        if (f_fecha) strncpy(filtro_fecha, f_fecha, sizeof(filtro_fecha)-1);
-        if (f_usr)   strncpy(filtro_usr,   f_usr,   sizeof(filtro_usr)-1);
+        char *f_usr = strtok(NULL, "|");
+        if (f_fecha){
+        	strncpy(filtro_fecha, f_fecha, sizeof(filtro_fecha)-1);
+        }
+        if (f_usr){
+        	strncpy(filtro_usr, f_usr, sizeof(filtro_usr)-1);
+        }
     }
 
     char linea[1024];
@@ -845,8 +858,12 @@ void hadmin_ver_logs(sock_t fd, char *param) {
         if (len > 0 && linea[len-1] == '\n') linea[len-1] = '\0';
 
         // Aplicar filtros si los hay
-        if (filtro_fecha[0] && !strstr(linea, filtro_fecha)) continue;
-        if (filtro_usr[0]   && !strstr(linea, filtro_usr))   continue;
+        if (filtro_fecha[0] && !strstr(linea, filtro_fecha)) {
+        	continue;
+        }
+        if (filtro_usr[0]   && !strstr(linea, filtro_usr)) {
+        	continue;
+        }
 
         enviar_fmt(fd, "LOG|%s", linea);
         n++;

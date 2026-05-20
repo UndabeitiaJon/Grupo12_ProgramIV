@@ -2,20 +2,15 @@
  * server_socket.h
  *
  *  Created on: 7 may 2026
- *      Author: e.aranoa
+ *      Author:
  */
 
-/*
- * server_socket.h  –  Sistema TRENFE  –  Fase 2
- *
- * Abstracción de red para el servidor.
- * Compatible con Windows (Winsock2) y Linux/macOS (POSIX sockets).
- */
+
 
 #ifndef SERVER_SOCKET_H_
 #define SERVER_SOCKET_H_
 
-//Portabilidad Windows / POSIX
+
 #ifdef _WIN32
     #include <winsock2.h>
     #include <ws2tcpip.h>
